@@ -1,27 +1,32 @@
 package app;
 
 import app.operators.*;
+import org.suikasoft.GsonPlus.JsonStringListPanel;
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.JOptionsUtils;
 import org.suikasoft.jOptions.app.App;
 import org.suikasoft.jOptions.app.AppPersistence;
+import org.suikasoft.jOptions.gui.panels.option.BooleanPanel;
 import org.suikasoft.jOptions.persistence.XmlPersistence;
 import org.suikasoft.jOptions.storedefinition.StoreDefinition;
 import org.suikasoft.jOptions.storedefinition.StoreDefinitionBuilder;
 import pt.up.fe.specs.util.SpecsSystem;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Tese_UI {
-
+    public static StoreDefinition storeDefinition;
 //    public static final DataKey<Integer> AN_INT = KeyFactory.integer("anInt");
 //    public static final DataKey<Boolean> AN_BOOLEAN = KeyFactory.bool("anBoolean");
 
+/*
     public static final DataKey<List<String>> PLUS_OP = KeyFactory.multipleStringList("ArithmeticOperator: '" + ArithmeticOperators.PLUS + "'  ", ArithmeticOperators.PLUS_OP).setDefault(() -> ArithmeticOperators.PLUS_OP);
     public static final DataKey<List<String>> MINUS_OP = KeyFactory.multipleStringList("ArithmeticOperator: '" + ArithmeticOperators.MINUS + "'  ", ArithmeticOperators.MINUS_OP).setDefault(() -> ArithmeticOperators.MINUS_OP);
     public static final DataKey<List<String>> MULTIPLY_OP = KeyFactory.multipleStringList("ArithmeticOperator: '" + ArithmeticOperators.MULTIPLY + "'  ", ArithmeticOperators.MULTIPLY_OP).setDefault(() -> ArithmeticOperators.MULTIPLY_OP);
@@ -53,12 +58,34 @@ public class Tese_UI {
     public static final DataKey<List<String>> INCREMENT_BEFORE_OP = KeyFactory.multipleStringList("UnaryOperators: '" + UnaryOperators.INCREMENT_BEFORE + "'  ", UnaryOperators.INCREMENT_BEFORE_OP).setDefault(() -> UnaryOperators.INCREMENT_BEFORE_OP);
     public static final DataKey<List<String>> DECREMENT_AFTER_OP = KeyFactory.multipleStringList("UnaryOperators: '" + UnaryOperators.DECREMENT_AFTER + "'  ", UnaryOperators.DECREMENT_AFTER_OP).setDefault(() -> UnaryOperators.DECREMENT_AFTER_OP);
     public static final DataKey<List<String>> DECREMENT_BEFORE_OP = KeyFactory.multipleStringList("UnaryOperators: '" + UnaryOperators.DECREMENT_BEFORE + "'  ", UnaryOperators.DECREMENT_BEFORE_OP).setDefault(() -> UnaryOperators.DECREMENT_BEFORE_OP);
+*/
 
-    public static void main(String[] args) {
+
+public static void main(String[] args) {
 
         SpecsSystem.programStandardInit();
 
-        StoreDefinition storeDefinition = new StoreDefinitionBuilder(Tese_UI.class).build();
+        StoreDefinitionBuilder storeDefinitionBuilder = new StoreDefinitionBuilder(Tese_UI.class);
+
+        storeDefinitionBuilder.startSection("Arithmetic Operators");
+        ArithmeticOperators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
+
+        storeDefinitionBuilder.startSection("BitWise Operators");
+        BitwiseOperators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
+
+        storeDefinitionBuilder.startSection("Conditional Operators");
+        ConditionalOperators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
+
+        storeDefinitionBuilder.startSection("Relational Operators");
+        RelationalOperators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
+
+        storeDefinitionBuilder.startSection("Unary Operators");
+        UnaryOperators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
+
+
+
+        storeDefinitionBuilder.startSection("Rest");
+        storeDefinition = storeDefinitionBuilder.build();
         AppPersistence persistence = new XmlPersistence(storeDefinition);
         persistence.saveData(new File("Data.xml"), DataStore.newInstance(storeDefinition));
 
