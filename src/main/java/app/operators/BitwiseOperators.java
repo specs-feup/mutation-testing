@@ -15,6 +15,9 @@ public final class BitwiseOperators extends Operators{
     /***
      * Bitwise Operators (Relates with Arithmetic Operators)
      */
+
+    public final static String TYPE = "Bitwise";
+
     public final static String SIGNED_RIGHT_SHIFT = ">>";
     public final static String SIGNED_LEFT_SHIFT = "<<";
     public final static String UNSIGNED_RIGHT_SHIFT = ">>>";
@@ -36,11 +39,14 @@ public final class BitwiseOperators extends Operators{
         return OPERATORS;
     }
 
-    public static List<DataKey> getDataKeys() {
+   public static List<DataKey> getDataKeys() {
         List<DataKey> dataKeysList = new ArrayList<>();
-        MUTATORS.forEach(stringList -> dataKeysList.add(
-                KeyFactory.multipleStringList(OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining()), stringList)
-                        .setDefault(() -> stringList)));;
+        MUTATORS.forEach(stringList -> {
+            String operator = OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining());
+            dataKeysList.add(
+                KeyFactory.multipleStringList(TYPE+operator, stringList).setLabel(operator+"  ")
+                        .setDefault(() -> stringList));
+        });
         return dataKeysList;
     }
 

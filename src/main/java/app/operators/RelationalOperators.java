@@ -13,6 +13,9 @@ public final class RelationalOperators extends Operators{
     /***
      * Relational Operators
      */
+
+    public final static String TYPE = "Relational";
+
     public final static String MINOR = "<";
     public final static String MINOR_OR_EQUAL = "<=";
     public final static String GREATER = ">";
@@ -41,11 +44,14 @@ public final class RelationalOperators extends Operators{
         return OPERATORS;
     }
 
-    public static List<DataKey> getDataKeys() {
+   public static List<DataKey> getDataKeys() {
         List<DataKey> dataKeysList = new ArrayList<>();
-        MUTATORS.forEach(stringList -> dataKeysList.add(
-                KeyFactory.multipleStringList(OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining()), stringList)
-                        .setDefault(() -> stringList)));;
+        MUTATORS.forEach(stringList -> {
+            String operator = OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining());
+            dataKeysList.add(
+                KeyFactory.multipleStringList(TYPE+operator, stringList).setLabel(operator+"  ")
+                        .setDefault(() -> stringList));
+        });
         return dataKeysList;
     }
 }

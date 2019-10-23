@@ -14,6 +14,8 @@ public final class ArithmeticOperators extends Operators {
     /***
      * Arithmetic Operators (Relates with Bitwise)
      */
+    public final static String TYPE = "Arithmetic";
+
     public final static String PLUS = "+";
     public final static String MINUS = "-";
     public final static String MULTIPLY = "*";
@@ -42,9 +44,12 @@ public final class ArithmeticOperators extends Operators {
 
    public static List<DataKey> getDataKeys() {
         List<DataKey> dataKeysList = new ArrayList<>();
-        MUTATORS.forEach(stringList -> dataKeysList.add(
-                KeyFactory.multipleStringList(OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining()), stringList)
-                        .setDefault(() -> stringList)));;
+        MUTATORS.forEach(stringList -> {
+            String operator = OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining());
+            dataKeysList.add(
+                KeyFactory.multipleStringList(TYPE+operator, stringList).setLabel(operator+"  ")
+                        .setDefault(() -> stringList));
+        });
         return dataKeysList;
     }
 }

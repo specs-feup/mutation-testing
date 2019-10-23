@@ -16,6 +16,8 @@ public final class UnaryOperators extends Operators{
      * Unary Operators
      */
 
+    public final static String TYPE = "Unary";
+
     public final static String UNARY_PLUS = "+";
     public final static String UNARY_MINUS = "-";
     public final static String INCREMENT_BEFORE = "++_";
@@ -47,11 +49,14 @@ public final class UnaryOperators extends Operators{
         return OPERATORS;
     }
 
-    public static List<DataKey> getDataKeys() {
+   public static List<DataKey> getDataKeys() {
         List<DataKey> dataKeysList = new ArrayList<>();
-        MUTATORS.forEach(stringList -> dataKeysList.add(
-                KeyFactory.multipleStringList(OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining()), stringList)
-                        .setDefault(() -> stringList)));;
+        MUTATORS.forEach(stringList -> {
+            String operator = stringList.size()>1 ? OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining()) : "!";
+            dataKeysList.add(
+                KeyFactory.multipleStringList(TYPE+operator, stringList).setLabel(operator+"  ")
+                        .setDefault(() -> stringList));
+        });
         return dataKeysList;
     }
 

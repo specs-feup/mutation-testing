@@ -83,8 +83,6 @@ public static void main(String[] args) {
         UnaryOperators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
 
 
-
-        storeDefinitionBuilder.startSection("Rest");
         storeDefinition = storeDefinitionBuilder.build();
         AppPersistence persistence = new XmlPersistence(storeDefinition);
         persistence.saveData(new File("Data.xml"), DataStore.newInstance(storeDefinition));
