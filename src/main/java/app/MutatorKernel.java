@@ -1,6 +1,5 @@
 package app;
 
-import app.operators.RelationalOperators;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.app.AppKernel;
 
@@ -10,7 +9,7 @@ public class MutatorKernel implements AppKernel {
 
     public int execute(DataStore dataStore) {
 
-        List<String> stringList = dataStore.get(main.MINOR_OP);
+        List<String> stringList = dataStore.get(Tese_UI.MINOR_OP);
         System.out.println(stringList.isEmpty());
         /*for(DataKey dataKey : main.dataKeys)
             System.out.println("Value: " + dataStore.get(dataKey));*/

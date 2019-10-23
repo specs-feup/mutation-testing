@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class main {
+public class Tese_UI {
 
 //    public static final DataKey<Integer> AN_INT = KeyFactory.integer("anInt");
 //    public static final DataKey<Boolean> AN_BOOLEAN = KeyFactory.bool("anBoolean");
@@ -58,7 +58,7 @@ public class main {
 
         SpecsSystem.programStandardInit();
 
-        StoreDefinition storeDefinition = new StoreDefinitionBuilder(main.class).build();
+        StoreDefinition storeDefinition = new StoreDefinitionBuilder(Tese_UI.class).build();
         AppPersistence persistence = new XmlPersistence(storeDefinition);
         persistence.saveData(new File("Data.xml"), DataStore.newInstance(storeDefinition));
 
