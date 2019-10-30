@@ -41,7 +41,6 @@ public class Tese_UI {
 
         storeDefinition = storeDefinitionBuilder.build();
         AppPersistence persistence = new XmlPersistence(storeDefinition);
-        persistence.saveData(new File("Data.xml"), DataStore.newInstance(storeDefinition));
 
         App app = App.newInstance(storeDefinition, persistence, new MutatorKernel());
         JOptionsUtils.executeApp(app, Arrays.asList(args));
