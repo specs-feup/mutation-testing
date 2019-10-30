@@ -1,13 +1,11 @@
 package app;
 
 import app.operators.Operators;
-import kadabra.resources.KadabraAPIResources;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.app.AppKernel;
 import weaver.gui.KadabraLauncher;
-import weaver.kadabra.concurrent.KadabraThread;
 
 import java.io.File;
 import java.io.FileWriter;
