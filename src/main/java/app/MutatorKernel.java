@@ -1,23 +1,38 @@
 package app;
 
-import org.suikasoft.jOptions.Datakey.DataKey;
-import org.suikasoft.jOptions.Datakey.DataKeyExtraData;
+import app.operators.Operators;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.app.AppKernel;
 
-import java.util.Collection;
-
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class MutatorKernel implements AppKernel {
 
     public int execute(DataStore dataStore) {
+        JSONObject jsonObject = new JSONObject();
 
-        /*List<String> stringList = dataStore.get(Tese_UI.MINOR_OP);
-        System.out.println(stringList.isEmpty());
-        for(DataKey dataKey : main.dataKeys)
-            System.out.println("Value: " + dataStore.get(dataKey));*/
+        try {
+            for (Operators operators : Operators.assignedOperators) {
+                JSONObject operator = new JSONObject();
+                for (String identifier : operators.getIdentifiers()){
+                    operator.put(identifier.substring(identifier.indexOf(' ')+1), dataStore.get(identifier));
+                }
+                jsonObject.put(operators.getType(),operator);
+            }
 
-        Collection<Object> list =  dataStore.getValues();//dataStore.getStoreDefinition().get().getSections().get(1).getKeys().get(0);
+            try (FileWriter file = new FileWriter("operators.json")) {
+                file.write(jsonObject.toString(2));
+            }
+
+        }catch (JSONException | IOException E){
+            E.printStackTrace();
+            return -1;
+        }
+
+
         return 0;
     }
 }
