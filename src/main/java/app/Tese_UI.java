@@ -18,8 +18,13 @@ import java.util.Arrays;
 public class Tese_UI {
     public static StoreDefinition storeDefinition;
 
-    public static final DataKey<File> PROJECT_PATH = KeyFactory.folder("Project Path");
-    public static final DataKey<File> OUTPUT_PATH = KeyFactory.folder("Output Path (Empty for default)");
+
+
+    public static final DataKey<File> PROJECT_FILE = KeyFactory.folder("ProjectPath").setLabel("Project path");
+    public static final DataKey<File> OUTPUT_FILE = KeyFactory.folder("OutputFile").setLabel("Output Path (Empty for default)");
+    public static final DataKey<File> LARA_FILE = KeyFactory.file("LaraPath", "lara").setLabel("Lara file path (for unimplemented mutators)");
+
+    public static String defaultPath = KeyFactory.folder("").getDefault().get().getAbsolutePath(); //For default paths
 
     public static void main(String[] args) {
 
