@@ -3,7 +3,7 @@ import weaver.WeaverJps;
 import lara.Io;
 
 aspectdef Test
-	input jsonFile end
+	input jsonFile, outputPath end
 	
 	var counter = 0;
 	var json = fileToJSON(jsonFile);
@@ -72,7 +72,7 @@ aspectdef Test
 	}
 	
 	function saveFile(){
-		var outputFolder = Io.getPath("output\\"+ counter);
+		var outputFolder = Io.getPath(outputPath);
 		counter++;
 	
 		// Write modified code
