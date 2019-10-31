@@ -36,7 +36,7 @@ aspectdef Test
 
 
 			println("/*--------------------------------------*/");
-			println("Muatating operator n."+ counter + ": "+ $op.operator +" to "+ mutationOp +" on "+ $op.ancestor("file").name + " line " + $op.line ); 
+			println("Mutating operator n."+ counter + ": "+ $op.operator +" to "+ mutationOp +" on "+ $op.ancestor("file").name + " line " + $op.line );
 			println("/*--------------------------------------*/");
 
 
@@ -78,5 +78,5 @@ aspectdef Test
 		// Write modified code
 		Weaver.writeCode(outputFolder);
 	}
-	
-end 
+
+end
