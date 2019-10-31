@@ -72,7 +72,7 @@ aspectdef Test
 	}
 	
 	function saveFile(){
-		var outputFolder = Io.getPath(outputPath+ "\\" + counter);
+		var outputFolder = Io.getPath(outputPath+ Io.getSeparator() + counter);
 		counter++;
 	
 		// Write modified code
