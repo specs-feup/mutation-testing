@@ -9,8 +9,8 @@ aspectdef Test
 	var json = fileToJSON(jsonFile);
 
 	for(var type in json)
-		if ( type == 'Unary')			
-			for($op of WeaverJps.search('binaryExpression').get()) {
+		if ( type === 'Unary')
+			for($op of WeaverJps.search('unaryExpression').get()) {
 			
 				var mutationOps = json[type][$op.operator];
 		
@@ -40,7 +40,7 @@ aspectdef Test
 			println("/*--------------------------------------*/");
 
 
-			if(mutationOp != null){
+			if(mutationOp != "undefined"){
 				// Store current operator
 				var previousOp = $op.operator;
 	
