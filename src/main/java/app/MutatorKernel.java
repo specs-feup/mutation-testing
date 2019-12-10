@@ -1,7 +1,6 @@
 package app;
 
 import app.operators.Operators;
-import kadabra.resources.KadabraAPIResources;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.suikasoft.jOptions.Interfaces.DataStore;
@@ -12,7 +11,9 @@ import weaver.kadabra.concurrent.KadabraThread;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MutatorKernel implements AppKernel {
@@ -22,10 +23,16 @@ public class MutatorKernel implements AppKernel {
 
         JSONObject jsonObject = new JSONObject();
 
-        String projectPath = dataStore.get(Tese_UI.PROJECT_PATH).getAbsolutePath();
-        String outputPath = dataStore.get(Tese_UI.OUTPUT_PATH).getAbsolutePath() + File.separator +"Output";
+        JSONObject laraArguments = new JSONObject();
+        String projectPath = dataStore.get(Tese_UI.PROJECT_FILE).getAbsolutePath();
+        String laraPath = dataStore.get(Tese_UI.LARA_FILE).getAbsolutePath();
+        String outputPath = dataStore.get(Tese_UI.OUTPUT_FILE).getAbsolutePath() + File.separator +"Output";
+
+        List<String> arguments = new ArrayList<>(Arrays.asList(laraPath, "-p", projectPath, "-o", outputPath+"_Main"));
 
         try {
+            laraArguments.put("outputPath", outputPath);
+
             for (Operators operators : Operators.assignedOperators) {
                 JSONObject operator = new JSONObject();
                 for (String identifier : operators.getIdentifiers()){
@@ -33,9 +40,11 @@ public class MutatorKernel implements AppKernel {
                 }
                 jsonObject.put(operators.getType(),operator);
             }
+            File file = new File("operators.json");
+            try (FileWriter fw = new FileWriter(file)) {
+                fw.write(jsonObject.toString(2));
 
-            try (FileWriter file = new FileWriter("operators.json")) {
-                file.write(jsonObject.toString(2));
+                laraArguments.put("jsonFile", file.getAbsolutePath());
             }
 
         }catch (JSONException | IOException E){
@@ -43,11 +52,22 @@ public class MutatorKernel implements AppKernel {
             return -1;
         }
 
-        String[] args = {"C:\\Gits\\Tese\\kadaba_android_example\\BinaryAndUnaryOp.lara", "-o", outputPath, "-p", projectPath,  "-X"};
-        System.out.println("Project path: " + projectPath);
-        System.out.println("ARGS:\n" + Arrays.asList(args).stream().collect(Collectors.joining(" ")));
 
-        KadabraLauncher.main(args);
+
+
+
+        arguments.add("-av");
+        arguments.add(laraArguments.toString());
+
+        arguments.add("-X");
+        arguments.add("-b");
+        arguments.add("2");
+        arguments.add("-s");
+
+        System.out.println("Project path: " + projectPath);
+        System.out.println("ARGS:\n" + String.join(" ", arguments));
+
+        KadabraLauncher.main(arguments.toArray(String[]::new));
 
         return 0;
     }

@@ -117,3 +117,4 @@ hs_err_pid*
 #Extra files
 Output
 # End of https://www.gitignore.io/api/java,intellij
+/Output_Main/
