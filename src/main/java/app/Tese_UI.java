@@ -24,7 +24,7 @@ public class Tese_UI {
     public static final DataKey<File> OUTPUT_FILE = KeyFactory.folder("OutputFile").setLabel("Output Path (Empty for default)");
     public static final DataKey<File> LARA_FILE = KeyFactory.file("LaraPath", "lara").setLabel("Lara file path (for unimplemented mutators)");
 
-    public static String defaultPath = KeyFactory.folder("").getDefault().get().getAbsolutePath(); //For default paths
+//    public static String defaultPath = KeyFactory.folder("").getDefault().orElse(new File("")).getAbsolutePath(); //For default paths
 
     public static void main(String[] args) {
 

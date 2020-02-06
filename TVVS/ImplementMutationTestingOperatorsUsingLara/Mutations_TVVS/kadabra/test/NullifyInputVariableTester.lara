@@ -1,0 +1,29 @@
+import mutation.NullifyInputVariable;
+import weaver.WeaverJps;
+import lara.Check;
+import mutation.TestResources;
+
+/**
+ * @test
+ */
+function testNullifyInputVariable() {
+
+	var $jp = WeaverJps.root();
+
+	var mutator = new NullifyInputVariable();
+
+	var actualOutput = "";
+
+	while(mutator.hasMutations()) {
+		// Mutate
+		mutator.mutate();
+		
+		// Output
+		actualOutput += mutator.getMutationPoint().parent.code + "\n";
+			
+		// Restore operator
+		mutator.restore();
+	}
+
+	Check.strings(actualOutput, TestResources.getString("NullifyInputVariable.output"));
+}

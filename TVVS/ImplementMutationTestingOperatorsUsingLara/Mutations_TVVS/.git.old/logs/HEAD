@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 5a817c1fabba5f5b162f0b8822c18e2e9b7ba1b4 Beatriz Tavares <1161604@isep.ipp.pt> 1576150591 +0000	clone: from https://gitlab.com/dianaramos07/feup---mesw.git
+5a817c1fabba5f5b162f0b8822c18e2e9b7ba1b4 5960c4c2a74ebf4c2b779c396a19b6ff40f35b2f Beatriz Tavares <1161604@isep.ipp.pt> 1576511891 +0000	commit: mutation classes
+5960c4c2a74ebf4c2b779c396a19b6ff40f35b2f ff252c79ede8fed0607b14c87d8b0e37a6b39389 Beatriz Tavares <1161604@isep.ipp.pt> 1576603609 +0000	pull origin master: Fast-forward
+ff252c79ede8fed0607b14c87d8b0e37a6b39389 2837d9df2f9460aed9d0d2a59369c1df2ac0efe9 Beatriz Tavares <1161604@isep.ipp.pt> 1576679066 +0000	pull origin master: Fast-forward
+2837d9df2f9460aed9d0d2a59369c1df2ac0efe9 82d658a95ac227c5e71af5d32ae35bd4c802a54c Beatriz Tavares <1161604@isep.ipp.pt> 1576679120 +0000	commit: tests
+82d658a95ac227c5e71af5d32ae35bd4c802a54c 7d9dda236dbc7d487a042ac7a5f5910b2ad1b649 Beatriz Tavares <1161604@isep.ipp.pt> 1576679316 +0000	commit: tests fix
+7d9dda236dbc7d487a042ac7a5f5910b2ad1b649 7f3e5fb9b7727cf95d6cd0a2813555d9bd8e54e4 Beatriz Tavares <1161604@isep.ipp.pt> 1576688210 +0000	commit: unit tests finish and fix bugs
+7f3e5fb9b7727cf95d6cd0a2813555d9bd8e54e4 8ff32117b9ed7d04234f950b6cb1c14f98e63bc3 Beatriz Tavares <1161604@isep.ipp.pt> 1576768827 +0000	commit: fix things
+8ff32117b9ed7d04234f950b6cb1c14f98e63bc3 6221dcf2429668f7653cf627b1d4162f5be0a2c3 Beatriz Tavares <1161604@isep.ipp.pt> 1576768958 +0000	commit: removing unuseful lines

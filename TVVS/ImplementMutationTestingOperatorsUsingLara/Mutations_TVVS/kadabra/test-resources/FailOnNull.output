@@ -1,0 +1,10 @@
+/**
+ * Inserted by Kadabra
+ */
+if (this.c == null)
+                        { throw new NullPointerException("fail on null") }
+/**
+ * Inserted by Kadabra
+ */
+if (object == null)
+                        { throw new NullPointerException("fail on empty") }
