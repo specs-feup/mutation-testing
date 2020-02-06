@@ -1,0 +1,88 @@
+import lara.mutation.Mutator;
+import kadabra.KadabraNodes;
+import weaver.WeaverJps;
+import weaver.Weaver;
+
+var NullifyInputVariable = function($startingPoint) {
+	// Parent constructor
+     Mutator.call(this);
+
+	if($startingPoint === undefined) {
+		$startingPoint = WeaverJps.root();
+	}
+
+	this.newValue = undefined;
+	this.mutationPoints = [];
+
+	var hasPrimitiveParams = false;
+
+	for(var $method of WeaverJps.search('method').get()) {
+		for(var $param of $method.params) {
+			if (!$param.isPrimitive) {
+				hasPrimitiveParams = true;
+			}
+		}
+		if (hasPrimitiveParams === true) {
+			this.mutationPoints.push($method);
+		}
+		hasPrimitiveParams = false;
+	}
+
+	println("Mutation points:");
+	for(var $point of this.mutationPoints) {
+		println("Point: " + $point.code);
+	}
+	
+	this.currentIndex = 0;
+	this.previousValue = undefined;
+	
+};
+
+// Inheritance
+NullifyInputVariable.prototype = Object.create(Mutator.prototype);
+
+/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+NullifyInputVariable.prototype.hasMutations = function() {
+	return this.currentIndex < this.mutationPoints.length;
+}
+
+NullifyInputVariable.prototype.getMutationPoint = function() {
+	if(this.isMutated){
+		return this.newValue;
+	}else{
+		if(this.currentIndex < this.mutationPoints.length) {
+		return this.mutationPoints[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}
+
+NullifyInputVariable.prototype._mutatePrivate = function() {
+
+	var mutationPoint = this.mutationPoints[this.currentIndex];
+	this.previousValue = mutationPoint.code;
+	
+	for (var $param of mutationPoint.params) {
+		if (!$param.isPrimitive) {
+			mutationPoint.body.insertBegin(%{[[$param.name]] = null}%);
+			this.newValue = mutationPoint;
+		}
+	}
+
+	this.currentIndex++;
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "
+			+ " to "+ this.newValue); 
+	println("/*--------------------------------------*/");
+
+}
+NullifyInputVariable.prototype._restorePrivate = function() {
+	// Restore operator
+	println("Restore  prev: " + this.previousValue);
+	println("Restore new: " + this.newValue.code);	
+	this.newValue.insertReplace(this.previousValue);
+	//println("value restored:" + this.newValue);
+	this.newValue = undefined;
+}

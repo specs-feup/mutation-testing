@@ -1,0 +1,81 @@
+import mutation.LiteralMutator;
+import weaver.WeaverJps;
+import mutation.TestResources;
+import lara.Check;
+import kadabra.KadabraNodes;
+
+/**
+ * @test
+ */
+function testLiteralMutator() {
+
+	var mutators = [];
+	var actualOutput = "";
+
+	//Mutate 0 to 1
+	mutators.push(new LiteralMutator(KadabraNodes.literal("1", "int"), KadabraNodes.literal("0", "int")));
+	//mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("1", "int"), ['int', 'byte', 'short', 'long', 'double', 'float'], "0.0"));
+	//mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("1", "int"), [], "0"));
+	
+	// Mutate 1 to -1
+	mutators.push(new LiteralMutator(KadabraNodes.literal("-1", "int"), KadabraNodes.literal("1", "int")));
+	//mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("-1", "int"), [], "1"));
+	
+	// Mutate booleans
+	mutators.push(new LiteralMutator(KadabraNodes.literal("false", "boolean"), KadabraNodes.literal("true", "boolean")));
+	mutators.push(new LiteralMutator(KadabraNodes.literal("true", "boolean"), KadabraNodes.literal("false", "boolean")));
+
+	// Mutate one string to " "
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal(" ", "String"), ['String']));
+
+	// int byte short: 1 to 0
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("0", "int"), ['int', 'byte', 'short'], "1"));
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("1", "int"), ['int', 'byte', 'short'], "-1"));
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("-1", "int"), ['int', 'byte', 'short'], "5"));
+
+	//Otherwise increment 1
+	mutators.push(LiteralMutator.newTypeFilteredMutator(
+		function($expr) {
+			var newValue = Number($expr.code) + 1; 
+			return KadabraNodes.literal(newValue.toString(),$expr.type);
+		}
+		, ['int', 'byte', 'short'], "1"));
+	
+	//long
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("0", "int"), ['long'], "1"));
+	//increment by 1
+	mutators.push(LiteralMutator.newTypeFilteredMutator(
+		function($expr) {
+			var newValue = $expr.code; 
+			newValue = newValue.substring(0, newValue.length-1);
+			newValue = Number(newValue) + 1; 
+			return KadabraNodes.literal(newValue.toString(),$expr.type);
+		}
+		, ['long'], "1l"));
+
+	//float
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("0.0", "double"), ['float'], "1.0F"));
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("0.0", "double"), ['float'], "2.0F"));
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("1.0", "double"), ['float']));
+	
+	
+	//Mutate doubles
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("1.0", "double"), ['double']));
+	mutators.push(LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal("0.0", "double"), ['double'], "1.0"));
+
+	for(mutator of mutators ) {
+			   while(mutator.hasMutations()) {
+	
+				// Mutate
+				mutator.mutate();
+				// Print
+				//println(mutator.getMutationPoint().parent.code);
+				actualOutput += mutator.getMutationPoint().parent.code + "\n";
+				// Restore operator
+				mutator.restore();
+			   	
+			    }
+	}
+
+	Check.strings(actualOutput, TestResources.getString("LiteralMutator.output"));
+}

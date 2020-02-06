@@ -1,0 +1,90 @@
+import lara.mutation.Mutator;
+import kadabra.KadabraNodes;
+import weaver.WeaverJps;
+import weaver.Weaver;
+
+var RemoveNullCheck = function($startingPoint) {
+	// Parent constructor
+     Mutator.call(this);
+
+	if($startingPoint === undefined) {
+		$startingPoint = WeaverJps.root();
+	}
+
+	this.newValue = undefined;
+	this.mutationPoints = [];
+
+	for(var $binaryExpression of WeaverJps.searchFromInclusive($startingPoint, 'binaryExpression').get()) {
+		if ($binaryExpression.operator === '!=' || $binaryExpression.operator === '==') {
+			if ($binaryExpression.rhs.type === "<nulltype>" 
+			|| $binaryExpression.lhs.type === "<nulltype>") {
+				this.mutationPoints.push($binaryExpression);
+			}
+		}
+	}	
+
+	println("Mutation points:");
+	for(var $point of this.mutationPoints) {
+		println("Point: " + $point.code);
+	}
+	
+	this.currentIndex = 0;
+	this.previousValue = undefined;
+	
+};
+
+// Inheritance
+RemoveNullCheck.prototype = Object.create(Mutator.prototype);
+
+/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+RemoveNullCheck.prototype.hasMutations = function() {
+	return this.currentIndex < this.mutationPoints.length;
+}
+
+RemoveNullCheck.prototype.getMutationPoint = function() {
+	if(this.isMutated){
+		return this.newValue;
+	}else{
+		if(this.currentIndex < this.mutationPoints.length) {
+		return this.mutationPoints[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}
+
+RemoveNullCheck.prototype._mutatePrivate = function() {
+
+	var mutationPoint = this.mutationPoints[this.currentIndex];
+
+	this.previousValue = mutationPoint.copy();
+	
+	if (mutationPoint.operator === '!=') {
+		mutationPoint.setOperator('==');
+		this.newValue = mutationPoint;
+	}
+	
+	else if (mutationPoint.operator === '==') {
+		mutationPoint.setOperator('!=');
+		this.newValue = mutationPoint;
+	}	
+
+	this.currentIndex++;
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": " + this.previousValue 
+			+ " to "+ this.newValue); 
+	println("/*--------------------------------------*/");
+
+}
+
+
+RemoveNullCheck.prototype._restorePrivate = function() {
+	// Restore operator
+	println("Restore  prev: " + this.previousValue.code);
+	println("Restore new: " + this.newValue.code);	
+	this.newValue.insertReplace(this.previousValue);
+	this.newValue = undefined;
+	this.previousValue = undefined;
+}
+

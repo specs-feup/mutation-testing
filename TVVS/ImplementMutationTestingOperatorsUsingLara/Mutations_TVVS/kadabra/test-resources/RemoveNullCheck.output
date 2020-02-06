@@ -1,0 +1,7 @@
+if (null == object) {
+    return 1;
+}
+if (object != null) {
+    return 2;
+}
+

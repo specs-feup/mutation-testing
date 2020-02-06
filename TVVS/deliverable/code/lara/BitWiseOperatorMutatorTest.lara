@@ -1,0 +1,34 @@
+import kadabra.mutation.BitWiseOperatorMutator;
+import weaver.WeaverJps;
+
+aspectdef BitWiseOperatorMutatorTest
+
+var $jp = WeaverJps.root();
+
+var mutator = new BitWiseOperatorMutator($jp, "|", "lhs", "^", "rhs", "&");
+
+while(mutator.hasMutations()) {
+	// Mutate
+	mutator.mutate();
+
+	// Print
+	println($jp.srcCode);
+
+	// Restore operator
+	mutator.restore();
+}
+
+var mutator2 = new BitWiseOperatorMutator($jp, "~", "");
+
+while(mutator2.hasMutations()) {
+	// Mutate
+	mutator2.mutate();
+
+	// Print
+	println($jp.srcCode);
+
+	// Restore operator
+	mutator2.restore();
+}
+
+end

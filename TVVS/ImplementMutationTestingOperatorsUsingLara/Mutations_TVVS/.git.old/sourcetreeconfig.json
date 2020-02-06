@@ -1,0 +1,32 @@
+{
+  "$id": "21",
+  "AutoRefresh": true,
+  "AutoRefreshRemotes": true,
+  "CommitTextLinks": null,
+  "DraftCommitMsg": "",
+  "IncomingSavedCount": 0,
+  "LastCheckedRemotes": "2019-12-19T16:17:36.3046264+00:00",
+  "LastUsedView": 0,
+  "LogBranchFilterIndex": 0,
+  "OutgoingSavedCount": 0,
+  "SidebarExpandedItems": [
+    "Branches"
+  ],
+  "SidebarWidth": 210.0,
+  "SubtreeLinks": [],
+  "RemoteProjectLinks": [
+    {
+      "$id": "22",
+      "BaseUrl": "",
+      "Identifier": "dianaramos07/feup---mesw",
+      "RemoteName": "origin",
+      "Type": -1,
+      "Username": null,
+      "CloneUrl": null,
+      "ProjectUrl": null,
+      "AccountId": "",
+      "AvatarUrl": null,
+      "DisplayName": "origin: "
+    }
+  ]
+}

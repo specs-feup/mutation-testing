@@ -1,0 +1,17 @@
+import weaver.WeaverOptions;
+
+aspectdef Test
+
+	//println("Something");
+
+	input jsonFile end
+
+	var counter = 0;
+	var json = fileToJSON(jsonFile);
+
+	for(var type in json)
+		printObject(json[type]);
+
+	printObject(WeaverOptions.getData());
+
+end
