@@ -3,7 +3,7 @@ import LiteralMutator;
 import ConstantMutator;
 import weaver.WeaverJps;
 import kadabra.KadabraNodes;
-
+import lara.Io;
 /**
 * Literal Mutator.
 */
@@ -88,6 +88,18 @@ end
 
 
 aspectdef FailonNullTesttt
+	input outputPath end
+	var counter = 0;
+	function saveFile(){
+		var outputFolder = Io.getPath(outputPath+ "/" + counter);
+		counter++;
+		println("Saving to "+outputFolder);
+		// Write modified code
+		Weaver.writeCode(outputFolder);
+	}
+
+
+
 	var mutator = new FailOnNull();
 
 	var actualOutput = "";
@@ -96,6 +108,7 @@ aspectdef FailonNullTesttt
 		// Mutate
 		mutator.mutate();
 		println("TYPEEEE---->" + mutator.type);
+		saveFile();
 		// Output
 		mutator.getMutationPoint() + "\n";
 			
@@ -108,51 +121,63 @@ end
 
 aspectdef ConstantMutatorTest
 
-var mutators = [];
-
-mutators.push(new ConstantMutator(KadabraNodes.literal("1", "int")));
-mutators.push(new ConstantMutator(KadabraNodes.literal("0", "int")));
-mutators.push(new ConstantMutator(KadabraNodes.literal("-1", "int")));
-
-//* (-1)
-mutators.push(new ConstantMutator(
-	function($expr) {
-			var newValue = Number($expr); 
-			//newValue = newValue.substring(0, newValue.length-1);
-			newValue = newValue * (-1); 
-			return KadabraNodes.literal(newValue.toString(),"int");
+	input outputPath end
+	var counter = 0;
+	function saveFile(){
+		var outputFolder = Io.getPath(outputPath+ "/" + counter);
+		counter++;
+		println("Saving to "+outputFolder);
+		// Write modified code
+		Weaver.writeCode(outputFolder);
 	}
-));
 
-//+ 1
-mutators.push(new ConstantMutator(
-	function($expr) {
-			var newValue = Number($expr); 
-			newValue = newValue + 1; 
-			return KadabraNodes.literal(newValue.toString(),"int");
-	}
-));
-
-//- 1
-mutators.push(new ConstantMutator(
-	function($expr) {
-			var newValue = Number($expr); 
-			newValue = newValue - 1; 
-			return KadabraNodes.literal(newValue.toString(),"int");
-	}
-));
-
-	for(mutator of mutators ) {
-			   while(mutator.hasMutations()) {
+	var mutator = [];
 	
-				// Mutate
-				mutator.mutate();
-				// Print
-				println(mutator.getMutationPoint().parent.code);
-				// Restore operator
-				mutator.restore();
-			   	
-			    }
-	}
+	mutators.push(new ConstantMutator(KadabraNodes.literal("1", "int")));
+	mutators.push(new ConstantMutator(KadabraNodes.literal("0", "int")));
+	mutators.push(new ConstantMutator(KadabraNodes.literal("-1", "int")));
+	
+	//* (-1)
+	mutators.push(new ConstantMutator(
+		function($expr) {
+				var newValue = Number($expr); 
+				//newValue = newValue.substring(0, newValue.length-1);
+				newValue = newValue * (-1); 
+				return KadabraNodes.literal(newValue.toString(),"int");
+		}
+	));
+	
+	//+ 1
+	mutators.push(new ConstantMutator(
+		function($expr) {
+				var newValue = Number($expr); 
+				newValue = newValue + 1; 
+				return KadabraNodes.literal(newValue.toString(),"int");
+		}
+	));
+	
+	//- 1
+	mutators.push(new ConstantMutator(
+		function($expr) {
+				var newValue = Number($expr); 
+				newValue = newValue - 1; 
+				return KadabraNodes.literal(newValue.toString(),"int");
+		}
+	));
+	
+		for(mutator of mutators ) {
+				   while(mutator.hasMutations()) {
+		
+					// Mutate
+					mutator.mutate();
+					// Print
+					println(mutator.getMutationPoint().parent.code);
+					saveFile();
+					// Restore operator
+					mutator.restore();
+				   	
+				    }
+		}
+
 
 end

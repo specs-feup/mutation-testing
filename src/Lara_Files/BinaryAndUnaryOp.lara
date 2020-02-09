@@ -71,12 +71,12 @@ aspectdef Test
 			
 	}
 	
-	function saveFile(){
-		var outputFolder = Io.getPath(outputPath+ "\\" + counter);
-		counter++;
-	
-		// Write modified code
-		Weaver.writeCode(outputFolder);
-	}
+        function saveFile(){
+            var outputFolder = Io.getPath(outputPath+ "\\" + counter);
+            counter++;
+
+            // Write modified code
+            Weaver.writeCode(outputFolder);
+        }
 
 end
