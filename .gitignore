@@ -17,7 +17,6 @@
 .idea/**/contentModel.xml
 
 # Sensitive or high-churn files
-.idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
 .idea/**/sqlDataSources.xml
@@ -121,3 +120,4 @@ Output
 /Output_Main/
 /undefined/
 /tese.iml
+/target/*

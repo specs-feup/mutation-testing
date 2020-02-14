@@ -33,7 +33,7 @@ public class Tese_UI {
         StoreDefinitionBuilder storeDefinitionBuilder = new StoreDefinitionBuilder(Tese_UI.class);
 
         for(Operators operators: Operators.assignedOperators) {
-            storeDefinitionBuilder.startSection(operators.getType() + " Operators");
+            storeDefinitionBuilder.startSection(operators.getDescription() + " Operators");
             operators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
         }
 

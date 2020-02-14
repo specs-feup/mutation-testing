@@ -34,9 +34,9 @@ public class MutatorKernel implements AppKernel {
             for (Operators operators : Operators.assignedOperators) {
                 JSONObject operator = new JSONObject();
                 for (String identifier : operators.getIdentifiers()){
-                    operator.put(identifier.substring(identifier.indexOf(' ')+1), dataStore.get(identifier));
+                    operator.accumulate(identifier.substring(identifier.indexOf(' ')+1), dataStore.get(identifier));
                 }
-                jsonObject.put(operators.getType(),operator);
+                jsonObject.accumulate(operators.getMutatorType(),operator);
             }
             File file = new File("operators.json");
             try (FileWriter fw = new FileWriter(file)) {

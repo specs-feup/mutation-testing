@@ -63,7 +63,7 @@
     </entry>
     <entry>
       <string>aspect</string>
-      <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Mutations_TVVS\Test.lara</file>
+      <file>src\Lara_Files\Main.lara</file>
     </entry>
     <entry>
       <string>stack trace</string>

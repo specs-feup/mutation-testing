@@ -11,6 +11,7 @@ public abstract class Operators {
     public abstract List<List<String>> getMutators();
     public abstract List<String> getOperators();
     public abstract List<String> getIdentifiers();
-    public abstract String getType();
+    public abstract String getDescription();
     public abstract List<DataKey> getDataKeys();
+    public abstract String getMutatorType();
 }
