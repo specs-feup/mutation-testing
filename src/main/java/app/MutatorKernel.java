@@ -5,11 +5,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.app.AppKernel;
+import pt.up.fe.specs.util.SpecsIo;
+import pt.up.fe.specs.util.utilities.Replacer;
 import weaver.gui.KadabraLauncher;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,31 +32,24 @@ public class MutatorKernel implements AppKernel {
 
         List<String> arguments = new ArrayList<>(Arrays.asList(laraPath, "-p", projectPath, "-o", outputPath+"_Main"));
 
+        laraArguments.put("outputPath", outputPath);
+
+        String templatePath = "src/Lara_Files/template.lara";
+        String mutatorsPath =  "src/Lara_Files/Mutators.lara";
+
+        Replacer replacer = null;
+
         try {
-            laraArguments.put("outputPath", outputPath);
-
-            for (Operators operators : Operators.assignedOperators) {
-                JSONObject operator = new JSONObject();
-                for (String identifier : operators.getIdentifiers()){
-                    operator.accumulate(identifier.substring(identifier.indexOf(' ')+1), dataStore.get(identifier));
-                }
-                jsonObject.accumulate(operators.getMutatorType(),operator);
-            }
-            File file = new File("operators.json");
-            try (FileWriter fw = new FileWriter(file)) {
-                fw.write(jsonObject.toString(2));
-
-                laraArguments.put("jsonFile", file.getAbsolutePath());
-            }
-
-        }catch (JSONException | IOException E){
-            E.printStackTrace();
+            replacer = new Replacer(new String(Files.readAllBytes(Paths.get(templatePath))));
+        } catch (IOException e) {
+            e.printStackTrace();
             return -1;
         }
 
+        replacer.replace("<IMPORT>", Operators.getImportString());
+        replacer.replace("<MUTATORS>", Operators.getMutatorString(dataStore));
 
-
-
+        SpecsIo.write(new File(mutatorsPath), replacer.toString());
 
         arguments.add("-av");
         arguments.add(laraArguments.toString());
