@@ -1,0 +1,90 @@
+import lara.mutation.Mutator;
+import kadabra.KadabraNodes;
+import weaver.WeaverJps;
+import weaver.Weaver;
+
+var UnaryMutator = function($expr, $startingPoint) {
+    // Parent constructor
+    Mutator.call(this);
+
+
+
+    if($startingPoint === undefined) {
+        $startingPoint = WeaverJps.root();
+    }
+
+    this.$expr = $expr;
+
+    this.newValue = undefined;
+
+    this.mutationPoints = [];
+
+    for(var $field of WeaverJps.search('binaryExpression').get()) {
+
+        if(!UnaryMutator._isCompatible($field.operator, $startingPoint)) {
+            continue;
+        }
+
+        this.mutationPoints.push($field);
+
+    }
+
+    this.currentIndex = 0;
+    this.previousValue = undefined;
+
+};
+
+// Inheritance
+UnaryMutator.prototype = Object.create(Mutator.prototype);
+
+UnaryMutator._isCompatible = function(type1, type2) {
+    return type1 === type2;
+}
+
+/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+UnaryMutator.prototype.hasMutations = function() {
+    return this.currentIndex < this.mutationPoints.length;
+}
+
+UnaryMutator.prototype.getMutationPoint = function() {
+    if (this.isMutated) {
+        return this.newValue;
+    } else {
+        if (this.currentIndex < this.mutationPoints.length) {
+            return this.mutationPoints[this.currentIndex];
+        } else {
+            return undefined;
+        }
+    }
+}
+
+//TODO: Refactor for the undefined
+UnaryMutator.prototype._mutatePrivate = function() {
+
+    this.newValue = this.mutationPoints[this.currentIndex];
+    println(this.newValue);
+    this.currentIndex++;
+
+    if(isFunction(this.$expr)){
+        //TODO: Change
+        var temp= this.$expr(this.newValue);
+        this.newValue = this.newValue.insertReplace(temp);
+    }else{
+        this.previousValue = this.newValue.copy;
+        this.newValue.operator = this.$expr;
+        //this.newValue = this.$expr;
+    }
+
+    println("/*--------------------------------------*/");
+    println("Mutating operator n."+ this.currentIndex + ": "+ this.previousValue +" to "+ this.newValue);
+    println("/*--------------------------------------*/");
+
+}
+
+UnaryMutator.prototype._restorePrivate = function() {
+    // Restore operator
+    println("Restoring" + this.newValue.operator + " to " + this.previousValue.operator);
+    this.newValue.operator = this.previousValue.operator;
+    this.previousValue = undefined;
+    this.newValue = undefined;
+}
