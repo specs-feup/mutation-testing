@@ -62,7 +62,7 @@ public class MutatorKernel implements AppKernel {
         System.out.println("Project path: " + projectPath);
         System.out.println("ARGS:\n" + String.join(" ", arguments));
 
-        KadabraLauncher.main(arguments.toArray(String[]::new));
+        KadabraLauncher.execute(arguments.toArray(String[]::new));
 
         return 0;
     }
