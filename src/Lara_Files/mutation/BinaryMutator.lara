@@ -31,7 +31,7 @@ var BinaryMutator = function($result, $original) {
 BinaryMutator.prototype = Object.create(Mutator.prototype);
 
 BinaryMutator._isCompatible = function(type1, type2) {
-    return type1 === type2;
+    return true;//type1 === type2;
 }
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
