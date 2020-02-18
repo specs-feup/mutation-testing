@@ -1,0 +1,71 @@
+import lara.mutation.Mutator;
+import kadabra.KadabraNodes;
+import weaver.WeaverJps;
+import weaver.Weaver;
+
+var NullifyObjectInitialization = function($startingPoint) {
+	// Parent constructor
+     Mutator.call(this);
+
+	if($startingPoint === undefined) {
+		$startingPoint = WeaverJps.root();
+	}
+
+	this.newValue = undefined;
+	this.mutationPoints = [];
+
+	for(var $newStatement of WeaverJps.search('new').get()) {
+		this.mutationPoints.push($newStatement);
+	}
+
+	println("Mutation points:");
+	for(var $point of this.mutationPoints) {
+		println("Point: " + $point.code);
+	}
+	
+	this.currentIndex = 0;
+	this.previousValue = undefined;
+};
+
+// Inheritance
+NullifyObjectInitialization.prototype = Object.create(Mutator.prototype);
+
+/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+NullifyObjectInitialization.prototype.hasMutations = function() {
+	return this.currentIndex < this.mutationPoints.length;
+}
+
+NullifyObjectInitialization.prototype.getMutationPoint = function() {
+	if(this.isMutated){
+		return this.newValue;
+	}else{
+		if(this.currentIndex < this.mutationPoints.length) {
+		return this.mutationPoints[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}
+
+NullifyObjectInitialization.prototype._mutatePrivate = function() {
+
+	var mutationPoint = this.mutationPoints[this.currentIndex];
+	this.previousValue = mutationPoint.code;
+	
+	this.newValue = mutationPoint.insertReplace("null");
+
+	this.currentIndex++;
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": " + this.previousValue
+			+ " to "+ this.newValue); 
+	println("/*--------------------------------------*/");
+
+}
+NullifyObjectInitialization.prototype._restorePrivate = function() {
+	// Restore operator
+	println("Restore  prev: " + this.previousValue);
+	println("Restore new: " + this.newValue.parent);	
+	this.newValue.insertReplace(this.previousValue);
+	this.newValue = undefined;
+}

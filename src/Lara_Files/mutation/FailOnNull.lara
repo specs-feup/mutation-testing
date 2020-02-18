@@ -1,0 +1,79 @@
+import lara.mutation.Mutator;
+import kadabra.KadabraNodes;
+import weaver.WeaverJps;
+import weaver.Weaver;
+
+var FailOnNull = function($startingPoint) {
+	// Parent constructor
+     Mutator.call(this);
+
+	if($startingPoint === undefined) {
+		$startingPoint = WeaverJps.root();
+	}
+
+	this.mutationPoints = [];
+
+	for(var $var of WeaverJps.search('var').get()) {
+		if($var.reference.toString() === "read" && !$var.isPrimitive) {
+			this.mutationPoints.push($var);
+		}
+	}
+
+	println("Mutation points:");
+	for(var $point of this.mutationPoints) {
+		println("Point: " + $point.code);
+	}
+	
+	this.currentIndex = 0;
+	this.newValue = undefined;
+	
+};
+
+// Inheritance
+FailOnNull.prototype = Object.create(Mutator.prototype);
+
+/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+FailOnNull.prototype.hasMutations = function() {
+	return this.currentIndex < this.mutationPoints.length;
+}
+
+FailOnNull.prototype.getMutationPoint = function() {
+	if(this.isMutated){
+		return this.newValue;
+	}else{
+		if(this.currentIndex < this.mutationPoints.length) {
+		return this.mutationPoints[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}
+
+FailOnNull.prototype._mutatePrivate = function() {
+
+	var mutationPoint = this.mutationPoints[this.currentIndex];
+
+		if (mutationPoint.type === "String") {
+			this.newValue = mutationPoint.insertBefore(%{if ([[mutationPoint]] == null) 
+			{ throw new NullPointerException("fail on empty") }}%);
+		}
+		else {
+			this.newValue = mutationPoint.insertBefore(%{if ([[mutationPoint]] == null) 
+			{ throw new NullPointerException("fail on null") }}%);
+		}
+
+
+	this.currentIndex++;
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ 
+		  " to "+ this.newValue); 
+	println("/*--------------------------------------*/");
+
+}
+FailOnNull.prototype._restorePrivate = function() {
+	// Restore operator
+	this.newValue.remove();
+	//println("value restored:" + this.newValue);
+	this.newValue = undefined;
+}
