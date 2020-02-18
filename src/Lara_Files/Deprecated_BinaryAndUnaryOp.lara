@@ -1,40 +1,13 @@
 import weaver.Weaver;
 import weaver.WeaverJps;
 import lara.Io;
-import mutation.*;
-import Mutators;
 
 aspectdef Test
-	input outputPath end
+	input jsonFile, outputPath end
 	
 	var counter = 0;
+	var json = fileToJSON(jsonFile);
 
-
-	for(mutator of Mutators){
-		while(mutator.hasMutations()) {
-
-			// Mutate
-			mutator.mutate();
-			// Print
-			println(mutator.getMutationPoint().parent.code);
-			saveFile();
-			// Restore operator
-			mutator.restore();
-
-		}
-	}
-
-	function saveFile(){
-		var outputFolder = Io.getPath(outputPath+ "/" + counter);
-		counter++;
-
-		// Write modified code
-		Weaver.writeCode(outputFolder);
-	}
-end
-
-
-	/*
 	for(var type in json)
 		if ( type === 'Unary')
 			for($op of WeaverJps.search('unaryExpression').get()) {
@@ -62,9 +35,9 @@ end
 	function modify(mutationOp, index){
 
 
-			println("/!*--------------------------------------*!/");
+			println("/*--------------------------------------*/");
 			println("Mutating operator n."+ counter + ": "+ $op.operator +" to "+ mutationOp +" on "+ $op.ancestor("file").name + " line " + $op.line );
-			println("/!*--------------------------------------*!/");
+			println("/*--------------------------------------*/");
 
 
 			if(mutationOp != "undefined"){
@@ -98,4 +71,12 @@ end
 
 	}
 
-*/
+	function saveFile(){
+		var outputFolder = Io.getPath(outputPath+ "\\" + counter);
+		counter++;
+
+		// Write modified code
+		Weaver.writeCode(outputFolder);
+	}
+
+end
