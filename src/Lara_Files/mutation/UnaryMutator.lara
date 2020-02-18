@@ -19,7 +19,7 @@ var UnaryMutator = function($expr, $startingPoint) {
 
     this.mutationPoints = [];
 
-    for(var $field of WeaverJps.search('binaryExpression').get()) {
+    for(var $field of WeaverJps.search('unaryExpression').get()) {
 
         if(!UnaryMutator._isCompatible($field.operator, $startingPoint)) {
             continue;

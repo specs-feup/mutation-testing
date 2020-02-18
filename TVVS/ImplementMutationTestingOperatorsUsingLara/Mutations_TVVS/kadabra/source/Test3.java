@@ -4,14 +4,14 @@ public class Test3 {
 
     private final int a = 222;
 
-    private final int b;
+    private final int b = 1;
 
     private int c = 4;
 
 
     // Constructor
     public Test3(int b) {
-        this.b = 2;
+        this.b = b << 2;
     }
 
     // Global variable declaration
@@ -21,9 +21,10 @@ public class Test3 {
     }
 	
 	public int operation() {
-		int sum = a + b + c;
+		int sum = 0;
+		if(a>b)
+			sum = a + b + c;
 		return sum;
 	}
 	
 }
-

@@ -14,7 +14,7 @@ aspectdef Test
 			// Mutate
 			mutator.mutate();
 			// Print
-			println(mutator.getMutationPoint().parent.code);
+			//println(mutator.getMutationPoint().parent.code);
 			saveFile();
 			// Restore operator
 			mutator.restore();
