@@ -48,7 +48,7 @@ UnaryMutator.prototype.hasMutations = function() {
 
 UnaryMutator.prototype.getMutationPoint = function() {
     if (this.isMutated) {
-        return this.newValue;
+        return this.mutationPoint;
     } else {
         if (this.currentIndex < this.mutationPoints.length) {
             return this.mutationPoints[this.currentIndex];
@@ -61,30 +61,42 @@ UnaryMutator.prototype.getMutationPoint = function() {
 //TODO: Refactor for the undefined
 UnaryMutator.prototype._mutatePrivate = function() {
 
-    this.newValue = this.mutationPoints[this.currentIndex];
-    println(this.newValue);
+    this.mutationPoint = this.mutationPoints[this.currentIndex];
+    println(this.mutationPoint);
     this.currentIndex++;
 
     if(isFunction(this.$expr)){
         //TODO: Change
-        var temp= this.$expr(this.newValue);
+        var temp= this.$expr(this.mutationPoint);
         this.newValue = this.newValue.insertReplace(temp);
     }else{
-        this.previousValue = this.newValue.copy;
-        this.newValue.operator = this.$expr;
+        if(this.$expr === "undefined"){
+            this.previousValue = this.mutationPoint.copy;
+            println(this.previousValue.operator);
+            this.mutationPoint = this.mutationPoint.insertReplace(this.previousValue.operand);
+        }else{
+            this.previousValue = this.mutationPoint.copy;
+            this.mutationPoint.operator = this.$expr;
+        }
         //this.newValue = this.$expr;
     }
 
     println("/*--------------------------------------*/");
-    println("Mutating operator n."+ this.currentIndex + ": "+ this.previousValue +" to "+ this.newValue);
+    println("Mutating operator n."+ this.currentIndex + ": "+ this.previousValue +" to "+ this.mutationPoint);
     println("/*--------------------------------------*/");
 
 }
 
 UnaryMutator.prototype._restorePrivate = function() {
     // Restore operator
-    println("Restoring" + this.newValue.operator + " to " + this.previousValue.operator);
-    this.newValue.operator = this.previousValue.operator;
+    println("Restoring " + this.mutationPoint + " to " + this.previousValue);
+
+    if(this.$expr === "undefined") {
+        this.mutationPoint = this.mutationPoint.insertReplace(this.previousValue);
+    }else {
+        this.mutationPoint.operator = this.previousValue.operator;
+    }
+
     this.previousValue = undefined;
-    this.newValue = undefined;
+    this.mutationPoint = undefined;
 }

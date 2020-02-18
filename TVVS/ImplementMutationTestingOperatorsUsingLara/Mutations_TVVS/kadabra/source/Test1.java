@@ -24,7 +24,8 @@ public class Test1 {
  
   long ddd=1l;
   boolean flag=true;
-  boolean flag1=false;
+  boolean flag1=!flag;
+  boolean flag2=!flag1;
  
   short k=1;
   short l=5;
