@@ -16,16 +16,12 @@
       </list>
     </entry>
     <entry>
+      <string>Remove Null Check</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
       <string>Arithmetic %</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>+</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Fail On Null</string>
