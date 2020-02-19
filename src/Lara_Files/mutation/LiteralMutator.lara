@@ -10,6 +10,10 @@ var LiteralMutator = function($newValue, $oldValue, $startingPoint) {
 	// Parent constructor
      Mutator.call(this);
 
+	if($startingPoint === undefined) {
+		$startingPoint = WeaverJps.root();
+	}
+
 	checkDefined($newValue, "LiteralMutator($newValue)");
 	 
 	 if($startingPoint === undefined) {

@@ -7,8 +7,6 @@ var UnaryMutator = function($expr, $startingPoint) {
     // Parent constructor
     Mutator.call(this);
 
-
-
     if($startingPoint === undefined) {
         $startingPoint = WeaverJps.root();
     }

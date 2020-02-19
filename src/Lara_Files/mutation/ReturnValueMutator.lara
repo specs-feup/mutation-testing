@@ -10,6 +10,10 @@ var ReturnValueMutator = function($joinpoint) {
 	// Parent constructor
     Mutator.call(this);
 
+	if($joinpoint === undefined) {
+		$joinpoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.toMutate = [];
 	this.currentIndex = 0;

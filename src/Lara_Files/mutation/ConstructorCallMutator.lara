@@ -7,6 +7,10 @@ var ConstructorCallMutator = function($joinPoint) {
 	// Parent constructor
     Mutator.call(this);
 
+	if($joinPoint === undefined) {
+		$joinPoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.$joinPoint = $joinPoint;
 	this.extraArgs = arrayFromArgs(arguments, 1);
