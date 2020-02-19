@@ -28,44 +28,24 @@
       </list>
     </entry>
     <entry>
+      <string>Fail On Null</string>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
       <string>Bitwise &gt;&gt;</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>+</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Bitwise &lt;&lt;</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>+</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>LaraPath</string>
-      <file></file>
+      <file>src\Lara_Files\Main.lara</file>
     </entry>
     <entry>
       <string>Arithmetic -</string>
-      <list>
-        <string>+</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Relational ==</string>
@@ -73,87 +53,39 @@
     </entry>
     <entry>
       <string>Arithmetic +</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary _++</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>-</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary _--</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>-</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic *</string>
-      <list>
-        <string>-</string>
-        <string>+</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary ++_</string>
-      <list>
-        <string>+</string>
-        <string>-</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary --_</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>-</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic /</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>+</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>ProjectPath</string>
-      <file>C:\Users</file>
+      <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Mutations_TVVS\kadabra\source</file>
+    </entry>
+    <entry>
+      <string>Arithmetic Operators Deletion</string>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>OutputFile</string>
@@ -173,20 +105,11 @@
     </entry>
     <entry>
       <string>Unary !</string>
-      <list>
-        <string>undefined</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary +</string>
-      <list>
-        <string>-</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Conditional &amp;&amp;</string>
@@ -202,14 +125,7 @@
     </entry>
     <entry>
       <string>Unary -</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Relational &gt;=</string>

@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class Operators {
 
-    public static Operators[] assignedOperators = {new ArithmeticOperatorDeletion(),  new ArithmeticOperators(),new BitwiseOperators(),new ConditionalOperators(),new RelationalOperators(), new UnaryOperators()};
+    public static Operators[] assignedOperators = {new ArithmeticOperatorDeletion(), new FailOnNull(), new ArithmeticOperators(),new BitwiseOperators(),new ConditionalOperators(),new RelationalOperators(), new UnaryOperators()};
 
     public abstract List<List<String>> getMutators();
     public abstract List<String> getOperators();
@@ -38,6 +38,8 @@ public abstract class Operators {
                 mutatorString.append("\tnew ")
                         .append(operators.getMutatorType())
                         .append("(),\n");
+            else if(operators instanceof FailOnNull)
+                mutatorString.append("\tnew ").append(operators.getMutatorType()).append("(),\n");
             mutatorString.replace(mutatorString.lastIndexOf(","),mutatorString.length()," ");
         return mutatorString.toString();
     }

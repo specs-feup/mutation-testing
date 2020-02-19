@@ -59,7 +59,7 @@
     </entry>
     <entry>
       <string>LaraPath</string>
-      <file>src\Lara_Files\BinaryAndUnaryOp.lara</file>
+      <file>src\Lara_Files\Deprecated_BinaryAndUnaryOp.lara</file>
     </entry>
     <entry>
       <string>Arithmetic -</string>
