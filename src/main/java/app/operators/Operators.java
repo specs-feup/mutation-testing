@@ -53,6 +53,10 @@ public abstract class Operators {
                             .append("(),\n");
 
                 }
+
+            if(mutatorString.length() == 0)
+                return "";
+
             mutatorString.replace(mutatorString.lastIndexOf(","),mutatorString.length()," ");
         return mutatorString.toString();
     }

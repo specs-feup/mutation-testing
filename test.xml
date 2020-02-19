@@ -23,7 +23,7 @@
     </entry>
     <entry>
       <string>Conditional Operator Deletion</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Fail On Null</string>
@@ -39,7 +39,7 @@
     </entry>
     <entry>
       <string>LaraPath</string>
-      <file>src\Lara_Files\Main.lara</file>
+      <file></file>
     </entry>
     <entry>
       <string>Arithmetic -</string>
