@@ -63,6 +63,11 @@ RemoveConditionalMutator.prototype._mutatePrivate = function() {
 	var mutatedCondition = 'true';
 	
 	this.$conditionalClause = this.$conditionalClause.insertReplace(mutatedCondition);
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": " + this.originalConditionalClause
+		+ " to "+ this.$conditionalClause);
+	println("/*--------------------------------------*/");
 	
 }
 

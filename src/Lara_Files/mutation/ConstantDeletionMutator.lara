@@ -70,7 +70,12 @@ ConstantDeletionMutator.prototype._mutatePrivate = function() {
 	} else if(this.targetConstant.contains(this.$node.rhs.srcCode)) {
 		this.$node = this.$node.insertReplace(this.$node.lhs);
 	}
-	
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.$originalNode
+		+" to "+ this.$node);
+	println("/*--------------------------------------*/");
+
 }
 
 ConstantDeletionMutator.prototype._restorePrivate = function() {

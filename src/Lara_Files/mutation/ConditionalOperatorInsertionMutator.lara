@@ -67,6 +67,12 @@ ConditionalOperatorInsertionMutator.prototype._mutatePrivate = function() {
 	var cond = this.$conditional.cond;
 	var newSrc = "!(" + cond.srcCode + ")";
 	cond.insertReplace(newSrc);
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.$originalConditional
+		+" to "+ this.$conditional);
+	println("/*--------------------------------------*/");
+
 }
 
 ConditionalOperatorInsertionMutator.prototype._restorePrivate = function() {

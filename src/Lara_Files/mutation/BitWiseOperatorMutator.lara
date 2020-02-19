@@ -102,6 +102,11 @@ BitWiseOperatorMutator.prototype._mutatePrivate = function() {
 	else
 		this.binaryMutate(newOp);
 
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.newOp
+		+" to "+ this.$bitwiseExpression);
+	println("/*--------------------------------------*/");
+
 }
 
 BitWiseOperatorMutator.prototype._restorePrivate = function() {
