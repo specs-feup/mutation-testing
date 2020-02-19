@@ -11,27 +11,27 @@ aspectdef Test
 	for(var type in json)
 		if ( type === 'Unary')
 			for($op of WeaverJps.search('unaryExpression').get()) {
-			
+
 				var mutationOps = json[type][$op.operator];
-		
-				if(mutationOps === undefined) 
+
+				if(mutationOps === undefined)
 					continue;
-				
-		
+
+
 				mutationOps.forEach(modify);
 			}
 		else
 			for($op of WeaverJps.search('binaryExpression').get()) {
-		
+
 				var mutationOps = json[type][$op.operator];
-	
-				if(mutationOps === undefined)						
+
+				if(mutationOps === undefined)
 					continue;
-				
+
 
 				mutationOps.forEach(modify);
 			}
-	
+
 	function modify(mutationOp, index){
 
 
@@ -43,38 +43,38 @@ aspectdef Test
 			if(mutationOp != "undefined"){
 				// Store current operator
 				var previousOp = $op.operator;
-	
+
 				// Set new operator
 				$op.operator = mutationOp;
-				
+
 				// Create output folder for this code version
 				saveFile();
-				
+
 				// Restore operator
 				$op.operator = previousOp;
-			
+
 			}else{
 				// Copies the unary expression (e.g.,  !a)
 				var $originalOp = $op.copy;
-				
+
 				// Replaces the unary expression with the operand (e.g., !a becomes a) and returns the new expression
 				var $newOp = $op.insertReplace($op.operand);
 
 				// Create output folder for this code version
 				saveFile();
-				
+
 				// Replaces the new expression with a copy of the original expression (e.g., a becomes !a again)
 				$newOp.insert replace($originalOp);
-				
+
 			}
-			
-			
+
+
 	}
-	
+
 	function saveFile(){
 		var outputFolder = Io.getPath(outputPath+ "\\" + counter);
 		counter++;
-	
+
 		// Write modified code
 		Weaver.writeCode(outputFolder);
 	}

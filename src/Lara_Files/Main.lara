@@ -1,0 +1,32 @@
+import lara.Io;
+import mutation.*;
+import Mutators;
+
+aspectdef Test
+	input outputPath end
+	
+	var counter = 0;
+
+
+	for(mutator of Mutators){
+		while(mutator.hasMutations()) {
+
+			// Mutate
+			mutator.mutate();
+			// Print
+			//println(mutator.getMutationPoint().parent.code);
+			saveFile();
+			// Restore operator
+			mutator.restore();
+
+		}
+	}
+
+	function saveFile(){
+		var outputFolder = Io.getPath(outputPath+ "/" + counter);
+		counter++;
+
+		// Write modified code
+		Weaver.writeCode(outputFolder);
+	}
+end

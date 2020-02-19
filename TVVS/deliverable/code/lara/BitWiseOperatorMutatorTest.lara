@@ -1,9 +1,12 @@
 import kadabra.mutation.BitWiseOperatorMutator;
 import weaver.WeaverJps;
+import lara.Io;
 
 aspectdef BitWiseOperatorMutatorTest
+input outputPath end
 
 var $jp = WeaverJps.root();
+var counter = 0;
 
 var mutator = new BitWiseOperatorMutator($jp, "|", "lhs", "^", "rhs", "&");
 
@@ -12,7 +15,7 @@ while(mutator.hasMutations()) {
 	mutator.mutate();
 
 	// Print
-	println($jp.srcCode);
+saveFile(outputPath+ "/	" + counter);
 
 	// Restore operator
 	mutator.restore();
@@ -25,10 +28,17 @@ while(mutator2.hasMutations()) {
 	mutator2.mutate();
 
 	// Print
-	println($jp.srcCode);
+	saveFile(outputPath+ "/" + counter);
 
 	// Restore operator
 	mutator2.restore();
 }
 
+function saveFile(path){
+	var outputFolder = Io.getPath(path);
+	counter++;
+
+	// Write modified code
+	Weaver.writeCode(outputFolder);
+}
 end
