@@ -34,12 +34,17 @@ public abstract class Operators {
                                 .append("\"),\n");
                     }
                 }
-            else if(operators instanceof ArithmeticOperatorDeletion)
-                mutatorString.append("\tnew ")
-                        .append(operators.getMutatorType())
-                        .append("(),\n");
-            else if(operators instanceof FailOnNull)
-                mutatorString.append("\tnew ").append(operators.getMutatorType()).append("(),\n");
+            else if(operators instanceof ArithmeticOperatorDeletion || operators instanceof FailOnNull )
+                for (String identifier : operators.getIdentifiers()){
+                    Boolean selectedMutators = (Boolean) dataStore.get(identifier);
+
+                    if(selectedMutators)
+                        mutatorString
+                            .append("\tnew ")
+                            .append(operators.getMutatorType())
+                            .append("(),\n");
+
+                }
             mutatorString.replace(mutatorString.lastIndexOf(","),mutatorString.length()," ");
         return mutatorString.toString();
     }
