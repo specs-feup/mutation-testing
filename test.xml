@@ -124,6 +124,10 @@
       <list/>
     </entry>
     <entry>
+      <string>Nullify Input Variable</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
       <string>Relational &gt;=</string>
       <list>
         <string>&lt;</string>
