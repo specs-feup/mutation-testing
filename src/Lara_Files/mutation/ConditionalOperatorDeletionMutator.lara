@@ -64,6 +64,13 @@ ConditionalOperatorDeletionMutator.prototype._mutatePrivate = function() {
 
 	this.$originalConditional = this.$conditional.copy();
 	this.$conditional.cond.insertReplace(this.$conditional.cond.operand.copy());
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.$originalConditional
+		+" to "+ this.$conditional);
+	println("/*--------------------------------------*/");
+
+
 }
 
 ConditionalOperatorDeletionMutator.prototype._restorePrivate = function() {
