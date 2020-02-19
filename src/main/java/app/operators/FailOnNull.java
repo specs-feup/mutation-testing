@@ -4,6 +4,7 @@ import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -42,7 +43,7 @@ public final class FailOnNull extends Operators{
 
     @Override
     public List<String> getIdentifiers() {
-        return identifiers;
+        return Collections.singletonList(getDescription());
     }
 
     @Override

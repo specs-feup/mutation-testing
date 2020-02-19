@@ -5,6 +5,7 @@ import org.suikasoft.jOptions.Datakey.KeyFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public final class ArithmeticOperatorDeletion extends Operators{
 
     @Override
     public List<String> getIdentifiers() {
-        return identifiers;
+        return Collections.singletonList(getDescription());
     }
 
     @Override
