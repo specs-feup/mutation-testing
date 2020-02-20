@@ -39,7 +39,7 @@
     </entry>
     <entry>
       <string>Constant to -Constant</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;</string>
@@ -123,11 +123,11 @@
     </entry>
     <entry>
       <string>Constant to 0</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Constant to 1</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Unary +</string>
@@ -135,7 +135,7 @@
     </entry>
     <entry>
       <string>Constant to -1</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Conditional &amp;&amp;</string>
@@ -148,6 +148,10 @@
     <entry>
       <string>Unary -</string>
       <list/>
+    </entry>
+    <entry>
+      <string>Constant Deletion Mutator</string>
+      <string>a</string>
     </entry>
     <entry>
       <string>Non Void Call Mutator</string>
@@ -175,11 +179,11 @@
     </entry>
     <entry>
       <string>Constant to Constant + 1</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Constant to Constant - 1</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
   </values>
   <strict>false</strict>
