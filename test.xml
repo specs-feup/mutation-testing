@@ -90,6 +90,10 @@
       <file></file>
     </entry>
     <entry>
+      <string>Conditional Operator Insertion</string>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
       <list/>
     </entry>
