@@ -14,6 +14,10 @@
       <list/>
     </entry>
     <entry>
+      <string>Super Constructor Call Deletion Mutator</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
       <string>Remove Null Check</string>
       <boolean>false</boolean>
     </entry>
@@ -95,7 +99,7 @@
     </entry>
     <entry>
       <string>Conditional Operator Insertion</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
@@ -124,6 +128,10 @@
     <entry>
       <string>Unary -</string>
       <list/>
+    </entry>
+    <entry>
+      <string>Non Void Call Mutator</string>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Nullify Input Variable</string>
