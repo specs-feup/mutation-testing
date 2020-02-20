@@ -6,6 +6,10 @@
       <list/>
     </entry>
     <entry>
+      <string>Constructor Call Mutator</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
       <string>Relational &lt;</string>
       <list/>
     </entry>

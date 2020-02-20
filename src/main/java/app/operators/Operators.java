@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class Operators {
 
     public static Operators[] assignedOperators = {new ArithmeticOperatorDeletion(), new FailOnNull(), new RemoveNullCheck(), new NullifyInputVariable(), new NullifyObjectInitialization(), new NullifyReturnValue(),
-            new ConditionalOperatorDeletionMutator(), new ConditionalOperatorInsertionMutator(),
+            new ConditionalOperatorDeletionMutator(), new ConditionalOperatorInsertionMutator(), new ConstructorCallMutator(),
             new ArithmeticOperators(),new BitwiseOperators(),new ConditionalOperators(),new RelationalOperators(), new UnaryOperators()};
 
     public abstract List<List<String>> getMutators();
@@ -43,7 +43,8 @@ public abstract class Operators {
                     || operators instanceof NullifyReturnValue
                     || operators instanceof NullifyInputVariable
                     || operators instanceof ConditionalOperatorDeletionMutator
-                    || operators instanceof ConditionalOperatorInsertionMutator)
+                    || operators instanceof ConditionalOperatorInsertionMutator
+                    || operators instanceof ConstructorCallMutator)
                 for (String identifier : operators.getIdentifiers()){
                     Boolean selectedMutators = (Boolean) dataStore.get(identifier);
 
