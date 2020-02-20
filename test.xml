@@ -3,83 +3,51 @@
   <values>
     <entry>
       <string>Relational &gt;</string>
-      <list>
-        <string>&lt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Constructor Call Mutator</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Relational &lt;</string>
-      <list>
-        <string>&gt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Super Constructor Call Deletion Mutator</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Remove Null Check</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Nullify Return Value</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Arithmetic %</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>+</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Conditional Operator Deletion</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Fail On Null</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Constant to -Constant</string>
       <boolean>true</boolean>
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>+</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Bitwise &lt;&lt;</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>+</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>LaraPath</string>
@@ -87,105 +55,39 @@
     </entry>
     <entry>
       <string>Arithmetic -</string>
-      <list>
-        <string>+</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Relational ==</string>
-      <list>
-        <string>&gt;</string>
-        <string>&lt;</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic +</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary _++</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>-</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary _--</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>-</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic *</string>
-      <list>
-        <string>-</string>
-        <string>+</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary ++_</string>
-      <list>
-        <string>+</string>
-        <string>-</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary --_</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>-</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic /</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>+</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>ProjectPath</string>
@@ -193,11 +95,11 @@
     </entry>
     <entry>
       <string>Return Value Mutator</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Arithmetic Operators Deletion</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>OutputFile</string>
@@ -205,105 +107,79 @@
     </entry>
     <entry>
       <string>Conditional Operator Insertion</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>+</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary !</string>
-      <list>
-        <string>undefined</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Nullify Object Initialization</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Constant to 0</string>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
+      <string>Constant to 1</string>
       <boolean>true</boolean>
     </entry>
     <entry>
       <string>Unary +</string>
-      <list>
-        <string>-</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
+    </entry>
+    <entry>
+      <string>Constant to -1</string>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Conditional &amp;&amp;</string>
-      <list>
-        <string>||</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Conditional ||</string>
-      <list>
-        <string>&amp;&amp;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary -</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Non Void Call Mutator</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Nullify Input Variable</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Relational &gt;=</string>
-      <list>
-        <string>&lt;</string>
-        <string>&gt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Relational &lt;=</string>
-      <list>
-        <string>&gt;</string>
-        <string>&lt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Remove Conditional Mutator</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Relational !=</string>
-      <list>
-        <string>&gt;</string>
-        <string>&lt;</string>
-        <string>==</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
+    </entry>
+    <entry>
+      <string>Constant to Constant + 1</string>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
+      <string>Constant to Constant - 1</string>
+      <boolean>true</boolean>
     </entry>
   </values>
   <strict>false</strict>
