@@ -131,7 +131,7 @@
     </entry>
     <entry>
       <string>Non Void Call Mutator</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Nullify Input Variable</string>
@@ -144,6 +144,10 @@
     <entry>
       <string>Relational &lt;=</string>
       <list/>
+    </entry>
+    <entry>
+      <string>Remove Conditional Mutator</string>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Relational !=</string>
