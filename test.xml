@@ -90,6 +90,10 @@
       <file>Java_Test_Files</file>
     </entry>
     <entry>
+      <string>Return Value Mutator</string>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
       <string>Arithmetic Operators Deletion</string>
       <boolean>false</boolean>
     </entry>
@@ -147,7 +151,7 @@
     </entry>
     <entry>
       <string>Remove Conditional Mutator</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Relational !=</string>
