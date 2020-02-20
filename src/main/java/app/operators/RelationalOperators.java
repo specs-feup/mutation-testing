@@ -2,6 +2,7 @@ package app.operators;
 
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Interfaces.DataStore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,5 +74,26 @@ public final class RelationalOperators extends Operators{
     @Override
     public String getMutatorType() {
         return MUTATOR_TYPE;
+    }
+
+    @Override
+    public String getMutatorString(DataStore dataStore) {
+        StringBuilder mutatorString = new StringBuilder();
+
+        for (String identifier : this.getIdentifiers()){
+            List<String> selectedMutators = (List<String>) dataStore.get(identifier);
+            for(String mutator : selectedMutators){
+                mutatorString
+                        .append("\tnew ")
+                        .append(this.getMutatorType())
+                        .append("(\"")
+                        .append(mutator)
+                        .append("\",\"")
+                        .append(identifier.substring(identifier.indexOf(' ')+1))
+                        .append("\"),\n");
+            }
+        }
+
+        return mutatorString.toString();
     }
 }

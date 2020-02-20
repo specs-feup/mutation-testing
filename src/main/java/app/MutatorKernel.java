@@ -1,7 +1,6 @@
 package app;
 
 import app.operators.Operators;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.app.AppKernel;
@@ -10,7 +9,6 @@ import pt.up.fe.specs.util.utilities.Replacer;
 import weaver.gui.KadabraLauncher;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -47,7 +45,7 @@ public class MutatorKernel implements AppKernel {
         }
 
         replacer.replace("<IMPORT>", Operators.getImportString());
-        replacer.replace("<MUTATORS>", Operators.getMutatorString(dataStore));
+        replacer.replace("<MUTATORS>", Operators.generateMutatorString(dataStore));
 
         SpecsIo.write(new File(mutatorsPath), replacer.toString());
 

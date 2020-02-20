@@ -17,48 +17,14 @@ public abstract class Operators {
     public abstract String getDescription();
     public abstract List<DataKey> getDataKeys();
     public abstract String getMutatorType();
+    public abstract String getMutatorString(DataStore dataStore);
 
-    public static String getMutatorString(DataStore dataStore){
+
+    public static String generateMutatorString(DataStore dataStore){
         StringBuilder mutatorString = new StringBuilder();
 
         for(Operators operators : assignedOperators)
-            if(operators.getMutatorType().equals("UnaryMutator") || operators.getMutatorType().equals("BinaryMutator"))
-                for (String identifier : operators.getIdentifiers()){
-                    List<String> selectedMutators = (List<String>) dataStore.get(identifier);
-                    for(String mutator : selectedMutators){
-                        mutatorString
-                                .append("\tnew ")
-                                .append(operators.getMutatorType())
-                                .append("(\"")
-                                .append(mutator)
-                                .append("\",\"")
-                                .append(identifier.substring(identifier.indexOf(' ')+1))
-                                .append("\"),\n");
-                    }
-                }
-            else    if(operators instanceof ArithmeticOperatorDeletion
-                    || operators instanceof FailOnNull
-                    || operators instanceof RemoveNullCheck
-                    || operators instanceof NullifyObjectInitialization
-                    || operators instanceof NullifyReturnValue
-                    || operators instanceof NullifyInputVariable
-                    || operators instanceof ConditionalOperatorDeletionMutator
-                    || operators instanceof ConditionalOperatorInsertionMutator
-                    || operators instanceof ConstructorCallMutator
-                    || operators instanceof InheritanceIPCMutator
-                    || operators instanceof NonVoidCallMutator
-                    || operators instanceof RemoveConditionalMutator
-                    || operators instanceof ReturnValueMutator)
-                for (String identifier : operators.getIdentifiers()){
-                    Boolean selectedMutators = (Boolean) dataStore.get(identifier);
-
-                    if(selectedMutators)
-                        mutatorString
-                            .append("\tnew ")
-                            .append(operators.getMutatorType())
-                            .append("(),\n");
-
-                }
+            mutatorString.append(operators.getMutatorString(dataStore));
 
             if(mutatorString.length() == 0)
                 return "";
