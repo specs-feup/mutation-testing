@@ -143,7 +143,7 @@ public final class LiteralMutator extends Operators{
                                 "\t\t\tnewValue = Number(newValue) + 1; \n" +
                                 "\t\t\treturn KadabraNodes.literal(newValue.toString(),$expr.type);\n" +
                                 "\t\t}\n" +
-                                "\t\t, ['long'], \"1l\"),").append("\n"); //TODO:Check this last part if correct
+                                "\t\t, ['long']),").append("\n"); //TODO:Check this last part if correct
                         break;
                     case FLOAT_ONE_TO_ZERO:
                         mutatorString.append("\t").append("LiteralMutator.newTypeFilteredMutator(KadabraNodes.literal(\"0.0\", \"double\"), ['float'], \"1.0F\"),").append("\n");

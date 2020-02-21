@@ -28,7 +28,7 @@ public class Test1 {
   boolean flag2=!flag1;
  
   short k=1;
-  short l=5;
+  short l=5l;
  
   }
  
