@@ -44,7 +44,7 @@ public class MutatorKernel implements AppKernel {
             return -1;
         }
 
-        replacer.replace("<IMPORT>", Operators.getImportString());
+        replacer.replace("<IMPORT>", "");//Operators.getImportString());
         replacer.replace("<MUTATORS>", Operators.generateMutatorString(dataStore));
 
         SpecsIo.write(new File(mutatorsPath), replacer.toString());
