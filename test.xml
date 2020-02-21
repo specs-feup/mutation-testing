@@ -54,6 +54,15 @@
       <boolean>false</boolean>
     </entry>
     <entry>
+      <string>BitWise Operator Mutator ^</string>
+      <list>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>|</string>
+        <string>&amp;</string>
+      </list>
+    </entry>
+    <entry>
       <string>int byte short: 1 to 0 ; </string>
       <boolean>false</boolean>
     </entry>
@@ -84,6 +93,21 @@
     <entry>
       <string>int byte short otherwise increments by 1</string>
       <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>BitWise Operator Mutator ~</string>
+      <list>
+        <string> </string>
+      </list>
+    </entry>
+    <entry>
+      <string>BitWise Operator Mutator |</string>
+      <list>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>^</string>
+        <string>&amp;</string>
+      </list>
     </entry>
     <entry>
       <string> one String to &quot;&quot;</string>
@@ -194,6 +218,15 @@
       <boolean>false</boolean>
     </entry>
     <entry>
+      <string>BitWise Operator Mutator &amp;</string>
+      <list>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>^</string>
+        <string>|</string>
+      </list>
+    </entry>
+    <entry>
       <string>Conditional ||</string>
       <list/>
     </entry>
@@ -235,7 +268,7 @@
     </entry>
     <entry>
       <string>long: otherwise increments by 1</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Relational !=</string>

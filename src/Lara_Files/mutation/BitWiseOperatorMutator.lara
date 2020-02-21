@@ -1,4 +1,5 @@
 import lara.mutation.Mutator;
+import weaver.WeaverJps;
 
 /**
  *  @param {$joinPoint} $joinPoint - A join point to use as startpoint to search for bitwise expressions to mutate.
