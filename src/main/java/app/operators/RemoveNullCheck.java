@@ -16,7 +16,7 @@ public final class RemoveNullCheck extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Remove Null Check";
+    private static final String DESCRIPTION = "Remove Null Check";
     public static final String MUTATOR_TYPE = "RemoveNullCheck";
 
 

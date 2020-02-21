@@ -16,7 +16,7 @@ public final class ConstantDeletionMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Constant Deletion Mutator";
+    private static final String DESCRIPTION = "Constant Deletion Mutator";
     public static final String MUTATOR_TYPE = "ConstantDeletionMutator";
 
 

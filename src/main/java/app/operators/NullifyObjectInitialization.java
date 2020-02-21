@@ -16,7 +16,7 @@ public final class NullifyObjectInitialization extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Nullify Object Initialization";
+    private static final String DESCRIPTION = "Nullify Object Initialization";
     public static final String MUTATOR_TYPE = "NullifyObjectInitialization";
 
 

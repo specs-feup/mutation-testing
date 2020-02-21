@@ -16,7 +16,7 @@ public final class InheritanceIPCMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Super Constructor Call Deletion Mutator";
+    private static final String DESCRIPTION = "Super Constructor Call Deletion Mutator";
     public static final String MUTATOR_TYPE = "InheritanceIPCMutator";
 
 

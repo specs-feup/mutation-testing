@@ -16,7 +16,7 @@ public final class RemoveConditionalMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Remove Conditional Mutator";
+    private static final String DESCRIPTION = "Remove Conditional Mutator";
     public static final String MUTATOR_TYPE = "RemoveConditionalMutator";
 
 

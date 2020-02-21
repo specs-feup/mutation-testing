@@ -18,29 +18,29 @@ public final class UnaryOperators extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Unary";
+    private static final String DESCRIPTION = "Unary";
     private static final String MUTATOR_TYPE = "UnaryMutator";
 
-    protected final static String UNARY_PLUS = "+";
-    protected final static String UNARY_MINUS = "-";
-    protected final static String INCREMENT_BEFORE = "++_";
-    protected final static String INCREMENT_AFTER = "_++";
-    protected final static String DECREMENT_BEFORE = "--_";
-    protected final static String DECREMENT_AFTER = "_--";
-    protected final static String NEGATE = "!";
+    protected static final String UNARY_PLUS = "+";
+    protected static final String UNARY_MINUS = "-";
+    protected static final String INCREMENT_BEFORE = "++_";
+    protected static final String INCREMENT_AFTER = "_++";
+    protected static final String DECREMENT_BEFORE = "--_";
+    protected static final String DECREMENT_AFTER = "_--";
+    protected static final String NEGATE = "!";
 
 
-    private final static List<String> UNARY_PLUS_OP = Arrays.asList(UNARY_MINUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
-    private final static List<String> UNARY_MINUS_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
-    private final static List<String> INCREMENT_BEFORE_OP = Arrays.asList(UNARY_PLUS, UNARY_MINUS, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
-    private final static List<String> INCREMENT_AFTER_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, UNARY_MINUS, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
-    private final static List<String> DECREMENT_BEFORE_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, UNARY_MINUS, DECREMENT_AFTER, NEGATE);
-    private final static List<String> DECREMENT_AFTER_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, UNARY_MINUS, NEGATE);
-    private final static List<String> NEGATE_OP = Collections.singletonList("undefined");
+    private static final List<String> UNARY_PLUS_OP = Arrays.asList(UNARY_MINUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
+    private static final List<String> UNARY_MINUS_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
+    private static final List<String> INCREMENT_BEFORE_OP = Arrays.asList(UNARY_PLUS, UNARY_MINUS, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
+    private static final List<String> INCREMENT_AFTER_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, UNARY_MINUS, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
+    private static final List<String> DECREMENT_BEFORE_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, UNARY_MINUS, DECREMENT_AFTER, NEGATE);
+    private static final List<String> DECREMENT_AFTER_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, UNARY_MINUS, NEGATE);
+    private static final List<String> NEGATE_OP = Collections.singletonList("undefined");
 
 
-    private final static List<List<String>> MUTATORS = Arrays.asList(UNARY_PLUS_OP, UNARY_MINUS_OP, INCREMENT_BEFORE_OP,INCREMENT_AFTER_OP,DECREMENT_AFTER_OP,DECREMENT_BEFORE_OP,NEGATE_OP);
-    private final static List<String> OPERATORS = Arrays.asList(UNARY_PLUS, UNARY_MINUS, INCREMENT_BEFORE,INCREMENT_AFTER,DECREMENT_AFTER,DECREMENT_BEFORE,NEGATE);
+    private static final List<List<String>> MUTATORS = Arrays.asList(UNARY_PLUS_OP, UNARY_MINUS_OP, INCREMENT_BEFORE_OP,INCREMENT_AFTER_OP,DECREMENT_AFTER_OP,DECREMENT_BEFORE_OP,NEGATE_OP);
+    private static final List<String> OPERATORS = Arrays.asList(UNARY_PLUS, UNARY_MINUS, INCREMENT_BEFORE,INCREMENT_AFTER,DECREMENT_AFTER,DECREMENT_BEFORE,NEGATE);
 
     @Override
     public List<List<String>> getMutators() {

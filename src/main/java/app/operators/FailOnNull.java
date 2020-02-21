@@ -16,7 +16,7 @@ public final class FailOnNull extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Fail On Null";
+    private static final String DESCRIPTION = "Fail On Null";
     public static final String MUTATOR_TYPE = "FailOnNull";
 
 

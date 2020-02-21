@@ -18,7 +18,7 @@ public final class ArithmeticOperatorDeletion extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Arithmetic Operators Deletion";
+    private static final String DESCRIPTION = "Arithmetic Operators Deletion";
     public static final String MUTATOR_TYPE = "ArithmeticOperatorDeletionMutator";
 
 

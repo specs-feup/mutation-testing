@@ -16,7 +16,7 @@ public final class ReturnValueMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Return Value Mutator";
+    private static final String DESCRIPTION = "Return Value Mutator";
     public static final String MUTATOR_TYPE = "ReturnValueMutator";
 
 

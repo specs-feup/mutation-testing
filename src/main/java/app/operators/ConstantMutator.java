@@ -18,15 +18,15 @@ public final class ConstantMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Constant Mutator";
+    private static final String DESCRIPTION = "Constant Mutator";
     private static final String MUTATOR_TYPE = "ConstantMutator";
 
-    protected final static String CONSTANT_TO_ONE = "Constant to 1";
-    protected final static String CONSTANT_TO_ZERO = "Constant to 0";
-    protected final static String CONSTANT_TO_MINUS_ONE = "Constant to -1";
-    protected final static String CONSTANT_TO_MINUS_CONSTANT = "Constant to -Constant";
-    protected final static String CONSTANT_TO_CONSTANT_PLUS_ONE = "Constant to Constant + 1";
-    protected final static String CONSTANT_TO_CONSTANT_MINUS_ONE = "Constant to Constant - 1";
+    protected static final String CONSTANT_TO_ONE = "Constant to 1";
+    protected static final String CONSTANT_TO_ZERO = "Constant to 0";
+    protected static final String CONSTANT_TO_MINUS_ONE = "Constant to -1";
+    protected static final String CONSTANT_TO_MINUS_CONSTANT = "Constant to -Constant";
+    protected static final String CONSTANT_TO_CONSTANT_PLUS_ONE = "Constant to Constant + 1";
+    protected static final String CONSTANT_TO_CONSTANT_MINUS_ONE = "Constant to Constant - 1";
 
     @Override
     public List<List<String>> getMutators() {

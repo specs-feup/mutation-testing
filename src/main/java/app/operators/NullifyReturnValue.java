@@ -16,7 +16,7 @@ public final class NullifyReturnValue extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Nullify Return Value";
+    private static final String DESCRIPTION = "Nullify Return Value";
     public static final String MUTATOR_TYPE = "NullifyReturnValue";
 
 

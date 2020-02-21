@@ -16,24 +16,24 @@ public final class ArithmeticOperators extends Operators {
      * Arithmetic Operators (Relates with Bitwise)
      */
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Arithmetic";
+    private static final String DESCRIPTION = "Arithmetic";
     private static final String MUTATOR_TYPE = "BinaryMutator";
 
-    protected final static String PLUS = "+";
-    protected final static String MINUS = "-";
-    protected final static String MULTIPLY = "*";
-    protected final static String DIVIDE = "/";
-    protected final static String REMAINDER = "%";
+    protected static final String PLUS = "+";
+    protected static final String MINUS = "-";
+    protected static final String MULTIPLY = "*";
+    protected static final String DIVIDE = "/";
+    protected static final String REMAINDER = "%";
 
 
-    private final static List<String> PLUS_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
-    private final static List<String> MINUS_OP = Arrays.asList(PLUS, MULTIPLY, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
-    private final static List<String> MULTIPLY_OP = Arrays.asList(MINUS, PLUS, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
-    private final static List<String> DIVIDE_OP = Arrays.asList(MINUS, MULTIPLY, PLUS, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
-    private final static List<String> REMAINDER_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, PLUS, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
+    private static final List<String> PLUS_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
+    private static final List<String> MINUS_OP = Arrays.asList(PLUS, MULTIPLY, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
+    private static final List<String> MULTIPLY_OP = Arrays.asList(MINUS, PLUS, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
+    private static final List<String> DIVIDE_OP = Arrays.asList(MINUS, MULTIPLY, PLUS, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
+    private static final List<String> REMAINDER_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, PLUS, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
 
-    private final static List<List<String>> MUTATORS = Arrays.asList(PLUS_OP, MINUS_OP, MULTIPLY_OP, DIVIDE_OP, REMAINDER_OP);
-    private final static List<String> OPERATORS = Arrays.asList(PLUS, MINUS, MULTIPLY, DIVIDE, REMAINDER);
+    private static final List<List<String>> MUTATORS = Arrays.asList(PLUS_OP, MINUS_OP, MULTIPLY_OP, DIVIDE_OP, REMAINDER_OP);
+    private static final List<String> OPERATORS = Arrays.asList(PLUS, MINUS, MULTIPLY, DIVIDE, REMAINDER);
 
     @Override
     public List<List<String>> getMutators() {

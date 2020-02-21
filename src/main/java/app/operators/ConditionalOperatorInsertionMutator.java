@@ -16,7 +16,7 @@ public final class ConditionalOperatorInsertionMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Conditional Operator Insertion";
+    private static final String DESCRIPTION = "Conditional Operator Insertion";
     public static final String MUTATOR_TYPE = "ConditionalOperatorInsertionMutator";
 
 

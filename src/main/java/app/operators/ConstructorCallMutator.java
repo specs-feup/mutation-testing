@@ -16,7 +16,7 @@ public final class ConstructorCallMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Constructor Call Mutator";
+    private static final String DESCRIPTION = "Constructor Call Mutator";
     public static final String MUTATOR_TYPE = "ConstructorCallMutator";
 
 

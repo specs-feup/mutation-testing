@@ -16,7 +16,7 @@ public final class NullifyInputVariable extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Nullify Input Variable";
+    private static final String DESCRIPTION = "Nullify Input Variable";
     public static final String MUTATOR_TYPE = "NullifyInputVariable";
 
 

@@ -16,7 +16,7 @@ public final class NonVoidCallMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Non Void Call Mutator";
+    private static final String DESCRIPTION = "Non Void Call Mutator";
     public static final String MUTATOR_TYPE = "NonVoidCallMutator";
 
 

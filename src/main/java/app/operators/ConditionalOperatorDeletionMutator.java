@@ -16,7 +16,7 @@ public final class ConditionalOperatorDeletionMutator extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Conditional Operator Deletion";
+    private static final String DESCRIPTION = "Conditional Operator Deletion";
     public static final String MUTATOR_TYPE = "ConditionalOperatorDeletionMutator";
 
 
