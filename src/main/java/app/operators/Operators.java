@@ -9,7 +9,7 @@ public abstract class Operators {
 
     public static Operators[] assignedOperators = {new ArithmeticOperatorDeletion(), new FailOnNull(), new RemoveNullCheck(), new NullifyInputVariable(), new NullifyObjectInitialization(), new NullifyReturnValue(),
             new ConditionalOperatorDeletionMutator(), new ConditionalOperatorInsertionMutator(), new ConstructorCallMutator(), new InheritanceIPCMutator(), new NonVoidCallMutator(), new RemoveConditionalMutator(),
-            new ReturnValueMutator(),  new ConstantMutator(), new ConstantDeletionMutator(), new LiteralMutator(), new ArithmeticOperators(),new BitwiseOperators(),new ConditionalOperators(),new RelationalOperators(), new UnaryOperators()};
+            new ReturnValueMutator(),  new ConstantMutator(), new ConstantDeletionMutator(), new LiteralMutator(), new BitWiseOperatorMutator(), new ArithmeticOperators(),new BitwiseOperators(),new ConditionalOperators(),new RelationalOperators(), new UnaryOperators()};
 
     public abstract List<List<String>> getMutators();
     public abstract List<String> getOperators();
