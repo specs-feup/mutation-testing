@@ -4,7 +4,7 @@ public class Test3 {
 
     private final int a = 222;
 
-    private final int b = 1;
+    private int b = 1;
 
     private int c = 4;
 

@@ -23,12 +23,13 @@ public class Test1 {
   byte ds2=5;
  
   long ddd=1l;
+  long dddd=5l;
   boolean flag=true;
   boolean flag1=!flag;
   boolean flag2=!flag1;
  
   short k=1;
-  short l=5l;
+  short l=5;
  
   }
  
