@@ -46,6 +46,10 @@
       <boolean>false</boolean>
     </entry>
     <entry>
+      <string>FindViewById Deletion</string>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
       <string>Conditional Operator Insertion</string>
       <boolean>false</boolean>
     </entry>
