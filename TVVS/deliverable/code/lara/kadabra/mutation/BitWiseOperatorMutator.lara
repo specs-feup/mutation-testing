@@ -9,6 +9,10 @@ var BitWiseOperatorMutator = function($joinPoint, bitwiseOperator) {
 	// Parent constructor
     Mutator.call(this);
 
+	if($joinPoint === undefined) {
+		$joinPoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.$joinPoint = $joinPoint;
 	this.bitwiseOperator = bitwiseOperator;
@@ -97,6 +101,11 @@ BitWiseOperatorMutator.prototype._mutatePrivate = function() {
 		this.unaryMutate();
 	else
 		this.binaryMutate(newOp);
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.$bitwiseExpression
+		+" to "+ this.$bitwiseExpression);
+	println("/*--------------------------------------*/");
 
 }
 
