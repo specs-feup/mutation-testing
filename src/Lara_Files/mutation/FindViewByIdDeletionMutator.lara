@@ -3,7 +3,7 @@ import kadabra.KadabraNodes;
 import weaver.WeaverJps;
 import weaver.Weaver;
 
-var FindViewByIdMutator = function($result, $original) {
+var FindViewByIdDeletionMutator = function($result, $original) {
     // Parent constructor
     Mutator.call(this);
 
@@ -23,18 +23,18 @@ var FindViewByIdMutator = function($result, $original) {
 };
 
 // Inheritance
-FindViewByIdMutator.prototype = Object.create(Mutator.prototype);
+FindViewByIdDeletionMutator.prototype = Object.create(Mutator.prototype);
 
-FindViewByIdMutator._isCompatible = function(type1, type2) {
+FindViewByIdDeletionMutator._isCompatible = function(type1, type2) {
     return type1 === type2;
 }
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
-FindViewByIdMutator.prototype.hasMutations = function() {
+FindViewByIdDeletionMutator.prototype.hasMutations = function() {
     return this.currentIndex < this.mutationPoints.length;
 }
 
-FindViewByIdMutator.prototype.getMutationPoint = function() {
+FindViewByIdDeletionMutator.prototype.getMutationPoint = function() {
     if (this.isMutated) {
         return this.mutationPoint;
     } else {
@@ -46,7 +46,7 @@ FindViewByIdMutator.prototype.getMutationPoint = function() {
     }
 }
 
-FindViewByIdMutator.prototype._mutatePrivate = function() {
+FindViewByIdDeletionMutator.prototype._mutatePrivate = function() {
 
     this.mutationPoint = this.mutationPoints[this.currentIndex];
     this.currentIndex++;
@@ -60,7 +60,7 @@ FindViewByIdMutator.prototype._mutatePrivate = function() {
 
 }
 
-FindViewByIdMutator.prototype._restorePrivate = function() {
+FindViewByIdDeletionMutator.prototype._restorePrivate = function() {
     // Restore operator
     println("Restoring: " + this.mutationPoint + " to " + this.previousValue);
     this.mutationPoint.insertReplace(this.previousValue);
