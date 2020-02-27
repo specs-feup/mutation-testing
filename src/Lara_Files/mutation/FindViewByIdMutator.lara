@@ -11,14 +11,9 @@ var FindViewByIdMutator = function($result, $original) {
 
     this.mutationPoints = [];
 
-    for(var $field of WeaverJps.search('binaryExpression').get()) {
-
-        if(!FindViewByIdMutator._isCompatible($field.operator, $original)) {
-            continue;
-        }
-
-        this.mutationPoints.push($field);
-
+    for(var $call of WeaverJps.search('call').get()) {
+        if($call.toString().includes("findViewById"))
+            this.mutationPoints.push($call);
     }
 
     this.currentIndex = 0;
@@ -56,25 +51,19 @@ FindViewByIdMutator.prototype._mutatePrivate = function() {
     this.mutationPoint = this.mutationPoints[this.currentIndex];
     this.currentIndex++;
 
-    if(isFunction(this.$expr)){
-        //TODO: Change
-        var temp = this.$expr(this.mutationPoint);
-        this.mutationPoint = this.mutationPoint.insertReplace(temp);
-    }else{
-        this.previousValue = this.mutationPoint.copy;
-        this.mutationPoint.operator = this.$expr;
-    }
+    this.previousValue = this.mutationPoint.copy;
+    this.mutationPoint = this.mutationPoint.insertReplace("null");
 
     println("/*--------------------------------------*/");
-    println("Mutating operator n."+ this.currentIndex + ": "+ this.previousValue +" to "+ this.mutationPoint);
+    println("Mutating operator n." + this.currentIndex + ": " + this.previousValue + " to " + this.mutationPoint);
     println("/*--------------------------------------*/");
 
 }
 
 FindViewByIdMutator.prototype._restorePrivate = function() {
     // Restore operator
-    println("Restoring: " + this.mutationPoint.operator + " to " + this.previousValue.operator);
-    this.mutationPoint.operator = this.previousValue.operator;
+    println("Restoring: " + this.mutationPoint + " to " + this.previousValue);
+    this.mutationPoint.insertReplace(this.previousValue);
     this.previousValue = undefined;
     this.mutationPoint = undefined;
 }
