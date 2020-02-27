@@ -85,18 +85,15 @@ public final class BitWiseOperatorMutator extends Operators{
 
         for (String identifier : this.getIdentifiers()){
             List<String> selectedMutators = (List<String>) dataStore.get(identifier);
-            mutatorString.append("\tnew ")
-                    .append(this.getMutatorType())
-                    .append("(undefined,\"")
-                    .append(identifier.substring(identifier.lastIndexOf(' ')+1))
-                    .append("\"");
             for(String mutator : selectedMutators){
-                mutatorString
-                        .append(",\"")
+                mutatorString.append("\tnew ")
+                        .append(this.getMutatorType())
+                        .append("(undefined,\"")
+                        .append(identifier.substring(identifier.lastIndexOf(' ')+1))
+                        .append("\",\"")
                         .append(mutator.trim())
-                        .append("\"");
+                        .append("\"),\n");
             }
-            mutatorString.append("),\n");
         }
 
         return mutatorString.toString();
