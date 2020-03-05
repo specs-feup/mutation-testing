@@ -11,10 +11,30 @@ var IdentifierReplacerMutator = function($result, $original) {
 
     this.mutationPoints = [];
 
-    for(var $call of WeaverJps.search('call').get()) {
-        if($call.toString().includes("findViewById"))
-            this.mutationPoints.push($call);
+    //To store the identifiers according to the package
+    this.identifiersMap = new Map();
+
+    //To get the mutation points and identifiers
+    for(var $expression of WeaverJps.search('expression', {code: /^R\..*/}).get()) { //Searching for every expression that starts by R.
+        for(var $desc of $expression.descendants)
+            if($desc.type === "Package"){
+                var tempList = this.identifiersMap.get($desc.toString);
+
+                if(tempList === undefined){ //Creating or updating the entry
+                    tempList = [$expression];
+                }else{
+                    tempList.push($expression);
+                }
+
+                this.identifiersMap.set($desc.toString, tempList); //Saving the entry
+            }
     }
+
+
+    for(var value of this.identifiersMap.values())
+        if(value.length > 1)
+            for(var item of value)
+                this.mutationPoints.push(item);
 
     this.currentIndex = 0;
     this.mutationPoint = undefined;
@@ -46,13 +66,27 @@ IdentifierReplacerMutator.prototype.getMutationPoint = function() {
     }
 }
 
-IdentifierReplacerMutator.prototype._mutatePrivate = function() {
+    IdentifierReplacerMutator.prototype._mutatePrivate = function() {
 
     this.mutationPoint = this.mutationPoints[this.currentIndex];
     this.currentIndex++;
 
-    this.previousValue = this.mutationPoint.copy;
-    this.mutationPoint = this.mutationPoint.insertReplace("null");
+    this.previousValue = this.mutationPoint.copy();
+
+    for(var $desc of this.mutationPoint.descendants)
+        if($desc.type === "Package") {
+            var tempList = this.identifiersMap.get($desc.toString);
+
+            var indexOfMutationPoint = tempList.indexOf(this.mutationPoint);
+
+            if(indexOfMutationPoint < tempList.length-1)
+                this.mutationPoint = this.mutationPoint.insertReplace(tempList[indexOfMutationPoint + 1].copy());
+            else
+                this.mutationPoint = this.mutationPoint.insertReplace(tempList[0].copy());
+            break;
+        }
+
+
 
     println("/*--------------------------------------*/");
     println("Mutating operator n." + this.currentIndex + ": " + this.previousValue + " to " + this.mutationPoint);
@@ -63,7 +97,7 @@ IdentifierReplacerMutator.prototype._mutatePrivate = function() {
 IdentifierReplacerMutator.prototype._restorePrivate = function() {
     // Restore operator
     println("Restoring: " + this.mutationPoint + " to " + this.previousValue);
-    this.mutationPoint.insertReplace(this.previousValue);
+    this.mutationPoint = this.mutationPoint.insertReplace(this.previousValue).copy();
     this.previousValue = undefined;
     this.mutationPoint = undefined;
 }
