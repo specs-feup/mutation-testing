@@ -56,6 +56,7 @@ public class MutatorKernel implements AppKernel {
         arguments.add("-b");
         arguments.add("2");
         arguments.add("-s");
+        arguments.add("-Q");
 
         System.out.println("Project path: " + projectPath);
         System.out.println("ARGS:\n" + String.join(" ", arguments));
