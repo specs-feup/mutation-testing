@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class Operators {
 
-    public static Operators[] assignedOperators = {new FindViewByIdDeletionMutator() ,new ArithmeticOperatorDeletion(), new FailOnNull(), new RemoveNullCheck(), new NullifyInputVariable(), new NullifyObjectInitialization(), new NullifyReturnValue(),
+    public static Operators[] assignedOperators = {new FindViewByIdDeletionMutator(), new IdentifierReplacerMutator() ,new ArithmeticOperatorDeletion(), new FailOnNull(), new RemoveNullCheck(), new NullifyInputVariable(), new NullifyObjectInitialization(), new NullifyReturnValue(),
             new ConditionalOperatorDeletionMutator(), new ConditionalOperatorInsertionMutator(), new ConstructorCallMutator(), new InheritanceIPCMutator(), new NonVoidCallMutator(), new RemoveConditionalMutator(),
             new ReturnValueMutator(),  new ConstantMutator(), new ConstantDeletionMutator(), new LiteralMutator(), new BitWiseOperatorMutator(), new ArithmeticOperators(),new BitwiseOperators(),new ConditionalOperators(),new RelationalOperators(), new UnaryOperators()};
 
