@@ -9,15 +9,15 @@ import java.util.Collections;
 import java.util.List;
 
 
-public final class NullifyReturnValue extends Operators{
+public final class InheritanceIPCMutator extends Operators{
 
     /***
      * Conditional Operators
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private static final String DESCRIPTION = "Nullify Return Value";
-    public static final String MUTATOR_TYPE = "NullifyReturnValue";
+    private static final String DESCRIPTION = "Super Constructor Call Deletion Mutator";
+    public static final String MUTATOR_TYPE = "InheritanceIPCMutator";
 
 
     @Override

@@ -9,6 +9,10 @@ var RemoveConditionalMutator = function($joinpoint) {
 	// Parent constructor
     Mutator.call(this);
 
+	if($joinpoint === undefined) {
+		$joinpoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.toMutate = [];
 	this.currentIndex = 0;
@@ -59,6 +63,11 @@ RemoveConditionalMutator.prototype._mutatePrivate = function() {
 	var mutatedCondition = 'true';
 	
 	this.$conditionalClause = this.$conditionalClause.insertReplace(mutatedCondition);
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": " + this.originalConditionalClause
+		+ " to "+ this.$conditionalClause);
+	println("/*--------------------------------------*/");
 	
 }
 

@@ -7,6 +7,10 @@ var ConditionalOperatorInsertionMutator = function($joinPoint) {
 	// Parent constructor
     Mutator.call(this);
 
+	if($joinPoint === undefined) {
+		$joinPoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.$joinPoint = $joinPoint;
 	this.extraArgs = arrayFromArgs(arguments, 1);
@@ -63,6 +67,12 @@ ConditionalOperatorInsertionMutator.prototype._mutatePrivate = function() {
 	var cond = this.$conditional.cond;
 	var newSrc = "!(" + cond.srcCode + ")";
 	cond.insertReplace(newSrc);
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.$originalConditional
+		+" to "+ this.$conditional);
+	println("/*--------------------------------------*/");
+
 }
 
 ConditionalOperatorInsertionMutator.prototype._restorePrivate = function() {

@@ -7,7 +7,9 @@ import java.util.List;
 
 public abstract class Operators {
 
-    public static Operators[] assignedOperators = {new ArithmeticOperatorDeletion(), new FailOnNull(), new RemoveNullCheck(), new NullifyInputVariable(), new NullifyObjectInitialization(), new NullifyReturnValue(), new ArithmeticOperators(),new BitwiseOperators(),new ConditionalOperators(),new RelationalOperators(), new UnaryOperators()};
+    public static Operators[] assignedOperators = {new FindViewByIdDeletionMutator(), new IdentifierReplacerMutator() ,new ArithmeticOperatorDeletion(), new FailOnNull(), new RemoveNullCheck(), new NullifyInputVariable(), new NullifyObjectInitialization(), new NullifyReturnValue(),
+            new ConditionalOperatorDeletionMutator(), new ConditionalOperatorInsertionMutator(), new ConstructorCallMutator(), new InheritanceIPCMutator(), new NonVoidCallMutator(), new RemoveConditionalMutator(),
+            new ReturnValueMutator(),  new ConstantMutator(), new ConstantDeletionMutator(), new LiteralMutator(), new BitWiseOperatorMutator(), new ArithmeticOperators(),new BitwiseOperators(),new ConditionalOperators(),new RelationalOperators(), new UnaryOperators()};
 
     public abstract List<List<String>> getMutators();
     public abstract List<String> getOperators();
@@ -15,41 +17,18 @@ public abstract class Operators {
     public abstract String getDescription();
     public abstract List<DataKey> getDataKeys();
     public abstract String getMutatorType();
+    public abstract String getMutatorString(DataStore dataStore);
 
-    public static String getMutatorString(DataStore dataStore){
+
+    public static String generateMutatorString(DataStore dataStore){
         StringBuilder mutatorString = new StringBuilder();
 
         for(Operators operators : assignedOperators)
-            if(operators.getMutatorType().equals("UnaryMutator") || operators.getMutatorType().equals("BinaryMutator"))
-                for (String identifier : operators.getIdentifiers()){
-                    List<String> selectedMutators = (List<String>) dataStore.get(identifier);
-                    for(String mutator : selectedMutators){
-                        mutatorString
-                                .append("\tnew ")
-                                .append(operators.getMutatorType())
-                                .append("(\"")
-                                .append(mutator)
-                                .append("\",\"")
-                                .append(identifier.substring(identifier.indexOf(' ')+1))
-                                .append("\"),\n");
-                    }
-                }
-            else if(operators instanceof ArithmeticOperatorDeletion
-                    || operators instanceof FailOnNull
-                    || operators instanceof RemoveNullCheck
-                    || operators instanceof NullifyObjectInitialization
-                    || operators instanceof NullifyReturnValue
-                    || operators instanceof NullifyInputVariable)
-                for (String identifier : operators.getIdentifiers()){
-                    Boolean selectedMutators = (Boolean) dataStore.get(identifier);
+            mutatorString.append(operators.getMutatorString(dataStore));
 
-                    if(selectedMutators)
-                        mutatorString
-                            .append("\tnew ")
-                            .append(operators.getMutatorType())
-                            .append("(),\n");
+            if(mutatorString.length() == 0)
+                return "";
 
-                }
             mutatorString.replace(mutatorString.lastIndexOf(","),mutatorString.length()," ");
         return mutatorString.toString();
     }

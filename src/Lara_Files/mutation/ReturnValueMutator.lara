@@ -10,6 +10,10 @@ var ReturnValueMutator = function($joinpoint) {
 	// Parent constructor
     Mutator.call(this);
 
+	if($joinpoint === undefined) {
+		$joinpoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.toMutate = [];
 	this.currentIndex = 0;
@@ -72,6 +76,11 @@ ReturnValueMutator.prototype._mutatePrivate = function() {
 	
 	var mutatedReturn = 'return ' + mutationValue + ';';
 	this.$returnExpression = this.$returnExpression.insertReplace(mutatedReturn);
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": " + this.originalReturnExpression
+		+ " to "+ this.$returnExpression);
+	println("/*--------------------------------------*/");
 }
 
 ReturnValueMutator.prototype._restorePrivate = function() {

@@ -14,6 +14,10 @@ var NonVoidCallMutator = function($joinpoint) {
 	// Parent constructor
     Mutator.call(this);
 
+	if($joinpoint === undefined) {
+		$joinpoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.toMutate = [];
 	this.currentIndex = 0;
@@ -97,6 +101,11 @@ NonVoidCallMutator.prototype._mutatePrivate = function() {
 	} else {
 		this.$callNode = this.$callNode.insertReplace(mutationValue);
 	}
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.originalCallNode
+		+" to "+ this.$callNode);
+	println("/*--------------------------------------*/");
 }
 
 NonVoidCallMutator.prototype._restorePrivate = function() {

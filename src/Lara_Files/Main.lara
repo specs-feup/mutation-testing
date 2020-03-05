@@ -1,5 +1,4 @@
 import lara.Io;
-import mutation.*;
 import Mutators;
 
 aspectdef Test
@@ -7,6 +6,10 @@ aspectdef Test
 	
 	var counter = 0;
 
+	if(Mutators[0] === undefined){
+		println("No mutators selected");
+		return;
+	}
 
 	for(mutator of Mutators){
 		while(mutator.hasMutations()) {

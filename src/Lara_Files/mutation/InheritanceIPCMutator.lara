@@ -7,6 +7,10 @@ var InheritanceIPCMutator = function($joinpoint) {
 	// Parent constructor
    	Mutator.call(this);
 
+	if($joinpoint === undefined) {
+		$joinpoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.toMutate = [];
 	this.currentIndex = 0;
@@ -63,6 +67,12 @@ InheritanceIPCMutator.prototype._mutatePrivate = function() {
 
 	// Replace super constructor call by a comment
 	this.$superCall = this.$superCall.insertReplace("// Super constructor call has been removed");
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.originalSuperCall
+		+" to "+ this.$superCall);
+	println("/*--------------------------------------*/");
+
 }
 
 InheritanceIPCMutator.prototype._restorePrivate = function() {

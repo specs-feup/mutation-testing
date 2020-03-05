@@ -2,9 +2,9 @@ package app.operators;
 
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Interfaces.DataStore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public final class NullifyInputVariable extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Nullify Input Variable";
+    private static final String DESCRIPTION = "Nullify Input Variable";
     public static final String MUTATOR_TYPE = "NullifyInputVariable";
 
 
@@ -52,8 +52,27 @@ public final class NullifyInputVariable extends Operators{
         return DESCRIPTION;
     }
 
-    @Override
+        @Override
     public String getMutatorType() {
         return MUTATOR_TYPE;
     }
+
+    @Override
+    public String getMutatorString(DataStore dataStore) {
+        StringBuilder mutatorString = new StringBuilder();
+
+        for (String identifier : this.getIdentifiers()){
+            Boolean selectedMutators = (Boolean) dataStore.get(identifier);
+
+            if(selectedMutators)
+                mutatorString
+                        .append("\tnew ")
+                        .append(this.getMutatorType())
+                        .append("(),\n");
+
+        }
+
+        return mutatorString.toString();
+    }
+
 }

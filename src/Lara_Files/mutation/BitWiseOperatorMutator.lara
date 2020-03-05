@@ -1,4 +1,5 @@
 import lara.mutation.Mutator;
+import weaver.WeaverJps;
 
 /**
  *  @param {$joinPoint} $joinPoint - A join point to use as startpoint to search for bitwise expressions to mutate.
@@ -8,6 +9,10 @@ import lara.mutation.Mutator;
 var BitWiseOperatorMutator = function($joinPoint, bitwiseOperator) {
 	// Parent constructor
     Mutator.call(this);
+
+	if($joinPoint === undefined) {
+		$joinPoint = WeaverJps.root();
+	}
 
 	// Instance variables
 	this.$joinPoint = $joinPoint;
@@ -97,6 +102,11 @@ BitWiseOperatorMutator.prototype._mutatePrivate = function() {
 		this.unaryMutate();
 	else
 		this.binaryMutate(newOp);
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.newOp
+		+" to "+ this.$bitwiseExpression);
+	println("/*--------------------------------------*/");
 
 }
 

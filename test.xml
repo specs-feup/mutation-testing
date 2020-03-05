@@ -7,16 +7,122 @@
     </entry>
     <entry>
       <string>Relational &lt;</string>
+      <list/>
+    </entry>
+    <entry>
+      <string>Super Constructor Call Deletion Mutator</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Nullify Return Value</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Conditional Operator Deletion</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Bitwise &gt;&gt;</string>
+      <list/>
+    </entry>
+    <entry>
+      <string>Unary _++</string>
+      <list/>
+    </entry>
+    <entry>
+      <string>long: 1 to 0, </string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Unary ++_</string>
+      <list/>
+    </entry>
+    <entry>
+      <string>Arithmetic Operators Deletion</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>float: 1.0 to 0, </string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>FindViewById Deletion</string>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
+      <string>Conditional Operator Insertion</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Nullify Object Initialization</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>BitWise Operator Mutator ^</string>
       <list>
-        <string>&gt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>|</string>
+        <string>&amp;</string>
       </list>
     </entry>
     <entry>
+      <string>int byte short: 1 to 0 ; </string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Conditional &amp;&amp;</string>
+      <list/>
+    </entry>
+    <entry>
+      <string>Constant Deletion Mutator</string>
+      <string></string>
+    </entry>
+    <entry>
+      <string>Non Void Call Mutator</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Relational &lt;=</string>
+      <list/>
+    </entry>
+    <entry>
+      <string>float 2.0 to 0, </string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Constructor Call Mutator</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>int byte short otherwise increments by 1</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>BitWise Operator Mutator ~</string>
+      <list>
+        <string> </string>
+      </list>
+    </entry>
+    <entry>
+      <string>BitWise Operator Mutator |</string>
+      <list>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>^</string>
+        <string>&amp;</string>
+      </list>
+    </entry>
+    <entry>
+      <string> one String to &quot;&quot;</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
       <string>Remove Null Check</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>float other number to 1.0</string>
       <boolean>false</boolean>
     </entry>
     <entry>
@@ -25,11 +131,11 @@
     </entry>
     <entry>
       <string>Fail On Null</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
-      <string>Bitwise &gt;&gt;</string>
-      <list/>
+      <string>Constant to -Constant</string>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Bitwise &lt;&lt;</string>
@@ -38,6 +144,10 @@
     <entry>
       <string>LaraPath</string>
       <file>src\Lara_Files\Main.lara</file>
+    </entry>
+    <entry>
+      <string> False to True</string>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Arithmetic -</string>
@@ -52,19 +162,11 @@
       <list/>
     </entry>
     <entry>
-      <string>Unary _++</string>
-      <list/>
-    </entry>
-    <entry>
       <string>Unary _--</string>
       <list/>
     </entry>
     <entry>
       <string>Arithmetic *</string>
-      <list/>
-    </entry>
-    <entry>
-      <string>Unary ++_</string>
       <list/>
     </entry>
     <entry>
@@ -77,10 +179,18 @@
     </entry>
     <entry>
       <string>ProjectPath</string>
-      <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Mutations_TVVS\kadabra\source</file>
+      <file>Java_Test_Files</file>
     </entry>
     <entry>
-      <string>Arithmetic Operators Deletion</string>
+      <string>Return Value Mutator</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>int byte short -1 to 1 ; </string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>double: 1.0 to 0, </string>
       <boolean>false</boolean>
     </entry>
     <entry>
@@ -89,35 +199,40 @@
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>+</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary !</string>
       <list/>
     </entry>
     <entry>
+      <string>Constant to 0</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Constant to 1</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
       <string>Unary +</string>
       <list/>
     </entry>
     <entry>
-      <string>Conditional &amp;&amp;</string>
+      <string>Constant to -1</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>BitWise Operator Mutator &amp;</string>
       <list>
-        <string>||</string>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>^</string>
+        <string>|</string>
       </list>
     </entry>
     <entry>
       <string>Conditional ||</string>
-      <list>
-        <string>&amp;&amp;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary -</string>
@@ -128,28 +243,48 @@
       <boolean>false</boolean>
     </entry>
     <entry>
-      <string>Relational &gt;=</string>
-      <list>
-        <string>&lt;</string>
-        <string>&gt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-      </list>
+      <string>int byte short 5 to -1</string>
+      <boolean>false</boolean>
     </entry>
     <entry>
-      <string>Relational &lt;=</string>
-      <list>
-        <string>&gt;</string>
-        <string>&lt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&gt;=</string>
-      </list>
+      <string>double another number to 1.0</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Relational &gt;=</string>
+      <list/>
+    </entry>
+    <entry>
+      <string> 0 to 1</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>True to False</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>1 to -1</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Remove Conditional Mutator</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>long: otherwise increments by 1</string>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Relational !=</string>
       <list/>
+    </entry>
+    <entry>
+      <string>Constant to Constant + 1</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
+      <string>Constant to Constant - 1</string>
+      <boolean>false</boolean>
     </entry>
   </values>
   <strict>false</strict>

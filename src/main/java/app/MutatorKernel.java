@@ -1,7 +1,6 @@
 package app;
 
 import app.operators.Operators;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.app.AppKernel;
@@ -10,7 +9,6 @@ import pt.up.fe.specs.util.utilities.Replacer;
 import weaver.gui.KadabraLauncher;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,7 +25,7 @@ public class MutatorKernel implements AppKernel {
 
         JSONObject laraArguments = new JSONObject();
         String projectPath = dataStore.get(Tese_UI.PROJECT_FILE).getAbsolutePath();
-        String laraPath = dataStore.get(Tese_UI.LARA_FILE).getAbsolutePath();
+        String laraPath = dataStore.get(Tese_UI.LARA_FILE).isFile() ? dataStore.get(Tese_UI.LARA_FILE).getAbsolutePath() : "src/Lara_Files/Main.lara";
         String outputPath = dataStore.get(Tese_UI.OUTPUT_FILE).getAbsolutePath() + File.separator +"Output";
 
         List<String> arguments = new ArrayList<>(Arrays.asList(laraPath, "-p", projectPath, "-o", outputPath+"_Main"));
@@ -46,8 +44,8 @@ public class MutatorKernel implements AppKernel {
             return -1;
         }
 
-        replacer.replace("<IMPORT>", Operators.getImportString());
-        replacer.replace("<MUTATORS>", Operators.getMutatorString(dataStore));
+        replacer.replace("<IMPORT>", "");//Operators.getImportString());
+        replacer.replace("<MUTATORS>", Operators.generateMutatorString(dataStore));
 
         SpecsIo.write(new File(mutatorsPath), replacer.toString());
 
@@ -58,6 +56,7 @@ public class MutatorKernel implements AppKernel {
         arguments.add("-b");
         arguments.add("2");
         arguments.add("-s");
+        arguments.add("-Q");
 
         System.out.println("Project path: " + projectPath);
         System.out.println("ARGS:\n" + String.join(" ", arguments));

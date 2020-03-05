@@ -9,15 +9,15 @@ import java.util.Collections;
 import java.util.List;
 
 
-public final class NullifyReturnValue extends Operators{
+public final class FindViewByIdDeletionMutator extends Operators{
 
     /***
      * Conditional Operators
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private static final String DESCRIPTION = "Nullify Return Value";
-    public static final String MUTATOR_TYPE = "NullifyReturnValue";
+    private static final String DESCRIPTION = "FindViewById Deletion";
+    public static final String MUTATOR_TYPE = "FindViewByIdDeletionMutator";
 
 
     @Override
@@ -52,7 +52,7 @@ public final class NullifyReturnValue extends Operators{
         return DESCRIPTION;
     }
 
-        @Override
+    @Override
     public String getMutatorType() {
         return MUTATOR_TYPE;
     }

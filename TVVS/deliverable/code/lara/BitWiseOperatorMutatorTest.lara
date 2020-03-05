@@ -8,7 +8,7 @@ input outputPath end
 var $jp = WeaverJps.root();
 var counter = 0;
 
-var mutator = new BitWiseOperatorMutator($jp, "|", "lhs", "^", "rhs", "&");
+var mutator = new BitWiseOperatorMutator($jp, "lhs", "|", "^", "rhs", "&");
 
 while(mutator.hasMutations()) {
 	// Mutate

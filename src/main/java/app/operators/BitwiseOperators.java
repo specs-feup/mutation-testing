@@ -2,6 +2,7 @@ package app.operators;
 
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Interfaces.DataStore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,19 +18,19 @@ public final class BitwiseOperators extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Bitwise";
+    private static final String DESCRIPTION = "Bitwise";
     private static final String MUTATOR_TYPE = "BinaryMutator";
 
-    protected final static String SIGNED_RIGHT_SHIFT = ">>";
-    protected final static String SIGNED_LEFT_SHIFT = "<<";
-    protected final static String UNSIGNED_RIGHT_SHIFT = ">>>";
+    protected static final String SIGNED_RIGHT_SHIFT = ">>";
+    protected static final String SIGNED_LEFT_SHIFT = "<<";
+    protected static final String UNSIGNED_RIGHT_SHIFT = ">>>";
 
-    private final static List<String> SIGNED_RIGHT_SHIFT_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, REMAINDER, PLUS, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
-    private final static List<String> SIGNED_LEFT_SHIFT_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, PLUS, UNSIGNED_RIGHT_SHIFT);
-    private final static List<String> UNSIGNED_RIGHT_SHIFT_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, PLUS);
+    private static final List<String> SIGNED_RIGHT_SHIFT_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, REMAINDER, PLUS, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
+    private static final List<String> SIGNED_LEFT_SHIFT_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, PLUS, UNSIGNED_RIGHT_SHIFT);
+    private static final List<String> UNSIGNED_RIGHT_SHIFT_OP = Arrays.asList(MINUS, MULTIPLY, DIVIDE, REMAINDER, SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, PLUS);
 
-    private final static List<List<String>> MUTATORS = Arrays.asList(SIGNED_LEFT_SHIFT_OP, SIGNED_RIGHT_SHIFT_OP, UNSIGNED_RIGHT_SHIFT_OP);
-    private final static List<String> OPERATORS = Arrays.asList(SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
+    private static final List<List<String>> MUTATORS = Arrays.asList(SIGNED_LEFT_SHIFT_OP, SIGNED_RIGHT_SHIFT_OP, UNSIGNED_RIGHT_SHIFT_OP);
+    private static final List<String> OPERATORS = Arrays.asList(SIGNED_LEFT_SHIFT, SIGNED_RIGHT_SHIFT, UNSIGNED_RIGHT_SHIFT);
 
     @Override
     public List<List<String>> getMutators() {
@@ -68,5 +69,26 @@ public final class BitwiseOperators extends Operators{
     @Override
     public String getMutatorType() {
         return MUTATOR_TYPE;
+    }
+
+    @Override
+    public String getMutatorString(DataStore dataStore) {
+        StringBuilder mutatorString = new StringBuilder();
+
+        for (String identifier : this.getIdentifiers()){
+            List<String> selectedMutators = (List<String>) dataStore.get(identifier);
+            for(String mutator : selectedMutators){
+                mutatorString
+                        .append("\tnew ")
+                        .append(this.getMutatorType())
+                        .append("(\"")
+                        .append(mutator)
+                        .append("\",\"")
+                        .append(identifier.substring(identifier.indexOf(' ')+1))
+                        .append("\"),\n");
+            }
+        }
+
+        return mutatorString.toString();
     }
 }

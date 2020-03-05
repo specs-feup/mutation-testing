@@ -2,6 +2,7 @@ package app.operators;
 
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Interfaces.DataStore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +16,7 @@ public final class NullifyObjectInitialization extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Nullify Object Initialization";
+    private static final String DESCRIPTION = "Nullify Object Initialization";
     public static final String MUTATOR_TYPE = "NullifyObjectInitialization";
 
 
@@ -51,8 +52,27 @@ public final class NullifyObjectInitialization extends Operators{
         return DESCRIPTION;
     }
 
-    @Override
+        @Override
     public String getMutatorType() {
         return MUTATOR_TYPE;
     }
+
+    @Override
+    public String getMutatorString(DataStore dataStore) {
+        StringBuilder mutatorString = new StringBuilder();
+
+        for (String identifier : this.getIdentifiers()){
+            Boolean selectedMutators = (Boolean) dataStore.get(identifier);
+
+            if(selectedMutators)
+                mutatorString
+                        .append("\tnew ")
+                        .append(this.getMutatorType())
+                        .append("(),\n");
+
+        }
+
+        return mutatorString.toString();
+    }
+
 }

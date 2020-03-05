@@ -9,15 +9,15 @@ import java.util.Collections;
 import java.util.List;
 
 
-public final class NullifyReturnValue extends Operators{
+public final class ConstantDeletionMutator extends Operators{
 
     /***
      * Conditional Operators
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private static final String DESCRIPTION = "Nullify Return Value";
-    public static final String MUTATOR_TYPE = "NullifyReturnValue";
+    private static final String DESCRIPTION = "Constant Deletion Mutator";
+    public static final String MUTATOR_TYPE = "ConstantDeletionMutator";
 
 
     @Override
@@ -36,7 +36,7 @@ public final class NullifyReturnValue extends Operators{
 
         identifiers.add(getDescription());
         dataKeysList.add(
-                KeyFactory.bool(getDescription()).setLabel(getDescription())
+                KeyFactory.string(getDescription(), "").setLabel(getDescription())
         );
 
         return dataKeysList;
@@ -52,7 +52,7 @@ public final class NullifyReturnValue extends Operators{
         return DESCRIPTION;
     }
 
-        @Override
+    @Override
     public String getMutatorType() {
         return MUTATOR_TYPE;
     }
@@ -62,17 +62,15 @@ public final class NullifyReturnValue extends Operators{
         StringBuilder mutatorString = new StringBuilder();
 
         for (String identifier : this.getIdentifiers()){
-            Boolean selectedMutators = (Boolean) dataStore.get(identifier);
+            String selectedMutators = (String) dataStore.get(identifier);
 
-            if(selectedMutators)
+            if(!selectedMutators.isBlank())
                 mutatorString
-                        .append("\tnew ")
-                        .append(this.getMutatorType())
-                        .append("(),\n");
-
+                        .append("\tnew ConstantDeletionMutator(undefined, '")
+                        .append(selectedMutators)
+                        .append("'),\n");
         }
 
         return mutatorString.toString();
     }
-
 }

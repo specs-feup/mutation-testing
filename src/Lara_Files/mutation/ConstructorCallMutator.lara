@@ -7,6 +7,10 @@ var ConstructorCallMutator = function($joinPoint) {
 	// Parent constructor
     Mutator.call(this);
 
+	if($joinPoint === undefined) {
+		$joinPoint = WeaverJps.root();
+	}
+
 	// Instance variables
 	this.$joinPoint = $joinPoint;
 	this.extraArgs = arrayFromArgs(arguments, 1);
@@ -51,6 +55,12 @@ ConstructorCallMutator.prototype._mutatePrivate = function() {
 
 	this.$originalParent = this.$referenceParent.copy();
 	this.$referenceParent = this.$referenceParent.insertReplace("null");
+
+	println("/*--------------------------------------*/");
+	println("Mutating operator n."+ this.currentIndex + ": "+ this.$originalParent
+		+" to "+ this.$referenceParent);
+	println("/*--------------------------------------*/");
+
 }
 
 ConstructorCallMutator.prototype._restorePrivate = function() {

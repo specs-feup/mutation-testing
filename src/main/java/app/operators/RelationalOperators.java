@@ -2,6 +2,7 @@ package app.operators;
 
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Interfaces.DataStore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,26 +16,26 @@ public final class RelationalOperators extends Operators{
      */
 
     private static List<String> identifiers = new ArrayList<>();
-    private final static String DESCRIPTION = "Relational";
+    private static final String DESCRIPTION = "Relational";
     private static final String MUTATOR_TYPE = "BinaryMutator";
 
-    protected final static String MINOR = "<";
-    protected final static String MINOR_OR_EQUAL = "<=";
-    protected final static String GREATER = ">";
-    protected final static String GREATER_OR_EQUAL = ">=";
-    protected final static String DIFFERENT = "!=";
-    protected final static String EQUAL = "==";
+    protected static final String MINOR = "<";
+    protected static final String MINOR_OR_EQUAL = "<=";
+    protected static final String GREATER = ">";
+    protected static final String GREATER_OR_EQUAL = ">=";
+    protected static final String DIFFERENT = "!=";
+    protected static final String EQUAL = "==";
 
-    private final static List<String> MINOR_OP = Arrays.asList(GREATER, EQUAL, DIFFERENT, MINOR_OR_EQUAL, GREATER_OR_EQUAL);
-    private final static List<String> MINOR_OR_EQUAL_OP = Arrays.asList(GREATER, MINOR, EQUAL, DIFFERENT,  GREATER_OR_EQUAL);
-    private final static List<String> GREATER_OP = Arrays.asList(MINOR, EQUAL, DIFFERENT, MINOR_OR_EQUAL, GREATER_OR_EQUAL);
-    private final static List<String> GREATER_OR_EQUAL_OP = Arrays.asList(MINOR, GREATER, EQUAL, DIFFERENT, MINOR_OR_EQUAL);
-    private final static List<String> DIFFERENT_OP = Arrays.asList(GREATER, MINOR, EQUAL, MINOR_OR_EQUAL, GREATER_OR_EQUAL);
-    private final static List<String> EQUAL_OP = Arrays.asList(GREATER, MINOR, DIFFERENT, MINOR_OR_EQUAL, GREATER_OR_EQUAL);
+    private static final List<String> MINOR_OP = Arrays.asList(GREATER, EQUAL, DIFFERENT, MINOR_OR_EQUAL, GREATER_OR_EQUAL);
+    private static final List<String> MINOR_OR_EQUAL_OP = Arrays.asList(GREATER, MINOR, EQUAL, DIFFERENT,  GREATER_OR_EQUAL);
+    private static final List<String> GREATER_OP = Arrays.asList(MINOR, EQUAL, DIFFERENT, MINOR_OR_EQUAL, GREATER_OR_EQUAL);
+    private static final List<String> GREATER_OR_EQUAL_OP = Arrays.asList(MINOR, GREATER, EQUAL, DIFFERENT, MINOR_OR_EQUAL);
+    private static final List<String> DIFFERENT_OP = Arrays.asList(GREATER, MINOR, EQUAL, MINOR_OR_EQUAL, GREATER_OR_EQUAL);
+    private static final List<String> EQUAL_OP = Arrays.asList(GREATER, MINOR, DIFFERENT, MINOR_OR_EQUAL, GREATER_OR_EQUAL);
 
 
-    private final static List<List<String>> MUTATORS = Arrays.asList(MINOR_OP, MINOR_OR_EQUAL_OP, GREATER_OP, GREATER_OR_EQUAL_OP, DIFFERENT_OP, EQUAL_OP);
-    private final static List<String> OPERATORS = Arrays.asList(MINOR, MINOR_OR_EQUAL, GREATER, GREATER_OR_EQUAL, DIFFERENT, EQUAL);
+    private static final List<List<String>> MUTATORS = Arrays.asList(MINOR_OP, MINOR_OR_EQUAL_OP, GREATER_OP, GREATER_OR_EQUAL_OP, DIFFERENT_OP, EQUAL_OP);
+    private static final List<String> OPERATORS = Arrays.asList(MINOR, MINOR_OR_EQUAL, GREATER, GREATER_OR_EQUAL, DIFFERENT, EQUAL);
 
     @Override
     public List<List<String>> getMutators() {
@@ -73,5 +74,26 @@ public final class RelationalOperators extends Operators{
     @Override
     public String getMutatorType() {
         return MUTATOR_TYPE;
+    }
+
+    @Override
+    public String getMutatorString(DataStore dataStore) {
+        StringBuilder mutatorString = new StringBuilder();
+
+        for (String identifier : this.getIdentifiers()){
+            List<String> selectedMutators = (List<String>) dataStore.get(identifier);
+            for(String mutator : selectedMutators){
+                mutatorString
+                        .append("\tnew ")
+                        .append(this.getMutatorType())
+                        .append("(\"")
+                        .append(mutator)
+                        .append("\",\"")
+                        .append(identifier.substring(identifier.indexOf(' ')+1))
+                        .append("\"),\n");
+            }
+        }
+
+        return mutatorString.toString();
     }
 }
