@@ -16,18 +16,17 @@ var IdentifierReplacerMutator = function($result, $original) {
 
     //To get the mutation points and identifiers
     for(var $expression of WeaverJps.search('expression', {code: /^R\..*/}).get()) { //Searching for every expression that starts by R.
-        for(var $desc of $expression.descendants)
-            if($desc.type === "Package"){
-                var tempList = this.identifiersMap.get($desc.toString);
 
-                if(tempList === undefined){ //Creating or updating the entry
-                    tempList = [$expression];
-                }else{
-                    tempList.push($expression);
-                }
+        var tempList = this.identifiersMap.get($expression.typeReference.package);
 
-                this.identifiersMap.set($desc.toString, tempList); //Saving the entry
-            }
+        if(tempList === undefined){ //Creating or updating the entry
+            tempList = [$expression];
+        }else{
+            tempList.push($expression);
+        }
+
+        this.identifiersMap.set($expression.typeReference.package, tempList); //Saving the entry
+
     }
 
 
@@ -66,26 +65,23 @@ IdentifierReplacerMutator.prototype.getMutationPoint = function() {
     }
 }
 
-    IdentifierReplacerMutator.prototype._mutatePrivate = function() {
+IdentifierReplacerMutator.prototype._mutatePrivate = function() {
 
     this.mutationPoint = this.mutationPoints[this.currentIndex];
     this.currentIndex++;
 
     this.previousValue = this.mutationPoint.copy();
 
-    for(var $desc of this.mutationPoint.descendants)
-        if($desc.type === "Package") {
-            var tempList = this.identifiersMap.get($desc.toString);
 
-            var indexOfMutationPoint = tempList.indexOf(this.mutationPoint);
+    var tempList = this.identifiersMap.get(this.mutationPoint.typeReference.package);
 
-            if(indexOfMutationPoint < tempList.length-1)
-                this.mutationPoint = this.mutationPoint.insertReplace(tempList[indexOfMutationPoint + 1].copy());
-            else
-                this.mutationPoint = this.mutationPoint.insertReplace(tempList[0].copy());
-            break;
-        }
+    var indexOfMutationPoint = tempList.indexOf(this.mutationPoint);
 
+    //TODO: CHECK IF IT IS THE PROPER WAY TO DO IT
+    if(indexOfMutationPoint < tempList.length-1)
+        this.mutationPoint = this.mutationPoint.insertReplace(tempList[indexOfMutationPoint + 1].copy());
+    else
+        this.mutationPoint = this.mutationPoint.insertReplace(tempList[0].copy());
 
 
     println("/*--------------------------------------*/");
