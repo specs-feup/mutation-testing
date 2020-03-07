@@ -78,3 +78,16 @@ ConditionalOperatorDeletionMutator.prototype._restorePrivate = function() {
 	this.$originalConditional = undefined;
 	this.$conditional = undefined;
 }
+
+
+ConditionalOperatorDeletionMutator.prototype.getMutationPoint = function() {
+	if (this.isMutated) {
+		return this.$conditional;
+	} else {
+		if (this.currentIndex < this.toMutate.length) {
+			return this.toMutate[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}
