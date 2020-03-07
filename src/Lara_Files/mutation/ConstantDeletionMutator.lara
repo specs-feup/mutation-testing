@@ -84,3 +84,15 @@ ConstantDeletionMutator.prototype._restorePrivate = function() {
 	this.$originalNode = undefined;
 	this.$node = undefined;
 }
+
+ConstantDeletionMutator.prototype.getMutationPoint = function() {
+	if (this.isMutated) {
+		return this.$node;
+	} else {
+		if (this.currentIndex < this.toMutate.length) {
+			return this.toMutate[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}
