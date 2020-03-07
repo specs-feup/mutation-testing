@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+@Deprecated
 public final class InheritanceIPCMutator extends Operators{
 
     /***
