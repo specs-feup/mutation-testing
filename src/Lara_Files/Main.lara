@@ -2,9 +2,12 @@ import lara.Io;
 import Mutators;
 
 aspectdef Test
-	input outputPath end
-	
+input outputPath end
+
 	var counter = 0;
+	var identifiersList = new Object();
+
+	identifiersList.identifiers = [];
 
 	if(Mutators[0] === undefined){
 		println("No mutators selected");
@@ -17,6 +20,20 @@ aspectdef Test
 			// Mutate
 			mutator.mutate();
 			// Print
+			var identifier = new Object();
+
+			var mutated = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
+
+			identifier.file = mutated.ancestor("file").name;
+			identifier.line  = mutated.line;
+			identifier.id = identifier.file+"_"+identifier.line+"_"+counter; // TODO: Add mutator type to identifier name
+
+
+
+			identifiersList.identifiers.push(identifier);
+			counter++;
+
+
 			//println(mutator.getMutationPoint().parent.code);
 			saveFile();
 			// Restore operator
