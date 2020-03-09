@@ -39,18 +39,29 @@ input outputPath end
 
 			mutator.getMutationPoint().insertAfter("}");
 			//println(mutator.getMutationPoint().parent.code);
-			saveFile();
+
 			// Restore operator
 			mutator.restore();
 
 		}
 	}
+	saveFile();
 
-	function saveFile(){
-		var outputFolder = Io.getPath(outputPath+ "/" + counter);
-		counter++;
+function saveFile(){
+	var outputFolder = Io.mkdir("./mutatedFiles/");
+	Io.deleteFolderContents(outputFolder);
 
-		// Write modified code
-		Weaver.writeCode(outputFolder);
+// Write modified code
+	Weaver.writeCode(outputFolder);
+
+// Print contents
+	for(var mutatedFile of Io.getFiles(outputFolder, "*.java") ) {
+		println("<File '" + mutatedFile.getName() + "'>");
+		println(Io.readFile(mutatedFile));
 	}
+
+	Io.writeJson("mutantsIdentifiers.json", identifiersList );
+
+	Io.deleteFolder(outputFolder);
+}
 end
