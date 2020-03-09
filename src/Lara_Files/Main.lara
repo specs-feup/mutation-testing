@@ -28,12 +28,16 @@ input outputPath end
 			identifier.line  = mutated.line;
 			identifier.id = identifier.file+"_"+identifier.line+"_"+counter; // TODO: Add mutator type to identifier name
 
-
+			mutator.getMutationPoint().insertBefore(
+				"if(System.getenv(\"MutKey\") == \""+ identifier.id +"\"){\n" +
+				mutated.srcCode +
+				"\n}else{\n"
+			);
 
 			identifiersList.identifiers.push(identifier);
 			counter++;
 
-
+			mutator.getMutationPoint().insertAfter("}");
 			//println(mutator.getMutationPoint().parent.code);
 			saveFile();
 			// Restore operator
