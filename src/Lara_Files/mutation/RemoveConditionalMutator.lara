@@ -77,3 +77,15 @@ RemoveConditionalMutator.prototype._restorePrivate = function() {
 	this.originalConditionalClause = undefined;
 	this.$conditionalClause = undefined;
 }
+
+RemoveConditionalMutator.prototype.getMutationPoint = function() {
+	if (this.isMutated && this.$conditionalClause !== null) {
+		return this.$conditionalClause;
+	} else {
+		if (this.currentIndex < this.toMutate.length) {
+			return this.toMutate[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}
