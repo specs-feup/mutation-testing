@@ -123,3 +123,4 @@ Output
 /target/*
 /src/Lara_Files/Mutators.lara
 /.idea/
+/mutatedFiles/
