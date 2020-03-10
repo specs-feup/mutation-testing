@@ -24,7 +24,7 @@ input outputPath end
 
 			var mutated = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
 
-			identifier.file = mutated.ancestor("file").name;
+			identifier.file = mutated.ancestor("file") === undefined ? "NOFILENAME" : mutated.ancestor("file").name;
 			identifier.line  = mutated.line;
 			identifier.id = identifier.file+"_"+identifier.line+"_"+counter; // TODO: Add mutator type to identifier name
 
