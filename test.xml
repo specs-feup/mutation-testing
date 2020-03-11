@@ -175,7 +175,7 @@
     </entry>
     <entry>
       <string>ProjectPath</string>
-      <file>..\ant\src\main</file>
+      <file>..\ant\src\main\org\apache\tools</file>
     </entry>
     <entry>
       <string>Return Value Mutator</string>

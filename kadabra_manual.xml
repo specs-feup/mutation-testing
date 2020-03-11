@@ -30,7 +30,7 @@
     </entry>
     <entry>
       <string>argv</string>
-      <string>{outputPath: &quot;output&quot;}</string>
+      <string>{outputPath: &quot;output&quot;, packageName: &quot;batatas&quot;}</string>
     </entry>
     <entry>
       <string>tools</string>
