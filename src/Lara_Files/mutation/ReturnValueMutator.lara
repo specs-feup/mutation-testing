@@ -89,3 +89,15 @@ ReturnValueMutator.prototype._restorePrivate = function() {
 	this.originalReturnExpression = undefined;
 	this.$returnExpression = undefined;
 }
+
+ReturnValueMutator.prototype.getMutationPoint = function() {
+	if (this.isMutated && this.$returnExpression !== null) {
+		return this.$returnExpression;
+	} else {
+		if (this.currentIndex < this.toMutate.length) {
+			return this.toMutate[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}

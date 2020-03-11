@@ -114,3 +114,16 @@ NonVoidCallMutator.prototype._restorePrivate = function() {
 	this.originalCallNode = undefined;
 	this.$callNode = undefined;
 }
+
+
+NonVoidCallMutator.prototype.getMutationPoint = function() {
+	if (this.isMutated && this.$callNode !== null) {
+		return this.$callNode;
+	} else {
+		if (this.currentIndex < this.toMutate.length) {
+			return this.toMutate[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}

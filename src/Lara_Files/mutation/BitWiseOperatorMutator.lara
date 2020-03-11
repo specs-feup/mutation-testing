@@ -142,3 +142,15 @@ BitWiseOperatorMutator.prototype.binaryMutate = function(newOp) {
 	else
 		this.$bitwiseExpression.operator = newOp;
 }
+
+BitWiseOperatorMutator.prototype.getMutationPoint = function() {
+	if (this.isMutated) {
+		return this.$bitwiseExpression;
+	} else {
+		if (this.newOperatorIndex < this.newOperators.length) {
+			return this.newOperators[this.newOperatorIndex];
+		} else {
+			return undefined;
+		}
+	}
+}

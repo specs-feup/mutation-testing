@@ -68,3 +68,15 @@ ConstructorCallMutator.prototype._restorePrivate = function() {
 	this.$originalParent = undefined;
 	this.$referenceParent = undefined;
 }
+
+ConstructorCallMutator.prototype.getMutationPoint = function() {
+	if (this.isMutated) {
+		return this.$referenceParent;
+	} else {
+		if (this.currentIndex < this.toMutate.length) {
+			return this.toMutate[this.currentIndex];
+		} else {
+			return undefined;
+		}
+	}
+}
