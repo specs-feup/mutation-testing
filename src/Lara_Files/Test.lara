@@ -1,17 +1,15 @@
-import weaver.WeaverOptions;
+import weaver.WeaverJps;
+import weaver.Weaver;
 
-aspectdef Test
+aspectdef test
+input outputPath end
 
-	//println("Something");
-
-	input jsonFile end
-
-	var counter = 0;
-	var json = fileToJSON(jsonFile);
-
-	for(var type in json)
-		printObject(json[type]);
-
-	printObject(WeaverOptions.getData());
-
+	for(var $jp of WeaverJps.root().descendants) {
+		if(Weaver.isJoinPoint($jp ,"binaryExpression")){
+				//if($jp.ancestor("statement").isFinal)
+				var $call = $jp.ancestor("call");
+				if($call !== undefined && $call.target === "null")
+					println("Call "+ $call+"\n\n\n");
+		} 
+	}
 end

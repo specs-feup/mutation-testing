@@ -7,7 +7,8 @@ import kadabra.KadabraNodes;
  */
 
 var ConstantDeletionMutator = function($joinpoint, targetConstant) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
 	if($joinpoint === undefined) {
@@ -34,6 +35,7 @@ var ConstantDeletionMutator = function($joinpoint, targetConstant) {
 };
 
 
+*/};
 // Inheritance
 ConstantDeletionMutator.prototype = Object.create(Mutator.prototype);
 

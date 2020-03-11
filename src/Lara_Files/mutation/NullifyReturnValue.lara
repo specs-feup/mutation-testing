@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var NullifyReturnValue = function($startingPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
      Mutator.call(this);
 
 	if($startingPoint === undefined) {
@@ -29,6 +30,7 @@ var NullifyReturnValue = function($startingPoint) {
 	this.previousValue = undefined;
 };
 
+*/};
 // Inheritance
 NullifyReturnValue.prototype = Object.create(Mutator.prototype);
 

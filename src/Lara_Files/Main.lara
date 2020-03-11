@@ -5,11 +5,27 @@ aspectdef Test
 	input outputPath end
 	
 	var counter = 0;
+	var identifiersList = new Object();
+
+	identifiersList.identifiers = [];
 
 	if(Mutators[0] === undefined){
 		println("No mutators selected");
 		return;
 	}
+
+	for(var $jp of WeaverJps.root().descendants) {
+		var $call = $jp.ancestor("call");
+		if($call !== undefined && $call.target !== "null"){ //FIXME: Change this verification of super() and this() calls
+			for(mutator of Mutators) {
+				if(mutator.addJp($jp)) {
+					var fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
+					println("New mutation point of type " + mutator.getType() + " on: "+ $jp + " file " + fileName + " line " + $jp.line);
+				}
+			}
+		}
+	}
+
 
 	for(mutator of Mutators){
 		while(mutator.hasMutations()) {
@@ -17,19 +33,49 @@ aspectdef Test
 			// Mutate
 			mutator.mutate();
 			// Print
+			var identifier = new Object();
+
+			var mutated = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
+
+			identifier.file = mutated.ancestor("file") === undefined ? "NOFILENAME" : mutated.ancestor("file").name;
+			identifier.line  = mutated.line;
+			identifier.id = identifier.file+"_"+identifier.line+"_"+counter; // TODO: Add mutator type to identifier name
+
+			mutator.getMutationPoint().insertBefore(
+				"if(System.getenv(\"MutKey\") == \""+ identifier.id +"\"){\n" +
+				mutated.srcCode +
+				"\n}else{\n"
+			);
+
+			identifiersList.identifiers.push(identifier);
+			counter++;
+
+			mutator.getMutationPoint().insertAfter("}");
 			//println(mutator.getMutationPoint().parent.code);
-			saveFile();
+
 			// Restore operator
 			mutator.restore();
 
 		}
 	}
+	saveFile();
+	println("Finalized with "+ identifiersList.identifiers.length +" mutants generated" );
 
 	function saveFile(){
-		var outputFolder = Io.getPath(outputPath+ "/" + counter);
-		counter++;
+		var outputFolder = Io.mkdir("./mutatedFiles/");
+		Io.deleteFolderContents(outputFolder);
 
 		// Write modified code
 		Weaver.writeCode(outputFolder);
+
+		// Print contents
+		// 	for(var mutatedFile of Io.getFiles(outputFolder, "*.java") ) {
+		// 		println("<File '" + mutatedFile.getName() + "'>");
+		// 		println(Io.readFile(mutatedFile));
+		// 	}
+
+		Io.writeJson("mutantsIdentifiers.json", identifiersList );
+
+
 	}
 end

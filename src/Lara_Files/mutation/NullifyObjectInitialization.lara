@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var NullifyObjectInitialization = function($startingPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
      Mutator.call(this);
 
 	if($startingPoint === undefined) {
@@ -27,6 +28,7 @@ var NullifyObjectInitialization = function($startingPoint) {
 	this.previousValue = undefined;
 };
 
+*/};
 // Inheritance
 NullifyObjectInitialization.prototype = Object.create(Mutator.prototype);
 

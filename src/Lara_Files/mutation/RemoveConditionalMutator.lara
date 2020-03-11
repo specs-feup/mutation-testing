@@ -6,7 +6,8 @@ import kadabra.KadabraNodes;
  */
 
 var RemoveConditionalMutator = function($joinpoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
 	if($joinpoint === undefined) {
@@ -32,6 +33,7 @@ var RemoveConditionalMutator = function($joinpoint) {
 };
 
 
+*/};
 // Inheritance
 RemoveConditionalMutator.prototype = Object.create(Mutator.prototype);
 

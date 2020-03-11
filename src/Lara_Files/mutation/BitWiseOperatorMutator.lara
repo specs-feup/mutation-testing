@@ -7,7 +7,8 @@ import weaver.WeaverJps;
  *  @param {String[] | String...} newOperators - Operators that will be used to mutate the bitwise expressions found.
  */
 var BitWiseOperatorMutator = function($joinPoint, bitwiseOperator) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
 	if($joinPoint === undefined) {
@@ -80,6 +81,9 @@ var BitWiseOperatorMutator = function($joinPoint, bitwiseOperator) {
 		}
 	}
 
+};
+
+*/
 };
 
 // Inheritance

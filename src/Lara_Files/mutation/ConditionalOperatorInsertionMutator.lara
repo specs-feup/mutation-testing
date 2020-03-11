@@ -4,7 +4,8 @@ import lara.mutation.Mutator;
  *  @param {$joinPoint} $joinPoint - A join point to use as starting point to search for conditionals to insert '!'.
  */
 var ConditionalOperatorInsertionMutator = function($joinPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
 	if($joinPoint === undefined) {
@@ -48,6 +49,7 @@ var ConditionalOperatorInsertionMutator = function($joinPoint) {
 
 };
 
+*/};
 // Inheritance
 ConditionalOperatorInsertionMutator.prototype = Object.create(Mutator.prototype);
 

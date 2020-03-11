@@ -7,7 +7,8 @@ import weaver.Weaver;
  * @param {$expression | $expression = function($expression)} $newValue
  */
 var LiteralMutator = function($newValue, $oldValue, $startingPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
      Mutator.call(this);
 
 	checkDefined($newValue, "LiteralMutator($newValue)");
@@ -60,6 +61,7 @@ var LiteralMutator = function($newValue, $oldValue, $startingPoint) {
 
 };
 
+*/};
 // Inheritance
 LiteralMutator.prototype = Object.create(Mutator.prototype);
 
