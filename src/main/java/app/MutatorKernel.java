@@ -38,11 +38,9 @@ public class MutatorKernel implements AppKernel {
             filesList.add(projectPath);
 
         for(File folder : filesList) {
-            JSONObject jsonObject = new JSONObject();
-
             JSONObject laraArguments = new JSONObject();
 
-            List<String> arguments = new ArrayList<>(Arrays.asList(laraPath, "-p", folder.getAbsolutePath(), "-o", outputPath + "_Main"));
+            List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", folder.getAbsolutePath(), "-o", outputPath + "MainOutputs" + File.separator + folder.getName()));
 
             laraArguments.put("outputPath", outputPath);
             laraArguments.put("packageName", folder.getAbsolutePath().replace(projectPath.getAbsolutePath(), "").replace(File.separatorChar, '.'));
@@ -72,9 +70,7 @@ public class MutatorKernel implements AppKernel {
             arguments.add("2");
             arguments.add("-s");
             arguments.add("-Q");
-
-            System.out.println("Project path: " + projectPath);
-            System.out.println("ARGS:\n" + String.join(" ", arguments));
+            arguments.add("-d");
 
             listArguments.add(arguments.toArray(String[]::new));
         }
@@ -100,14 +96,17 @@ public class MutatorKernel implements AppKernel {
                     .findFirst()
                     .orElse(true);
         } catch (InterruptedException e) {
+            e.printStackTrace();
             Thread.currentThread().interrupt();
             return false;
         } catch (ExecutionException e) {
             System.err.println("Unrecoverable exception while executing parallel instances of Clava: " + e);
+            e.printStackTrace();
             return false;
         }
 
     }
+
 
     private static boolean executeSafe(String[] args) {
         try {
@@ -125,7 +124,7 @@ public class MutatorKernel implements AppKernel {
                 if (file.isFile())
                     list.add(file);
                 else
-                    if(file.isDirectory())
+                    if(file.isDirectory() && !file.getName().matches("test*.{0,}")) //Regex to ignore the folders with name starting as test
                         list = getFiles(file, list);
 
             }
