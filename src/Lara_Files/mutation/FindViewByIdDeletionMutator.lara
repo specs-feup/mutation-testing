@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var FindViewByIdDeletionMutator = function($result, $original) {
-    // Parent constructor
+    	notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
     this.$expr = $result;
@@ -22,6 +23,7 @@ var FindViewByIdDeletionMutator = function($result, $original) {
 
 };
 
+*/};
 // Inheritance
 FindViewByIdDeletionMutator.prototype = Object.create(Mutator.prototype);
 

@@ -14,6 +14,19 @@ input outputPath end
 		return;
 	}
 
+	for(var $jp of WeaverJps.root().descendants) {
+		var $call = $jp.ancestor("call");
+		if($call !== undefined && $call.target !== undefined){ //FIXME: Change this verification of super() and this() calls
+			for(mutator of Mutators) {
+				if(mutator.addJp($jp)) {
+					var fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
+					println("New mutation point of type " + mutator.getType() + " on: "+ $jp + " file " + fileName + " line " + $jp.line);
+				}
+			}
+		}
+	}
+
+
 	for(mutator of Mutators){
 		while(mutator.hasMutations()) {
 
@@ -49,7 +62,7 @@ input outputPath end
 	println("Finalized with "+ identifiersList.identifiers.length +" mutants generated" );
 
 	function saveFile(){
-		var outputFolder = Io.mkdir("./mutatedFiles/");
+		var outputFolder = Io.mkdir(outputPath +  "/mutatedFiles/");
 		Io.deleteFolderContents(outputFolder);
 
 		// Write modified code
@@ -61,8 +74,7 @@ input outputPath end
 		// 		println(Io.readFile(mutatedFile));
 		// 	}
 
-		Io.writeJson("mutantsIdentifiers.json", identifiersList );
-
+		Io.writeJson("mutantsIdentifiers"+ Io.getSeparator() +packageName+".json", identifiersList );
 
 	}
 end

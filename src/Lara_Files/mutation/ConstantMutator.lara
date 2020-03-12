@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var ConstantMutator = function($expr, $startingPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
      Mutator.call(this);
 
 	checkDefined($expr, "ConstantMutator");
@@ -72,7 +73,7 @@ var ConstantMutator = function($expr, $startingPoint) {
 	this.previousValue = undefined;
 
 };
-
+*/};
 // Inheritance
 ConstantMutator.prototype = Object.create(Mutator.prototype);
 

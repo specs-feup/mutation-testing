@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var IdentifierReplacerMutator = function($result, $original) {
-    // Parent constructor
+    	notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
     this.$expr = $result;
@@ -14,9 +15,9 @@ var IdentifierReplacerMutator = function($result, $original) {
     //To store the identifiers according to the package
     this.identifiersMap = new Map();
 
-    //To get the mutation points and identifiers
-    for(var $expression of WeaverJps.search('expression', {code: /^R\..*/}).get()) { //Searching for every expression that starts by R.
-
+    //To get the mutation points and identifiers*/
+    //for(var $expression of WeaverJps.search('expression', {code: /^R\..*/}).get()) { //Searching for every expression that starts by R.
+/*
         var tempList = this.identifiersMap.get($expression.typeReference.package);
 
         if(tempList === undefined){ //Creating or updating the entry
@@ -41,6 +42,7 @@ var IdentifierReplacerMutator = function($result, $original) {
 
 };
 
+*/};
 // Inheritance
 IdentifierReplacerMutator.prototype = Object.create(Mutator.prototype);
 

@@ -7,7 +7,8 @@ import lara.mutation.Mutator;
  *  - If method type is primitive or boxed BOOLEAN, return value is replaced by true.
  */
 var ReturnValueMutator = function($joinpoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
 	if($joinpoint === undefined) {
@@ -33,6 +34,7 @@ var ReturnValueMutator = function($joinpoint) {
 };
 
 
+*/};
 // Inheritance
 ReturnValueMutator.prototype = Object.create(Mutator.prototype);
 

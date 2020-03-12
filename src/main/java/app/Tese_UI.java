@@ -10,6 +10,7 @@ import org.suikasoft.jOptions.persistence.XmlPersistence;
 import org.suikasoft.jOptions.storedefinition.StoreDefinition;
 import org.suikasoft.jOptions.storedefinition.StoreDefinitionBuilder;
 import pt.up.fe.specs.util.SpecsSystem;
+import pt.up.fe.specs.util.properties.SpecsProperty;
 
 import java.io.File;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class Tese_UI {
             storeDefinitionBuilder.startSection(operators.getDescription() + " Operators");
             operators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
         }
-
+        SpecsProperty.ShowMemoryHeap.applyProperty("true");
         storeDefinition = storeDefinitionBuilder.build();
         AppPersistence persistence = new XmlPersistence(storeDefinition);
 

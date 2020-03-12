@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var NullifyInputVariable = function($startingPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
      Mutator.call(this);
 
 	if($startingPoint === undefined) {
@@ -38,6 +39,7 @@ var NullifyInputVariable = function($startingPoint) {
 	
 };
 
+*/};
 // Inheritance
 NullifyInputVariable.prototype = Object.create(Mutator.prototype);
 

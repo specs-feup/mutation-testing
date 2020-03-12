@@ -3,29 +3,18 @@ import kadabra.KadabraNodes;
 import weaver.WeaverJps;
 import weaver.Weaver;
 
-var UnaryMutator = function($expr, $startingPoint) {
-    // Parent constructor
+var UnaryMutator = function($expr, $original) {
+  //Parent constructor
     Mutator.call(this);
 
-    if($startingPoint === undefined) {
-        $startingPoint = WeaverJps.root();
-    }
+    this.type = "UnaryMutator";
 
     this.$expr = $expr;
+    this.$original = $original;
 
     this.newValue = undefined;
 
     this.mutationPoints = [];
-
-    for(var $field of WeaverJps.search('unaryExpression').get()) {
-
-        if(!UnaryMutator._isCompatible($field.operator, $startingPoint)) {
-            continue;
-        }
-
-        this.mutationPoints.push($field);
-
-    }
 
     this.currentIndex = 0;
     this.previousValue = undefined;
@@ -35,11 +24,23 @@ var UnaryMutator = function($expr, $startingPoint) {
 // Inheritance
 UnaryMutator.prototype = Object.create(Mutator.prototype);
 
+UnaryMutator.prototype.getType = function(){
+    return this.type;
+}
+
 UnaryMutator._isCompatible = function(type1, type2) {
     return type1 === type2;
 }
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
+UnaryMutator.prototype.addJp = function($joinpoint){
+    if($joinpoint.instanceOf("unaryExpression")  &&  UnaryMutator._isCompatible($joinpoint.operator, this.$original)) {
+        this.mutationPoints.push($joinpoint);
+        return true;
+    }
+    return false;
+}
+
 UnaryMutator.prototype.hasMutations = function() {
     return this.currentIndex < this.mutationPoints.length;
 }

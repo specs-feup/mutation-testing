@@ -4,7 +4,8 @@ import lara.mutation.Mutator;
  *  @param {$joinpoint} $joinpoint - Joinpoint used as starting point to search for super constructor calls to be removed.
  */
 var InheritanceIPCMutator = function($joinpoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
    	Mutator.call(this);
 
 	if($joinpoint === undefined) {
@@ -14,10 +15,10 @@ var InheritanceIPCMutator = function($joinpoint) {
 	// Instance variables
 	this.toMutate = [];
 	this.currentIndex = 0;
-	
+
 	this.originalSuperCall = undefined;
 	this.$superCall = undefined;
-	
+
 	// Checks
 	var extraArgs = arrayFromArgs(arguments, 1);
 	if(extraArgs.length != 0)
@@ -29,6 +30,7 @@ var InheritanceIPCMutator = function($joinpoint) {
 		println("Found no suitable code to mutate");
 };
 
+*/};
 // Inheritance
 InheritanceIPCMutator.prototype = Object.create(Mutator.prototype);
 

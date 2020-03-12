@@ -11,7 +11,8 @@ import kadabra.KadabraNodes;
  *  - If method type is non of the above, method call is replaced by null.
  */
 var NonVoidCallMutator = function($joinpoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
 	if($joinpoint === undefined) {
@@ -37,6 +38,7 @@ var NonVoidCallMutator = function($joinpoint) {
 };
 
 
+*/};
 // Inheritance
 NonVoidCallMutator.prototype = Object.create(Mutator.prototype);
 

@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var RemoveNullCheck = function($startingPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
      Mutator.call(this);
 
 	if($startingPoint === undefined) {
@@ -33,6 +34,7 @@ var RemoveNullCheck = function($startingPoint) {
 	
 };
 
+*/};
 // Inheritance
 RemoveNullCheck.prototype = Object.create(Mutator.prototype);
 

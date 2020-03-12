@@ -4,7 +4,8 @@ import lara.mutation.Mutator;
  *  @param {$joinPoint} $joinPoint - A join point to use as startpoint to search for constructor calls to replace with null.
  */
 var ConstructorCallMutator = function($joinPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
     Mutator.call(this);
 
 	if($joinPoint === undefined) {
@@ -39,6 +40,7 @@ var ConstructorCallMutator = function($joinPoint) {
 
 };
 
+*/};
 // Inheritance
 ConstructorCallMutator.prototype = Object.create(Mutator.prototype);
 

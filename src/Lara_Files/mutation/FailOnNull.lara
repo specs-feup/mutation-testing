@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var FailOnNull = function($startingPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
      Mutator.call(this);
 
 	if($startingPoint === undefined) {
@@ -29,6 +30,7 @@ var FailOnNull = function($startingPoint) {
 	
 };
 
+*/};
 // Inheritance
 FailOnNull.prototype = Object.create(Mutator.prototype);
 

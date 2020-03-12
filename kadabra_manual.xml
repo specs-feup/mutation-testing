@@ -9,7 +9,7 @@
       <string>workspace</string>
       <FileList>
         <fileList>
-          <file>Java_Test_Files</file>
+          <file>..\ant\src\main\org\apache\tools\zip\ZipEntry.java</file>
         </fileList>
       </FileList>
     </entry>
@@ -30,7 +30,7 @@
     </entry>
     <entry>
       <string>argv</string>
-      <string></string>
+      <string>{outputPath: &quot;output&quot;, packageName: &quot;batatas&quot;}</string>
     </entry>
     <entry>
       <string>tools</string>
@@ -73,8 +73,7 @@
       <string>include</string>
       <FileList>
         <fileList>
-          <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Mutations_TVVS\kadabra</file>
-          <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Mutations_TVVS\kadabra\mutation</file>
+          <file>src\Lara_Files</file>
         </fileList>
       </FileList>
     </entry>
@@ -92,7 +91,7 @@
     </entry>
     <entry>
       <string>noclasspath</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>javascript</string>
@@ -129,6 +128,10 @@
     <entry>
       <string>workspace_extra</string>
       <map/>
+    </entry>
+    <entry>
+      <string>fully_qualified_names</string>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>restrict mode</string>
