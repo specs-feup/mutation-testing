@@ -2,7 +2,7 @@ import lara.Io;
 import Mutators;
 
 aspectdef Test
-input outputPath end
+input outputPath, packageName end
 
 	var counter = 0;
 	var identifiersList = new Object();
