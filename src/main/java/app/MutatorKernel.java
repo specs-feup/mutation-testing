@@ -1,7 +1,10 @@
 package app;
 
 import app.operators.Operators;
-import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.app.AppKernel;
 import pt.up.fe.specs.util.SpecsIo;
@@ -9,6 +12,8 @@ import pt.up.fe.specs.util.utilities.Replacer;
 import weaver.gui.KadabraLauncher;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -63,7 +68,7 @@ public class MutatorKernel implements AppKernel {
             SpecsIo.write(new File(mutatorsPath), replacer.toString());
 
             arguments.add("-av");
-            arguments.add(laraArguments.toString());
+            arguments.add(laraArguments.toJSONString());
 
             arguments.add("-X");
             arguments.add("-b");
@@ -77,8 +82,11 @@ public class MutatorKernel implements AppKernel {
 
         executeParallel(listArguments.toArray(String[][]::new), 8);
 
+        compileMutantIds(new File(outputPath + File.separator + "mutantsIdentifiers"));
+
         return 0;
     }
+
 
     public static boolean executeParallel(String [][] args, int threads) {
 
@@ -130,4 +138,44 @@ public class MutatorKernel implements AppKernel {
             }
         return list;
     }
+
+    public static boolean  compileMutantIds(File folder){
+        if(!folder.isDirectory())
+            return false;
+
+        File[] fList = folder.listFiles(File::isFile);
+        JSONParser parser = new JSONParser();
+        JSONArray identifiersList = new JSONArray();
+
+        if(fList != null)
+            for (File file : fList) {
+                    try {
+                        Object obj = parser.parse(new FileReader(file));
+
+                        JSONObject jsonObject = (JSONObject) obj;
+                        JSONArray jsonArray = (JSONArray) jsonObject.get("identifiers");
+
+                        identifiersList.addAll(jsonArray);
+
+                    } catch (ParseException | IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+        try {
+            FileWriter jsonFileWriter = new FileWriter(folder.getParentFile().getAbsolutePath()+File.separator+ "mutantsIdentifiers.json");
+
+            JSONObject finalResult = new JSONObject();
+            finalResult.put("identifiers", identifiersList);
+            jsonFileWriter.write(finalResult.toJSONString());
+
+            jsonFileWriter.flush();
+            jsonFileWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
 }
