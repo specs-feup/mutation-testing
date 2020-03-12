@@ -63,7 +63,7 @@ input outputPath, packageName end
 
 	function saveFile(){
 		var outputFolder = Io.mkdir(outputPath + Io.getSeparator() +  "mutatedFiles");
-		Io.deleteFolderContents(outputFolder);
+		//Io.deleteFolderContents(outputFolder);
 
 		// Write modified code
 		Weaver.writeCode(outputFolder);
