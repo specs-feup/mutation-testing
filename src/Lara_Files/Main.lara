@@ -62,7 +62,7 @@ input outputPath end
 	println("Finalized with "+ identifiersList.identifiers.length +" mutants generated" );
 
 	function saveFile(){
-		var outputFolder = Io.mkdir(outputPath +  "/mutatedFiles/");
+		var outputFolder = Io.mkdir(outputPath + Io.getSeparator() +  "mutatedFiles");
 		Io.deleteFolderContents(outputFolder);
 
 		// Write modified code
@@ -74,7 +74,7 @@ input outputPath end
 		// 		println(Io.readFile(mutatedFile));
 		// 	}
 
-		Io.writeJson("mutantsIdentifiers"+ Io.getSeparator() +packageName+".json", identifiersList );
+		Io.writeJson(outputPath + Io.getSeparator() +  "mutantsIdentifiers"+ Io.getSeparator() +packageName+".json", identifiersList );
 
 	}
 end
