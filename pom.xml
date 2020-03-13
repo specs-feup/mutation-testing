@@ -40,6 +40,13 @@
             <version>2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>weaver.gui</groupId>
+            <artifactId>KadabraLauncher</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\wasdf\OneDrive\Ambiente de Trabalho\Kadabra\kadabra.jar</systemPath>
+        </dependency>
 
     </dependencies>
 </project>
