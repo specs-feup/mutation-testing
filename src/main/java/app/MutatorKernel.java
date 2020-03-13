@@ -1,6 +1,7 @@
 package app;
 
 import app.operators.Operators;
+import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,10 +12,7 @@ import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.specs.util.utilities.Replacer;
 import weaver.gui.KadabraLauncher;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -34,6 +32,14 @@ public class MutatorKernel implements AppKernel {
         String laraPath = dataStore.get(Tese_UI.LARA_FILE).isFile() ? dataStore.get(Tese_UI.LARA_FILE).getAbsolutePath() : "src/Lara_Files/Main.lara";
         String outputPath = dataStore.get(Tese_UI.OUTPUT_FILE).getAbsolutePath() + File.separator +"Output";
 
+        try{
+            File tempOutputDir = new File(outputPath);
+            if(!tempOutputDir.exists())
+                tempOutputDir.mkdir();
+            FileUtils.cleanDirectory(tempOutputDir);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
         List<File> filesList = getFiles(projectPath, new ArrayList<>());
 
@@ -42,51 +48,71 @@ public class MutatorKernel implements AppKernel {
         if(filesList.isEmpty())
             filesList.add(projectPath);
 
-        for(File folder : filesList) {
-            JSONObject laraArguments = new JSONObject();
+        for(File file : filesList) {
+            if(file.getName().matches("(.{0,})(.java$)")){
+                JSONObject laraArguments = new JSONObject();
 
-            List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", folder.getAbsolutePath(), "-o", outputPath + "MainOutputs" + File.separator + folder.getName()));
+                List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", file.getAbsolutePath(), "-o", outputPath + "MainOutputs" + File.separator + file.getName()));
 
-            laraArguments.put("outputPath", outputPath);
-            laraArguments.put("packageName", folder.getAbsolutePath().replace(projectPath.getAbsolutePath(), "").replace(File.separatorChar, '.'));
 
-            String templatePath = "src/Lara_Files/template.lara";
-            String mutatorsPath = "src/Lara_Files/Mutators.lara";
 
-            Replacer replacer = null;
+                laraArguments.put("outputPath", outputPath);
+                laraArguments.put("packageName", getPackageString(file));
+                laraArguments.put("outputFolder", getOutputPath(file.getAbsolutePath().substring(0,file.getAbsolutePath().lastIndexOf(getPackageString(file).replace(".", File.separator))),projectPath,outputPath));
+                String templatePath = "src/Lara_Files/template.lara";
+                String mutatorsPath = "src/Lara_Files/Mutators.lara";
 
-            try {
-                replacer = new Replacer(new String(Files.readAllBytes(Paths.get(templatePath))));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return -1;
+                Replacer replacer = null;
+
+                try {
+                    replacer = new Replacer(new String(Files.readAllBytes(Paths.get(templatePath))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return -1;
+                }
+
+                replacer.replace("<IMPORT>", "");//Operators.getImportString());
+                replacer.replace("<MUTATORS>", Operators.generateMutatorString(dataStore));
+
+                SpecsIo.write(new File(mutatorsPath), replacer.toString());
+
+                arguments.add("-av");
+                arguments.add(laraArguments.toJSONString());
+
+                arguments.add("-X");
+                arguments.add("-b");
+                arguments.add("2");
+                arguments.add("-s");
+                //arguments.add("-Q");
+                arguments.add("-d");
+
+                listArguments.add(arguments.toArray(String[]::new));
             }
+            else{
+                try {
+                    File outputFolder = new File(getOutputPath(file.getAbsolutePath(),projectPath, outputPath));
 
-            replacer.replace("<IMPORT>", "");//Operators.getImportString());
-            replacer.replace("<MUTATORS>", Operators.generateMutatorString(dataStore));
+                    FileUtils.copyFile(file, outputFolder);
 
-            SpecsIo.write(new File(mutatorsPath), replacer.toString());
-
-            arguments.add("-av");
-            arguments.add(laraArguments.toJSONString());
-
-            arguments.add("-X");
-            arguments.add("-b");
-            arguments.add("2");
-            arguments.add("-s");
-            arguments.add("-Q");
-            arguments.add("-d");
-
-            listArguments.add(arguments.toArray(String[]::new));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    break;
+                }
+            }
         }
 
-        executeParallel(listArguments.toArray(String[][]::new), 8);
+        executeParallel(listArguments.toArray(String[][]::new), 20);
 
         compileMutantIds(new File(outputPath + File.separator + "mutantsIdentifiers"));
 
         return 0;
     }
 
+
+    private String getOutputPath(String  originalPath, File projectPath, String outputPath){
+
+        return outputPath + File.separator + "mutatedFiles" + originalPath.replace(projectPath.getAbsolutePath(),"" );
+    }
 
     public static boolean executeParallel(String [][] args, int threads) {
 
@@ -170,6 +196,8 @@ public class MutatorKernel implements AppKernel {
 
             jsonFileWriter.flush();
             jsonFileWriter.close();
+
+            System.err.println("Generated "+identifiersList.size()+" mutants");
         }catch (IOException e){
             e.printStackTrace();
             return false;
@@ -177,5 +205,43 @@ public class MutatorKernel implements AppKernel {
 
         return true;
     }
+
+
+    public static String getPackageString(File file){
+        try {
+            BufferedReader brTest = new BufferedReader(new FileReader(file));
+            String text = "NOT A JAVA CLASS";
+
+            boolean isPackage = false;
+            boolean isNotPackage = false;
+            boolean insideComment = false;
+            while(!isPackage && !isNotPackage){
+                text = brTest.readLine().trim();
+                if(text == null)
+                    break;
+                if(!insideComment) {
+                    if(text.matches("(^\\/\\*.*.{0,})"))
+                        insideComment = true;
+                    if (text.matches("^package*.{0,}")) {
+                        isPackage = true;
+                        return text.replace("package", "")
+                                .replace(";", "").trim();
+                    } else if (!text.matches("(^\\/\\/*.{0,})"))
+                        if (text.matches("(^import*.{0,})") || text.matches("(^.{0,}class*.{0,})") || text.matches("(^.{0,}interface*.{0,})"))
+                            return "";
+                } else {
+                    if(text.matches("(.*.{0,}\\*\\/$)"))
+                        insideComment = false;
+                }
+            }
+
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 
 }

@@ -2,7 +2,7 @@ import lara.Io;
 import Mutators;
 
 aspectdef Test
-input outputPath, packageName end
+input outputPath, packageName, outputFolder end
 
 	var counter = 0;
 	var identifiersList = new Object();
@@ -62,11 +62,11 @@ input outputPath, packageName end
 	println("Finalized with "+ identifiersList.identifiers.length +" mutants generated" );
 
 	function saveFile(){
-		var outputFolder = Io.mkdir(outputPath + Io.getSeparator() +  "mutatedFiles");
+		var $outputFolder = Io.mkdir(outputFolder);
 		//Io.deleteFolderContents(outputFolder);
 
 		// Write modified code
-		Weaver.writeCode(outputFolder);
+		Weaver.writeCode($outputFolder);
 
 		// Print contents
 		// 	for(var mutatedFile of Io.getFiles(outputFolder, "*.java") ) {
