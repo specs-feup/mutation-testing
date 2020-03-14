@@ -19,6 +19,10 @@ import java.util.Date;
 
 
 public class Tese_UI {
+    static{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        System.setProperty("current.date.time", dateFormat.format(new Date()));
+    }
     public static StoreDefinition storeDefinition;
 
 
