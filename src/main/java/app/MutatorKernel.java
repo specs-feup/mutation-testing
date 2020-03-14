@@ -87,7 +87,7 @@ public class MutatorKernel implements AppKernel {
                 arguments.add("-b");
                 arguments.add("2");
                 arguments.add("-s");
-                //arguments.add("-Q");
+                arguments.add("-Q");
                 arguments.add("-d");
 
                 listArguments.add(arguments.toArray(String[]::new));
