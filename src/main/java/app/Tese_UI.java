@@ -13,7 +13,9 @@ import pt.up.fe.specs.util.SpecsSystem;
 import pt.up.fe.specs.util.properties.SpecsProperty;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class Tese_UI {
@@ -22,6 +24,7 @@ public class Tese_UI {
 
 
     public static final DataKey<File> PROJECT_FILE = KeyFactory.folder("ProjectPath").setLabel("Project path");
+    public static final DataKey<File> PROJECT_CLASS_FILE = KeyFactory.folder("ClassPath").setLabel("Compiled Class files path");
     public static final DataKey<File> OUTPUT_FILE = KeyFactory.folder("OutputFile").setLabel("Output Path (Empty for default)");
     public static final DataKey<File> LARA_FILE = KeyFactory.file("LaraPath", "lara").setLabel("Lara file path (for unimplemented mutators)");
 
@@ -37,7 +40,8 @@ public class Tese_UI {
             storeDefinitionBuilder.startSection(operators.getDescription() + " Operators");
             operators.getDataKeys().forEach(storeDefinitionBuilder::addKey);
         }
-        SpecsProperty.ShowMemoryHeap.applyProperty("true");
+
+        //SpecsProperty.ShowMemoryHeap.applyProperty("true");
         storeDefinition = storeDefinitionBuilder.build();
         AppPersistence persistence = new XmlPersistence(storeDefinition);
 

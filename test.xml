@@ -125,6 +125,10 @@
       <boolean>false</boolean>
     </entry>
     <entry>
+      <string>ClassPath</string>
+      <file>..\ant - Cópia\build\classes</file>
+    </entry>
+    <entry>
       <string>Constructor Call Mutator</string>
       <boolean>false</boolean>
     </entry>

@@ -32,6 +32,7 @@ public class MutatorKernel implements AppKernel {
 
 
         File projectPath = dataStore.get(Tese_UI.PROJECT_FILE);
+        String classFilesPath = dataStore.get(Tese_UI.PROJECT_CLASS_FILE).getAbsolutePath();
         String laraPath = dataStore.get(Tese_UI.LARA_FILE).isFile() ? dataStore.get(Tese_UI.LARA_FILE).getAbsolutePath() : "src/Lara_Files/Main.lara";
         String outputPath = dataStore.get(Tese_UI.OUTPUT_FILE).getAbsolutePath() + File.separator +"Output";
 
@@ -56,7 +57,7 @@ public class MutatorKernel implements AppKernel {
                 JSONObject laraArguments = new JSONObject();
 
                 List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", file.getAbsolutePath(), "-o", outputPath + "_Main" +
-                        "" + File.separator + file.getName()));
+                        "" + File.separator + file.getName(), "-I", classFilesPath));
 
 
 
