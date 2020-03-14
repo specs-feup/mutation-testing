@@ -2,6 +2,7 @@ package app;
 
 import app.operators.Operators;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,8 +25,10 @@ import java.util.stream.Collectors;
 
 public class MutatorKernel implements AppKernel {
 
+    public static final Logger LOGGER = Logger.getLogger(MutatorKernel.class);
+
     public int execute(DataStore dataStore) {
-        System.out.println("CONFIG:" + dataStore);
+        LOGGER.info("CONFIG:" + dataStore);
 
 
         File projectPath = dataStore.get(Tese_UI.PROJECT_FILE);
@@ -38,7 +41,7 @@ public class MutatorKernel implements AppKernel {
                 tempOutputDir.mkdir();
             FileUtils.cleanDirectory(tempOutputDir);
         }catch (IOException e){
-            e.printStackTrace();
+            LOGGER.error(e.getStackTrace());
         }
 
         List<File> filesList = getFiles(projectPath, new ArrayList<>());
@@ -68,7 +71,7 @@ public class MutatorKernel implements AppKernel {
                 try {
                     replacer = new Replacer(new String(Files.readAllBytes(Paths.get(templatePath))));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getStackTrace());
                     return -1;
                 }
 
@@ -96,7 +99,7 @@ public class MutatorKernel implements AppKernel {
                     FileUtils.copyFile(file, outputFolder);
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e.getStackTrace());
                     break;
                 }
             }
@@ -119,7 +122,7 @@ public class MutatorKernel implements AppKernel {
 
         var customThreadPool = threads > 0 ? new ForkJoinPool(threads) : new ForkJoinPool();
 
-        System.out.println("Launching " + args.length + " instances of Kadabra in parallel, using " + threads + " threads");
+        LOGGER.info("Launching " + args.length + " instances of Kadabra in parallel, using " + threads + " threads");
 
         try {
             var results = customThreadPool.submit(() -> Arrays.asList(args).parallelStream()
@@ -131,23 +134,24 @@ public class MutatorKernel implements AppKernel {
                     .findFirst()
                     .orElse(true);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getStackTrace());
             Thread.currentThread().interrupt();
             return false;
         } catch (ExecutionException e) {
-            System.err.println("Unrecoverable exception while executing parallel instances of Clava: " + e);
-            e.printStackTrace();
+            LOGGER.error("Unrecoverable exception while executing parallel instances of Kadabra: " + e);
+            LOGGER.error(e.getStackTrace());
             return false;
         }
 
     }
 
-
+    private static int threadCount = 0;
     private static boolean executeSafe(String[] args) {
         try {
+            LOGGER.info("New Thead. Thread count -> " + ++threadCount + "\n ARGS: " + String.join(" ", Arrays.asList(args)));
             return KadabraLauncher.execute(args);
         } catch (Exception e) {
-            System.err.println("Exception during Kadabra execution: " + e);
+            LOGGER.error("Exception during Kadabra execution: " + e);
             return false;
         }
     }
@@ -185,7 +189,7 @@ public class MutatorKernel implements AppKernel {
                         identifiersList.addAll(jsonArray);
 
                     } catch (ParseException | IOException e) {
-                        e.printStackTrace();
+                        LOGGER.error(e.getStackTrace());
                     }
             }
         try {
@@ -198,9 +202,9 @@ public class MutatorKernel implements AppKernel {
             jsonFileWriter.flush();
             jsonFileWriter.close();
 
-            System.err.println("Generated "+identifiersList.size()+" mutants");
+            LOGGER.info("Generated "+identifiersList.size()+" mutants");
         }catch (IOException e){
-            e.printStackTrace();
+            LOGGER.error(e.getStackTrace());
             return false;
         }
 
@@ -238,7 +242,7 @@ public class MutatorKernel implements AppKernel {
 
             return null;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getStackTrace());
             return null;
         }
 
