@@ -73,8 +73,8 @@ input outputPath, packageName, outputFolder end
 		// 		println("<File '" + mutatedFile.getName() + "'>");
 		// 		println(Io.readFile(mutatedFile));
 		// 	}
-
-		Io.writeJson(outputPath + Io.getSeparator() +  "mutantsIdentifiers"+ Io.getSeparator() +packageName+".json", identifiersList );
+		if(identifiersList.identifiers.length > 0)
+			Io.writeJson(outputPath + Io.getSeparator() +  "mutantsIdentifiers"+ Io.getSeparator() +packageName+".json", identifiersList );
 
 	}
 end

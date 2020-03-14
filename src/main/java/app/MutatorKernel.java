@@ -52,7 +52,8 @@ public class MutatorKernel implements AppKernel {
             if(file.getName().matches("(.{0,})(.java$)")){
                 JSONObject laraArguments = new JSONObject();
 
-                List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", file.getAbsolutePath(), "-o", outputPath + "MainOutputs" + File.separator + file.getName()));
+                List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", file.getAbsolutePath(), "-o", outputPath + "_Main" +
+                        "" + File.separator + file.getName()));
 
 
 
