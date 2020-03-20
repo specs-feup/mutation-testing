@@ -15,13 +15,16 @@ input outputPath, packageName, outputFolder end
 	}
 
 	for(var $jp of WeaverJps.root().descendants) {
+
 		var $call = $jp.ancestor("call");
-		if($call !== undefined && $call.target !== undefined){ //FIXME: Change this verification of super() and this() calls
-			for(mutator of Mutators) {
-				if(mutator.addJp($jp)) {
-					var fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
-					println("New mutation point of type " + mutator.getType() + " on: "+ $jp + " file " + fileName + " line " + $jp.line);
-				}
+
+		if($call !== undefined && $call.name === "<init>")
+			continue;
+
+		for(mutator of Mutators) {
+			if(mutator.addJp($jp)) {
+				var fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
+				println("New mutation point of type " + mutator.getType() + " on: "+ $jp + " file " + fileName + " line " + $jp.line);
 			}
 		}
 	}
