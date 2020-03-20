@@ -75,7 +75,9 @@ public class MutatorKernel implements AppKernel {
                 }
 
                 laraArguments.put("outputPath", outputPath);
-                laraArguments.put("packageName", getPackageString(file));
+                String packageName = getPackageString(file);
+                laraArguments.put("packageName", packageName.isBlank() ? file.getName() : packageName+"."+file.getName());
+
 
                 String absolutePath = file.getAbsolutePath();
                 int lastIndex  = absolutePath.lastIndexOf(getPackageString(file).replace(".", File.separator)) ;
