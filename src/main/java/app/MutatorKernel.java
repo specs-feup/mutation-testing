@@ -26,10 +26,13 @@ import java.util.stream.Collectors;
 public class MutatorKernel implements AppKernel {
 
     public static final Logger LOGGER = Logger.getLogger(MutatorKernel.class);
+    private static Boolean isInterrupted = false;
+    private static int threadCount = 0;
 
     public int execute(DataStore dataStore) {
         LOGGER.info("CONFIG:" + dataStore);
 
+        isInterrupted = false;
 
         File projectPath = dataStore.get(Tese_UI.PROJECT_FILE);
         String classFilesPath = dataStore.get(Tese_UI.PROJECT_CLASS_FILE).getAbsolutePath();
@@ -41,8 +44,13 @@ public class MutatorKernel implements AppKernel {
             if(!tempOutputDir.exists())
                 tempOutputDir.mkdir();
             FileUtils.cleanDirectory(tempOutputDir);
+            tempOutputDir = new File(outputPath+"_Main");
+            if(!tempOutputDir.exists())
+                tempOutputDir.mkdir();
+            FileUtils.cleanDirectory(tempOutputDir);
         }catch (IOException e){
-            LOGGER.error(e.getStackTrace());
+            LOGGER.error(e);
+            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
         }
 
         List<File> filesList = getFiles(projectPath, new ArrayList<>());
@@ -57,13 +65,22 @@ public class MutatorKernel implements AppKernel {
                 JSONObject laraArguments = new JSONObject();
 
                 List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", file.getAbsolutePath(), "-o", outputPath + "_Main" +
-                        "" + File.separator + file.getName(), "-I", classFilesPath));
+                        "" + File.separator + file.getName()));
 
-
+                if(!classFilesPath.isBlank()) {
+                    arguments.add("-I");
+                    arguments.add(classFilesPath);
+                }else{
+                    arguments.add("-X");
+                }
 
                 laraArguments.put("outputPath", outputPath);
                 laraArguments.put("packageName", getPackageString(file));
-                laraArguments.put("outputFolder", getOutputPath(file.getAbsolutePath().substring(0,file.getAbsolutePath().lastIndexOf(getPackageString(file).replace(".", File.separator))),projectPath,outputPath));
+
+                String absolutePath = file.getAbsolutePath();
+                int lastIndex  = absolutePath.lastIndexOf(getPackageString(file).replace(".", File.separator)) ;
+                laraArguments.put("outputFolder", getOutputPath(absolutePath.substring(0, lastIndex > 0 && lastIndex < absolutePath.length() ? lastIndex : absolutePath.length()),projectPath,outputPath));
+
                 String templatePath = "src/Lara_Files/template.lara";
                 String mutatorsPath = "src/Lara_Files/Mutators.lara";
 
@@ -72,7 +89,8 @@ public class MutatorKernel implements AppKernel {
                 try {
                     replacer = new Replacer(new String(Files.readAllBytes(Paths.get(templatePath))));
                 } catch (IOException e) {
-                    LOGGER.error(e.getStackTrace());
+                    LOGGER.error(e);
+                    Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
                     return -1;
                 }
 
@@ -84,7 +102,7 @@ public class MutatorKernel implements AppKernel {
                 arguments.add("-av");
                 arguments.add(laraArguments.toJSONString());
 
-                arguments.add("-X");
+
                 arguments.add("-b");
                 arguments.add("2");
                 arguments.add("-s");
@@ -100,13 +118,15 @@ public class MutatorKernel implements AppKernel {
                     FileUtils.copyFile(file, outputFolder);
 
                 } catch (IOException e) {
-                    LOGGER.error(e.getStackTrace());
+                    LOGGER.error(e);
+            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));
                     break;
                 }
             }
         }
 
-        executeParallel(listArguments.toArray(String[][]::new), 20);
+        threadCount = 0;
+        executeParallel(listArguments.toArray(String[][]::new), 1);
 
         compileMutantIds(new File(outputPath + File.separator + "mutantsIdentifiers"));
 
@@ -118,6 +138,8 @@ public class MutatorKernel implements AppKernel {
 
         return outputPath + File.separator + "mutatedFiles" + originalPath.replace(projectPath.getAbsolutePath(),"" );
     }
+
+
 
     public static boolean executeParallel(String [][] args, int threads) {
 
@@ -135,26 +157,31 @@ public class MutatorKernel implements AppKernel {
                     .findFirst()
                     .orElse(true);
         } catch (InterruptedException e) {
-            LOGGER.error(e.getStackTrace());
+            LOGGER.error(e);
+            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
+            isInterrupted = true;
             Thread.currentThread().interrupt();
             return false;
         } catch (ExecutionException e) {
             LOGGER.error("Unrecoverable exception while executing parallel instances of Kadabra: " + e);
-            LOGGER.error(e.getStackTrace());
+            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
             return false;
         }
 
     }
 
-    private static int threadCount = 0;
     private static boolean executeSafe(String[] args) {
+        if(!isInterrupted)
         try {
-            LOGGER.info("New Thead. Thread count -> " + ++threadCount + "\n ARGS: " + String.join(" ", Arrays.asList(args)));
+            LOGGER.info("New Thead. Thread count -> " + ++threadCount);
+            LOGGER.info(" ARGS: " + String.join(" ", Arrays.asList(args)));
             return KadabraLauncher.execute(args);
         } catch (Exception e) {
             LOGGER.error("Exception during Kadabra execution: " + e);
+            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
             return false;
         }
+        return true;
     }
 
     public static List<File> getFiles(File directory, List<File> list){
@@ -190,7 +217,8 @@ public class MutatorKernel implements AppKernel {
                         identifiersList.addAll(jsonArray);
 
                     } catch (ParseException | IOException e) {
-                        LOGGER.error(e.getStackTrace());
+                        LOGGER.error(e);
+                        Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
                     }
             }
         try {
@@ -205,7 +233,8 @@ public class MutatorKernel implements AppKernel {
 
             LOGGER.info("Generated "+identifiersList.size()+" mutants");
         }catch (IOException e){
-            LOGGER.error(e.getStackTrace());
+            LOGGER.error(e);
+            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
             return false;
         }
 
@@ -243,7 +272,8 @@ public class MutatorKernel implements AppKernel {
 
             return null;
         } catch (IOException e) {
-            LOGGER.error(e.getStackTrace());
+            LOGGER.error(e);
+            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
             return null;
         }
 
