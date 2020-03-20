@@ -4,8 +4,7 @@ import lara.mutation.Mutator;
  *  @param {$joinPoint} $joinPoint - A join point to use as startpoint to search for constructor calls to replace with null.
  */
 var ConstructorCallMutator = function($joinPoint) {
-		notImplemented("NotImplemented");
-/*//Parent constructor
+	//Parent constructor
     Mutator.call(this);
 
 	if($joinPoint === undefined) {
@@ -28,24 +27,27 @@ var ConstructorCallMutator = function($joinPoint) {
 	if(this.extraArgs.length != 0)
 		throw "Expected only 1 argument but received " + (this.extraArgs.length + 1);
 
-	for($ref of WeaverJps.searchFrom(this.$joinpoint, 'reference').get().reverse()) {
-		// Check it is a constructor call reference
-		if($ref.name === "<init>" && $ref.type === "Executable" && $ref.parent.srcCode !== "super()")
-			this.toMutate.push($ref);
-	}
-	
-	this.totalMutations = this.toMutate.length;
-	if(this.totalMutations == 0)
-		println("Found no suitable code to mutate");
-
 };
 
-*/};
 // Inheritance
 ConstructorCallMutator.prototype = Object.create(Mutator.prototype);
 
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
+ConstructorCallMutator.prototype.getType = function(){
+	return "ConstructorCallMutator";
+}
+
+ConstructorCallMutator.prototype.addJp = function($joinpoint){
+	if($joinpoint.instanceOf("reference") && $joinpoint.name === "<init>" && $joinpoint.type === "Executable" && $joinpoint.parent.srcCode !== "super()"){
+		this.toMutate.push($joinpoint);
+		this.totalMutations = this.toMutate.length;
+		return true;
+	}
+
+	return false;
+}
+
 
 ConstructorCallMutator.prototype.hasMutations = function() {
 	return this.currentIndex < this.totalMutations;

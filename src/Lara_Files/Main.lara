@@ -24,7 +24,11 @@ input outputPath, packageName, outputFolder end
 		for(mutator of Mutators) {
 			if(mutator.addJp($jp)) {
 				var fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
-				println("New mutation point of type " + mutator.getType() + " on: "+ $jp + " file " + fileName + " line " + $jp.line);
+				try{
+					println("New mutation point of type " + mutator.getType() + " on: "+ $jp + " file " + fileName + " line " + $jp.line);
+				}catch (e) {
+					println("New mutation point of type " + mutator.getType() + " on: "+ $jp.parent + " file " + fileName + " line " + $jp.parent.line);
+				}
 			}
 		}
 	}
