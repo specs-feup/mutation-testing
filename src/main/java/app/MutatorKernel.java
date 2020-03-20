@@ -126,7 +126,7 @@ public class MutatorKernel implements AppKernel {
         }
 
         threadCount = 0;
-        executeParallel(listArguments.toArray(String[][]::new), 1);
+        executeParallel(listArguments.toArray(String[][]::new), dataStore.get(Tese_UI.NUMBER_OF_THREADS) < filesList.size() ? dataStore.get(Tese_UI.NUMBER_OF_THREADS) : filesList.size());
 
         compileMutantIds(new File(outputPath + File.separator + "mutantsIdentifiers"));
 
