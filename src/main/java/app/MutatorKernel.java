@@ -67,11 +67,9 @@ public class MutatorKernel implements AppKernel {
                 List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", file.getAbsolutePath(), "-o", outputPath + "_Main" +
                         "" + File.separator + file.getName()));
 
-                if(!classFilesPath.isBlank()) {
+                if(!classFilesPath.equals(System.getProperty("user.dir"))) {
                     arguments.add("-I");
                     arguments.add(classFilesPath);
-                }else{
-                    arguments.add("-X");
                 }
 
                 laraArguments.put("outputPath", outputPath);
@@ -110,6 +108,7 @@ public class MutatorKernel implements AppKernel {
                 arguments.add("-s");
                 arguments.add("-Q");
                 arguments.add("-d");
+                arguments.add("-X");
 
                 listArguments.add(arguments.toArray(String[]::new));
             }
