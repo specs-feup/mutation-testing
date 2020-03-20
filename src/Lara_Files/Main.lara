@@ -38,22 +38,40 @@ input outputPath, packageName, outputFolder end
 			// Print
 			var identifier = new Object();
 
-			var mutated = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
+				var mutated = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
 
-			identifier.file = mutated.ancestor("file") === undefined ? "NOFILENAME" : mutated.ancestor("file").name;
-			identifier.line  = mutated.line;
-			identifier.id = identifier.file+"_"+identifier.line+"_"+counter; // TODO: Add mutator type to identifier name
+			try {
+				identifier.file = mutated.ancestor("file") === undefined ? "NOFILENAME" : mutated.ancestor("file").path;
+				identifier.line = mutated.line;
+				identifier.id = packageName + "_" + identifier.line + "_" + counter;
 
-			mutator.getMutationPoint().insertBefore(
-				"if(System.getenv(\"MutKey\") == \""+ identifier.id +"\"){\n" +
-				mutated.srcCode +
-				"\n}else{\n"
-			);
+				mutator.getMutationPoint().insertBefore(
+					"if(System.getenv(\"MutKey\") == \"" + identifier.id + "\"){\n" +
+					mutated.srcCode +
+					"\n}else{\n"
+				);
+				mutator.getMutationPoint().insertAfter("}");
+
+			}catch (e) {
+				mutated = mutator.getMutationPoint().parent;
+
+				identifier.file = mutated.ancestor("file") === undefined ? "NOFILENAME" : mutated.ancestor("file").path;
+				identifier.line = mutated.line;
+				identifier.id = packageName + "_" + identifier.line + "_" + counter;
+
+				mutated.insertBefore(
+					"if(System.getenv(\"MutKey\") == \"" + identifier.id + "\"){\n" +
+					mutated.srcCode +
+					"\n}else{\n"
+				);
+				mutated.insertAfter("}");
+			}
+
 
 			identifiersList.identifiers.push(identifier);
 			counter++;
 
-			mutator.getMutationPoint().insertAfter("}");
+
 			//println(mutator.getMutationPoint().parent.code);
 
 			// Restore operator
