@@ -21,9 +21,8 @@ var LiteralMutator = function($newValue, $oldValue) {
 	this.previousValue = undefined;
 	this.mutation = undefined;
 
-};
 
-*/};
+};
 // Inheritance
 LiteralMutator.prototype = Object.create(Mutator.prototype);
 
