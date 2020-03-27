@@ -3,19 +3,11 @@ import kadabra.KadabraNodes;
 import weaver.WeaverJps;
 import weaver.Weaver;
 
-var FindViewByIdDeletionMutator = function($result, $original) {
-    	notImplemented("NotImplemented");
-/*//Parent constructor
+var FindViewByIdDeletionMutator = function() {
+  //Parent constructor
     Mutator.call(this);
 
-    this.$expr = $result;
-
     this.mutationPoints = [];
-
-    for(var $call of WeaverJps.search('call').get()) {
-        if($call.toString().includes("findViewById"))
-            this.mutationPoints.push($call);
-    }
 
     this.currentIndex = 0;
     this.mutationPoint = undefined;
@@ -23,9 +15,20 @@ var FindViewByIdDeletionMutator = function($result, $original) {
 
 };
 
-*/};
 // Inheritance
 FindViewByIdDeletionMutator.prototype = Object.create(Mutator.prototype);
+
+FindViewByIdDeletionMutator.prototype.getType = function(){
+    return "FindViewByIdDeletionMutator";
+}
+
+FindViewByIdDeletionMutator.prototype.addJp = function($joinpoint){
+    if($joinpoint.instanceOf('call') && $joinpoint.toString().includes("findViewById")){
+        this.mutationPoints.push($joinpoint);
+        return true;
+    }
+    return false;
+}
 
 FindViewByIdDeletionMutator._isCompatible = function(type1, type2) {
     return type1 === type2;
