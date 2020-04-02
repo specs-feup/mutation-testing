@@ -3,45 +3,37 @@ import kadabra.KadabraNodes;
 import weaver.WeaverJps;
 import weaver.Weaver;
 
-var NullifyInputVariable = function($startingPoint) {
-		notImplemented("NotImplemented");
-/*//Parent constructor
-     Mutator.call(this);
-
-	if($startingPoint === undefined) {
-		$startingPoint = WeaverJps.root();
-	}
+var NullifyInputVariable = function() {
+	//Parent constructor
+	Mutator.call(this);
 
 	this.newValue = undefined;
 	this.mutationPoints = [];
 
-	var hasPrimitiveParams = false;
 
-	for(var $method of WeaverJps.search('method').get()) {
-		for(var $param of $method.params) {
-			if (!$param.isPrimitive) {
-				hasPrimitiveParams = true;
-			}
-		}
-		if (hasPrimitiveParams === true) {
-			this.mutationPoints.push($method);
-		}
-		hasPrimitiveParams = false;
-	}
-
-	println("Mutation points:");
-	for(var $point of this.mutationPoints) {
-		println("Point: " + $point.code);
-	}
-	
 	this.currentIndex = 0;
 	this.previousValue = undefined;
-	
+
 };
 
-*/};
 // Inheritance
 NullifyInputVariable.prototype = Object.create(Mutator.prototype);
+
+NullifyInputVariable.prototype.getType = function (){
+	return "NullifyInputVariable";
+}
+
+NullifyInputVariable.prototype.addJp = function($joinpoint){
+	if($joinpoint.instanceOf('method')) {
+		for(var $param of $joinpoint.params) {
+			if (!$param.isPrimitive) {
+				this.mutationPoints.push($joinpoint);
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
 NullifyInputVariable.prototype.hasMutations = function() {
