@@ -210,13 +210,14 @@ public class MutatorKernel implements AppKernel {
         if(fList != null)
             for (File file : fList) {
                     try {
-                        Object obj = parser.parse(new FileReader(file));
+                        FileReader fr = new FileReader(file);
+                        Object obj = parser.parse(fr);
 
                         JSONObject jsonObject = (JSONObject) obj;
                         JSONArray jsonArray = (JSONArray) jsonObject.get("identifiers");
 
                         identifiersList.addAll(jsonArray);
-
+                        fr.close();
                     } catch (ParseException | IOException e) {
                         LOGGER.error(e);
                         Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
