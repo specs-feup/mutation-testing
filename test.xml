@@ -3,23 +3,11 @@
   <values>
     <entry>
       <string>Relational &gt;</string>
-      <list>
-        <string>&lt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Relational &lt;</string>
-      <list>
-        <string>&gt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Nullify Return Value</string>
@@ -35,14 +23,7 @@
     </entry>
     <entry>
       <string>Unary _++</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>-</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>long: 1 to 0, </string>
@@ -50,18 +31,11 @@
     </entry>
     <entry>
       <string>Unary ++_</string>
-      <list>
-        <string>+</string>
-        <string>-</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic Operators Deletion</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>float: 1.0 to 0, </string>
@@ -81,12 +55,7 @@
     </entry>
     <entry>
       <string>BitWise Operator Mutator ^</string>
-      <list>
-        <string>lhs</string>
-        <string>rhs</string>
-        <string>|</string>
-        <string>&amp;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>int byte short: 1 to 0 ; </string>
@@ -94,9 +63,7 @@
     </entry>
     <entry>
       <string>Conditional &amp;&amp;</string>
-      <list>
-        <string>||</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Constant Deletion Mutator</string>
@@ -108,13 +75,11 @@
     </entry>
     <entry>
       <string>Relational &lt;=</string>
-      <list>
-        <string>&gt;</string>
-        <string>&lt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
+    </entry>
+    <entry>
+      <string>NUMBER_OF_THREADS</string>
+      <int>1</int>
     </entry>
     <entry>
       <string>float 2.0 to 0, </string>
@@ -126,7 +91,7 @@
     </entry>
     <entry>
       <string>ClassPath</string>
-      <file>..\ant - Cópia\build\classes</file>
+      <file></file>
     </entry>
     <entry>
       <string>Constructor Call Mutator</string>
@@ -138,18 +103,11 @@
     </entry>
     <entry>
       <string>BitWise Operator Mutator ~</string>
-      <list>
-        <string></string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>BitWise Operator Mutator |</string>
-      <list>
-        <string>lhs</string>
-        <string>rhs</string>
-        <string>^</string>
-        <string>&amp;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string> one String to &quot;&quot;</string>
@@ -165,15 +123,7 @@
     </entry>
     <entry>
       <string>Arithmetic %</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>+</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Fail On Null</string>
@@ -197,87 +147,35 @@
     </entry>
     <entry>
       <string>Arithmetic -</string>
-      <list>
-        <string>+</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Relational ==</string>
-      <list>
-        <string>!=</string>
-        <string>&gt;</string>
-        <string>&lt;</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic +</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary _--</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>-</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic *</string>
-      <list>
-        <string>-</string>
-        <string>+</string>
-        <string>/</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary --_</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>-</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Arithmetic /</string>
-      <list>
-        <string>-</string>
-        <string>*</string>
-        <string>+</string>
-        <string>%</string>
-        <string>&lt;&lt;</string>
-        <string>&gt;&gt;</string>
-        <string>&gt;&gt;&gt;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>ProjectPath</string>
-      <file>..\ant - Cópia\src</file>
+      <file>Java_Test_Files</file>
     </entry>
     <entry>
       <string>Return Value Mutator</string>
@@ -301,9 +199,7 @@
     </entry>
     <entry>
       <string>Unary !</string>
-      <list>
-        <string>undefined</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Constant to 0</string>
@@ -315,14 +211,7 @@
     </entry>
     <entry>
       <string>Unary +</string>
-      <list>
-        <string>-</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Constant to -1</string>
@@ -330,33 +219,19 @@
     </entry>
     <entry>
       <string>BitWise Operator Mutator &amp;</string>
-      <list>
-        <string>lhs</string>
-        <string>rhs</string>
-        <string>^</string>
-        <string>|</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Conditional ||</string>
-      <list>
-        <string>&amp;&amp;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Unary -</string>
-      <list>
-        <string>+</string>
-        <string>++_</string>
-        <string>_++</string>
-        <string>--_</string>
-        <string>_--</string>
-        <string>!</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Nullify Input Variable</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>int byte short 5 to -1</string>
@@ -368,13 +243,7 @@
     </entry>
     <entry>
       <string>Relational &gt;=</string>
-      <list>
-        <string>&lt;</string>
-        <string>&gt;</string>
-        <string>==</string>
-        <string>!=</string>
-        <string>&lt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string> 0 to 1</string>
@@ -398,13 +267,7 @@
     </entry>
     <entry>
       <string>Relational !=</string>
-      <list>
-        <string>&gt;</string>
-        <string>&lt;</string>
-        <string>==</string>
-        <string>&lt;=</string>
-        <string>&gt;=</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Constant to Constant + 1</string>

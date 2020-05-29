@@ -136,8 +136,7 @@ public class MutatorKernel implements AppKernel {
 
 
     private String getOutputPath(String  originalPath, File projectPath, String outputPath){
-
-        return outputPath + File.separator + "mutatedFiles" + originalPath.replace(projectPath.getAbsolutePath(),"" );
+        return outputPath + File.separator + "mutatedFiles" + File.separator;//originalPath.replace(projectPath.getAbsolutePath()," " );
     }
 
 

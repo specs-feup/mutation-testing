@@ -5,7 +5,7 @@ import weaver.Weaver;
 
 var FailOnNull = function($startingPoint) {
 		notImplemented("NotImplemented");
-/*//Parent constructor
+/* //Parent constructor
      Mutator.call(this);
 
 	if($startingPoint === undefined) {
@@ -57,11 +57,11 @@ FailOnNull.prototype._mutatePrivate = function() {
 
 		if (mutationPoint.type === "String") {
 			this.newValue = mutationPoint.insertBefore(%{if ([[mutationPoint]] == null) 
-			{ throw new NullPointerException("fail on empty") }}%);
+			{ throw new java.lang.NullPointerException("Fail on empty") }}%);
 		}
 		else {
 			this.newValue = mutationPoint.insertBefore(%{if ([[mutationPoint]] == null) 
-			{ throw new NullPointerException("fail on null") }}%);
+			{ throw new java.lang.NullPointerException("fail on null") }}%);
 		}
 
 

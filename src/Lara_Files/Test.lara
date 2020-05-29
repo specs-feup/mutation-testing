@@ -1,15 +1,190 @@
 import weaver.WeaverJps;
 import weaver.Weaver;
+import weaver.JoinPoints;
+import lara.Io;
+import lara.Strings;
 
-aspectdef test
+import mutation.SuperCallDeletion;
+
+
+aspectdef testConstructorChange
 input outputPath end
 
-	for(var $jp of WeaverJps.root().descendants) {
-		if(Weaver.isJoinPoint($jp ,"binaryExpression")){
-				//if($jp.ancestor("statement").isFinal)
-				var $call = $jp.ancestor("call");
-				if($call !== undefined && $call.target === "null")
-					println("Call "+ $call+"\n\n\n");
-		} 
+//	select constructor end
+//	apply
+//		var replaceString = "(app.ClassMutator app";
+//		if($constructor.params.length > 0) {
+//			replaceString = replaceString + ", ";
+//		}
+//		
+//		var code =  Strings.replacer( $constructor.srcCode,/\(/ , replaceString);
+//		$constructor.insertBefore(code);
+//		println("Constructor scrCode: \n" + $constructor.srcCode );
+//		println("\n\n\nParent scrCode: \n" +$constructor.parent.srcCode);
+//	end
+
+	var typeToValue = {
+		'boolean': 'false',
+		'Boolean': 'false',
+		'int': '0',
+		'byte': '0',
+		'short': '0',
+		'long': '0',
+		'float': '0.0',
+		'double': '0.0',
+		'char': '\u0000',
+		'String': '\u0000'
+	};
+	var typeList = Object.keys(typeToValue);
+
+	var hasMutations = false;
+
+	for(var $joinpoint  of WeaverJps.root().descendants){
+		if($joinpoint.instanceOf('assignment') || $joinpoint.instanceOf('localVariable') || $joinpoint.instanceOf('if') || $joinpoint.instanceOf('loop')){
+				var descendants = ($joinpoint.instanceOf('if') || $joinpoint.instanceOf('loop')) ? $joinpoint.cond.descendants : $joinpoint.descendants;
+	
+			for($descendant of $joinpoint.descendants) {
+				try {
+					if ($descendant.instanceOf('call') && $descendant.returnType !== 'void') {
+						var mutationValue = typeList.includes($descendant.returnType) ? typeToValue[$descendant.returnType] : 'null';			
+					
+						var $callNode = $descendant;
+						var $originalCallNode = $callNode.copy();
+						
+						println("Original ->" + $callNode.parent.srcCode);
+						if($callNode.returnType === 'char' || $callNode.returnType === 'String') {
+							try{
+							var mutatedNode = KadabraNodes.literal(mutationValue, this.$callNode.returnType);
+							}catch(e){
+								println( "ERROR!!" + e);
+							}
+							$callNode = $callNode.insertReplace(mutatedNode);
+						} else {
+							$callNode = $callNode.insertReplace(mutationValue);
+						}
+
+
+
+						try {
+							$callNode.insertBefore(
+								"if(System.getenv(\"MutKey\") == \"" + 1 + "\"){\n" +
+								$callNode.srcCode +
+								"\n}else{\n"
+							);
+							mutator.getMutationPoint().insertAfter("}");
+						}catch (e) {
+							try{
+								mutated = $callNode.parent;
+			
+								mutated.insertBefore(
+									"if(System.getenv(\"MutKey\") == \"" + 1 + "\"){\n" +
+									mutated.srcCode +
+									"\n}else{\n"
+								);
+								mutated.insertAfter("}");
+							} catch (ee) {
+								println("Error " + ee);
+							}
+						}
+						
+						println("Mutated -> " + $callNode.parent.srcCode);
+						$callNode = $callNode.insertReplace($originalCallNode);
+						println("Returned -> " + $callNode.parent.srcCode + "\n\n");
+
+						
+						$callNode = $callNode.insertReplace($originalCallNode);
+					
+						//print($descendant);
+					}//else
+						//println("Nope");
+				} catch (e) {
+					//println("ERROR!! -> " + e +"\n\n");
+				}
+			}
+		}
 	}
+
+	println("Done -> " + WeaverJps.root().srcCode);
 end
+
+
+// aspectdef testNewClass
+// input outputPath end
+//
+// //	for(var $expression of WeaverJps.search('expression', {code: /^R\..*/}).get()) { //Searching for every expression that starts by R.
+// /*		for(var attribute of $expression.attributes){
+//
+// 			println(attribute);
+// 		}
+// 		println("Kind -> " + $expression);
+// 		println("\n\n\n");
+//     	}
+//
+// |--------------------------------------------------------------------------|
+// */
+// 	var mutatedFileList = [];
+//
+// 	var mutator = new SuperCallDeletion();
+// 	mutator.setAutomaticRestore(false);
+// 	select call end
+// 	apply
+// 		mutator.addJp($call);
+// 	end
+//
+// 	var index = 0;
+// 	var mutatedList = mutator.getAllMutationPoints();
+// 	while(mutator.hasMutations() ){
+// 		mutator.mutate();
+// 		mutationPoint = mutator.getMutationPoint();
+//
+// 		var $file  = mutationPoint.mutated.ancestor("file");
+// 		var $class = mutationPoint.mutated.ancestor("class");
+// 		var mutatedFileData = new Object();
+// 		mutatedFileData.name = $class.name;
+// 		var found = mutatedFileList.some(function(mutatedFile){
+// 				return mutatedFile.name === mutatedFileData.name;
+// 			});
+//
+// 		mutatedFileData.mutatedPackage =  $class.package + ".mutated" + index++;
+// 		mutatedFileData.originalFullyQualifiedName =  $class.package + "." + mutatedFileData.name;
+// 		mutatedFileData.mutatedFullyQualifiedName =  mutatedFileData.mutatedPackage + "." + mutatedFileData.name;
+// 		var packageFileStructure =  Strings.replacer( mutatedFileData.mutatedPackage, /\./g, Io.getSeparator());
+// 		mutatedFileData.filePath = outputPath+ Io.getSeparator() + packageFileStructure +Io.getSeparator()+ $file.name;
+// 		mutatedFileList.push(mutatedFileData);
+//
+// 		var srcCode = Strings.replacer($file.srcCode, new RegExp("package " + $class.package,"g") ,"package "+ mutatedFileData.mutatedPackage);
+// 		srcCode = Strings.replacer(srcCode, new RegExp($class.package + "." + mutatedFileData.name,"g") , mutatedFileData.mutatedPackage + "." + mutatedFileData.name);
+//
+// 		Io.writeFile( mutatedFileData.filePath,srcCode);
+//
+// 		mutator.restore();
+//
+// 	}
+//
+// 	while(mutator.hasRestores()){
+// 		mutator.restore();
+// 	}
+//
+// 	println(JSON.stringify(mutatedFileList));
+//
+//
+//
+// 	for(var $jp of WeaverJps.root().descendants) {
+// 		if($jp.instanceOf("declaration") && mutatedFileList.some( function(mutatedFile){
+// 			if(mutatedFile.originalFullyQualifiedName === $jp.completeType){
+// 				$copy = $jp.copy();
+// 				$copy.completeType= mutatedFile.mutatedFullyQualifiedName;
+//
+// 				println("Original Code: "  + $jp.srcCode);
+// 				println("Mutated Code : "  + $copy.srcCode);
+//
+// 				return true;
+// 			}else
+// 				return false;})){
+//
+//
+// 		}
+// 	}
+//
+//
+// end

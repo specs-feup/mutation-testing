@@ -31,7 +31,7 @@ input outputPath, packageName, outputFolder end
 						println("New mutation point of type " + mutator.getType() + " on: "+ $jp.parent + " file " + fileName + " line " + $jp.parent.line);
 					} catch (ee) {
 						println(ee);
-					}
+					} 
 				}
 			}
 		}
@@ -46,25 +46,21 @@ input outputPath, packageName, outputFolder end
 			// Print
 			var identifier = new Object();
 
-				var mutated = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
+			var mutated = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
+
+			println("Ancestor ->  " + mutator.getMutationPoint().ancestor("statement"));
 
 			try {
 				identifier.file = mutated.ancestor("file") === undefined ? "NOFILENAME" : mutated.ancestor("file").path;
 				identifier.line = mutated.line;
 				identifier.id = packageName + "_" + identifier.line + "_" + counter;
+				println("New identifier! File -> " + identifier.file + " | Line -> " + identifier.line + " | id -> " + identifier.id);
 			}catch (e) {
-				try {
-					mutated = mutator.getMutationPoint().parent;
-
-					identifier.file = mutated.ancestor("file") === undefined ? "NOFILENAME" : mutated.ancestor("file").path;
-					identifier.line = mutated.line;
-					identifier.id = packageName + "_" + identifier.line + "_" + counter;
-				} catch (ee) {
-					println(ee);
-				}
+				println("ERROR generating ID!! " + e);
+				continue;
 			}
 			try {
-				mutator.getMutationPoint().insertBefore(
+				mutated.insertBefore(
 					"if(System.getenv(\"MutKey\") == \"" + identifier.id + "\"){\n" +
 					mutated.srcCode +
 					"\n}else{\n"
@@ -72,7 +68,7 @@ input outputPath, packageName, outputFolder end
 				mutator.getMutationPoint().insertAfter("}");
 			}catch (e) {
 				try{
-					mutated = mutator.getMutationPoint().parent;
+					mutated = mutated.parent;
 
 					mutated.insertBefore(
 						"if(System.getenv(\"MutKey\") == \"" + identifier.id + "\"){\n" +
@@ -81,7 +77,8 @@ input outputPath, packageName, outputFolder end
 					);
 					mutated.insertAfter("}");
 				} catch (ee) {
-					println(ee);
+					println("ERROR MUTATING!!! -> " + ee);
+					continue;
 				}
 			}
 

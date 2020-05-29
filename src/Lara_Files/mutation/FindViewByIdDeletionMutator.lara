@@ -40,21 +40,16 @@ FindViewByIdDeletionMutator.prototype.hasMutations = function() {
 }
 
 FindViewByIdDeletionMutator.prototype.getMutationPoint = function() {
-    if (this.isMutated) {
-        return this.mutationPoint;
+    if (this.currentIndex < this.mutationPoints.length) {
+        return this.mutationPoints[this.currentIndex];
     } else {
-        if (this.currentIndex < this.mutationPoints.length) {
-            return this.mutationPoints[this.currentIndex];
-        } else {
-            return undefined;
-        }
+        return undefined;
     }
 }
 
 FindViewByIdDeletionMutator.prototype._mutatePrivate = function() {
 
     this.mutationPoint = this.mutationPoints[this.currentIndex];
-    this.currentIndex++;
 
     this.previousValue = this.mutationPoint.copy;
     this.mutationPoint = this.mutationPoint.insertReplace("null");
@@ -69,6 +64,7 @@ FindViewByIdDeletionMutator.prototype._restorePrivate = function() {
     // Restore operator
     println("Restoring: " + this.mutationPoint + " to " + this.previousValue);
     this.mutationPoint.insertReplace(this.previousValue);
+    this.currentIndex++;
     this.previousValue = undefined;
     this.mutationPoint = undefined;
 }
