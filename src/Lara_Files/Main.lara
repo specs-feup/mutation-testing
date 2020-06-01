@@ -39,8 +39,10 @@ input outputPath, packageName, outputFolder end
 
 
 	for(mutator of Mutators){
+		println("Applying mutator " + mutator.getName());
+	
 		while(mutator.hasMutations()) {
-
+			
 			// Mutate
 			mutator.mutate();
 			// Print
