@@ -48,13 +48,23 @@ input outputPath, packageName, outputFolder end
 			// Print
 			var identifier = new Object();
 
-			var mutated = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
+			// Try to get a statement
+			var mutationPoint = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
+			
+			// If no statement ancestor, cannot use current mutation method
+			if(mutationPoint === undefined) {
+				println("Mutation point is a " + mutator.getMutationPoint().joinPointType + ", cannot use current mutation method (ifs)");
+				continue;
+			}
+			
 
-			println("Ancestor ->  " + mutator.getMutationPoint().ancestor("statement"));
+			println("Mutation Point ->  " + mutationPoint);
+			println("Mutation Point Type ->  " + mutationPoint.joinPointType);
+			println("Ancestor ->  " + mutationPoint.ancestor("statement"));
 
 			try {
-				identifier.file = mutated.ancestor("file") === undefined ? "NOFILENAME" : mutated.ancestor("file").path;
-				identifier.line = mutated.line;
+				identifier.file = mutationPoint.ancestor("file") === undefined ? "NOFILENAME" : mutationPoint.ancestor("file").path;
+				identifier.line = mutationPoint.line;
 				identifier.id = packageName + "_" + identifier.line + "_" + counter;
 				println("New identifier! File -> " + identifier.file + " | Line -> " + identifier.line + " | id -> " + identifier.id);
 			}catch (e) {
@@ -62,22 +72,22 @@ input outputPath, packageName, outputFolder end
 				continue;
 			}
 			try {
-				mutated.insertBefore(
+				mutationPoint.insertBefore(
 					"if(System.getenv(\"MutKey\") == \"" + identifier.id + "\"){\n" +
-					mutated.srcCode +
+					mutationPoint.srcCode +
 					"\n}else{\n"
 				);
-				mutator.getMutationPoint().insertAfter("}");
+				mutationPoint.insertAfter("}");
 			}catch (e) {
 				try{
-					mutated = mutated.parent;
+					var mutationPointParent = mutationPoint.parent;
 
-					mutated.insertBefore(
+					mutationPointParent.insertBefore(
 						"if(System.getenv(\"MutKey\") == \"" + identifier.id + "\"){\n" +
-						mutated.srcCode +
+						mutationPointParent.srcCode +
 						"\n}else{\n"
 					);
-					mutated.insertAfter("}");
+					mutationPointParent.insertAfter("}");
 				} catch (ee) {
 					println("ERROR MUTATING!!! -> " + ee);
 					continue;
