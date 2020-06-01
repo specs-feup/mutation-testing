@@ -5,7 +5,7 @@ import weaver.Weaver;
 
 var NullifyInputVariable = function() {
 	//Parent constructor
-	Mutator.call(this);
+	Mutator.call(this, "NullifyInputVariable");
 
 	this.newValue = undefined;
 	this.mutationPoints = [];
@@ -13,6 +13,7 @@ var NullifyInputVariable = function() {
 
 	this.currentIndex = 0;
 	this.previousValue = undefined;
+	this.currentMutation = undefined;
 
 };
 
@@ -41,36 +42,60 @@ NullifyInputVariable.prototype.hasMutations = function() {
 }
 
 NullifyInputVariable.prototype.getMutationPoint = function() {
-	if(this.currentIndex < this.mutationPoints.length) {
-		println("JP!! -> " + this.mutationPoints[this.currentIndex] );
-		println("JPCode!! -> " + this.mutationPoints[this.currentIndex].code ); //FIXME: Aqui imprime
-		return this.mutationPoints[this.currentIndex];
-	} else {
-		return undefined;
+	// If mutation is currently occuring, return mutation point
+	if(this.previousValue !== undefined) {
+		return this.previousValue;
 	}
+
+	// Return next mutation point
+	if(this.currentIndex < this.mutationPoints.length) {
+		//println("JP!! -> " + this.mutationPoints[this.currentIndex] );
+		//println("JPCode!! -> " + this.mutationPoints[this.currentIndex].code ); //FIXME: Aqui imprime
+		return this.mutationPoints[this.currentIndex];
+	}
+	
+	return undefined;
 }
 
-NullifyInputVariable.prototype._mutatePrivate = function() {
+NullifyInputVariable.prototype.getCurrentMutation = function() {
+	return this.currentMutation;
+} 
 
-	this.previousValue = this.getMutationPoint().code; //FIXME: Aqui dá erro
+NullifyInputVariable.prototype._mutatePrivate = function() {
+	//this.previousValue = this.getMutationPoint().code;
+	//this.currentMutation = this.getMutationPoint();
 	
-	for (var $param of this.getMutationPoint().params) {
+	// Get mutation point
+	var mutationPoint = this.getMutationPoint();
+	// Increment index
+	this.currentIndex++;
+
+	
+	//println("MUTATION POINT: " + mutationPoint);
+	this.previousValue = mutationPoint; //FIXME: Aqui dá erro
+	
+	this.currentMutation = mutationPoint.copy();
+	//println("Current mutation: " + this.currentMutation);
+	
+	for (var $param of this.currentMutation.params) {
 		if (!$param.isPrimitive) {
-			this.getMutationPoint().body.insertBegin(%{[[$param.name]] = null}%);
+			this.currentMutation.body.insertBegin(%{[[$param.name]] = null}%);
 		}
 	}
 
 	println("/*--------------------------------------*/");
 	println("Mutating operator n."+ this.currentIndex + ": "
-			+ " to "+ this.getMutationPoint());
+			+ " to "+ this.currentMutation);
 	println("/*--------------------------------------*/");
 }
 
 
 NullifyInputVariable.prototype._restorePrivate = function() {
 	// Restore operator
-	println("Restore  prev: " + this.previousValue);
-	println("Restore new: " + this.getMutationPoint().code);
-	this.getMutationPoint().insertReplace(this.previousValue);
-	this.currentIndex++;
+	//println("Restore  prev: " + this.previousValue);
+	//println("Restore new: " + this.currentMutation.code);
+	//this.getMutationPoint().insertReplace(this.previousValue);
+	this.currentMutation.insertReplace(this.previousValue);
+	this.currentMutation = undefined;
+	//this.currentIndex++;
 }
