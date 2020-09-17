@@ -67,7 +67,7 @@ input outputPath end
 
 						try {
 							$callNode.insertBefore(
-								"if(System.getenv(\"MutKey\") == \"" + 1 + "\"){\n" +
+								"if(System.getenv(\"MUID\") == \"" + 1 + "\"){\n" +
 								$callNode.srcCode +
 								"\n}else{\n"
 							);
@@ -77,7 +77,7 @@ input outputPath end
 								mutated = $callNode.parent;
 			
 								mutated.insertBefore(
-									"if(System.getenv(\"MutKey\") == \"" + 1 + "\"){\n" +
+									"if(System.getenv(\"MUID\") == \"" + 1 + "\"){\n" +
 									mutated.srcCode +
 									"\n}else{\n"
 								);

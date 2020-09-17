@@ -40,9 +40,9 @@ input outputPath, packageName, outputFolder end
 
 	for(mutator of Mutators){
 		println("Applying mutator " + mutator.getName());
-	
+
 		while(mutator.hasMutations()) {
-			
+
 			// Mutate
 			mutator.mutate();
 			// Print
@@ -50,13 +50,13 @@ input outputPath, packageName, outputFolder end
 
 			// Try to get a statement
 			var mutationPoint = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
-			
+
 			// If no statement ancestor, cannot use current mutation method
 			if(mutationPoint === undefined) {
 				println("Mutation point is a " + mutator.getMutationPoint().joinPointType + ", cannot use current mutation method (ifs)");
 				continue;
 			}
-			
+
 
 			println("Mutation Point ->  " + mutationPoint);
 			println("Mutation Point Type ->  " + mutationPoint.joinPointType);
@@ -72,9 +72,9 @@ input outputPath, packageName, outputFolder end
 				continue;
 			}
 			try {
-				mutationPoint.insertBefore(
-					"if(System.getenv(\"MutKey\") == \"" + identifier.id + "\"){\n" +
-					mutationPoint.srcCode +
+				mutated.insertBefore(
+					"if(System.getProperty(\"MUID\").equals(\"" + identifier.id + "\")){\n" +
+					mutated.srcCode +
 					"\n}else{\n"
 				);
 				mutationPoint.insertAfter("}");
@@ -110,7 +110,7 @@ input outputPath, packageName, outputFolder end
 	println("Finalized with "+ identifiersList.identifiers.length +" mutants generated" );
 
 	function saveFile(){
-		var $outputFolder = Io.mkdir(outputFolder);
+		var $outputFolder = Io.mkdir(outputFolder + Io.getSeparator());
 		//Io.deleteFolderContents(outputFolder);
 
 		// Write modified code
