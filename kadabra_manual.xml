@@ -129,7 +129,10 @@
     <entry>
       <string>external_dependencies</string>
       <StringList>
-        <stringList/>
+        <stringList>
+          <string>https://github.com/specs-feup/lara-framework.git?folder=experimental/SourceAction</string>
+          <string>https://github.com/specs-feup/lara-framework.git?folder=experimental/Mutation</string>
+        </stringList>
       </StringList>
     </entry>
     <entry>

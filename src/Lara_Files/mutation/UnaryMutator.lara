@@ -1,101 +1,108 @@
-import lara.mutation.Mutator;
+import kadabra.KadabraAst;
 import kadabra.KadabraNodes;
-import weaver.WeaverJps;
-import weaver.Weaver;
 
-var UnaryMutator = function($expr, $original) {
-  //Parent constructor
-    Mutator.call(this);
+import lara.mutation.MutationGenerator;
+import lara.actions.LaraActions;
 
-    this.type = "UnaryMutator";
+import lara.Check;
 
-    this.$expr = $expr;
-    this.$original = $original;
+/**
+ *
+ * Generates a mutation related with a single unary operator.
+ *
+ * @class
+ */
+var UnaryMutator = function(originalUnaryOperator, unaryOperator) {
+	
+	Check.isString(unaryOperator);
+	if(!KadabraAst.getUnaryOperators().has(unaryOperator)) {
+		throw "Invalid unary operator '" + unaryOperator + "'. Available operators: " + KadabraAst.getUnaryOperators().values();
+	}
 
-    this.newValue = undefined;
+	// Support "undefined" string
+	originalUnaryOperator = originalUnaryOperator === "undefined" ? undefined : originalUnaryOperator;
 
-    this.mutationPoints = [];
+	if(originalUnaryOperator !== undefined) {
+		Check.isString(originalUnaryOperator);
+		if(!KadabraAst.getUnaryOperators().has(originalUnaryOperator)) {
+			throw "Invalid unary operator '" + originalUnaryOperator + "'. Available operators: " + KadabraAst.getUnaryOperators().values();
+		}		
+		
+		if(originalUnaryOperator === unaryOperator) {
+			throw "Original unary operator and new unary operator must be different";		
+		}
+	}
 
-    this.currentIndex = 0;
-    this.previousValue = undefined;
+	
+	var originalOpName = originalUnaryOperator !== undefined ? originalUnaryOperator : "all";
+	var name = "BinaryOpMutation_" + originalOpName + "_to_" + unaryOperator;
 
+	// Parent constructor
+	MutationGenerator.call(this, name);
+	
+	this.unaryOperator = unaryOperator;
+	this.originalUnaryOperator = originalUnaryOperator;	
 };
 
-// Inheritance
-UnaryMutator.prototype = Object.create(Mutator.prototype);
-
 UnaryMutator.prototype.getType = function(){
-    return this.type;
+	return "UnaryMutator";
 }
 
-UnaryMutator._isCompatible = function(type1, type2) {
-    return type1 === type2;
+// Inheritance
+UnaryMutator.prototype = Object.create(MutationGenerator.prototype);
+
+UnaryMutator.prototype.getOp = function() {
+	return this.unaryOperator;
+}
+
+UnaryMutator.prototype.getOriginalOp = function() {
+	return this.originalUnaryOperator;
 }
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
-UnaryMutator.prototype.addJp = function($joinpoint){
-    if($joinpoint.instanceOf("unaryExpression")  &&  UnaryMutator._isCompatible($joinpoint.operator, this.$original)) {
-        this.mutationPoints.push($joinpoint);
-        return true;
-    }
-    return false;
-}
 
-UnaryMutator.prototype.hasMutations = function() {
-    return this.currentIndex < this.mutationPoints.length;
-}
+UnaryMutator.prototype.isMutationPoint = function($jp) {
+	// Check if binary expression
+	if(!$jp.instanceOf("unaryExpression")) {
+		return false;
+	}
+	
 
-UnaryMutator.prototype.getMutationPoint = function() {
-    if (this.isMutated) {
-        return this.mutationPoint;
-    } else {
-        if (this.currentIndex < this.mutationPoints.length) {
-            return this.mutationPoints[this.currentIndex];
-        } else {
-            return undefined;
-        }
-    }
-}
-
-//TODO: Refactor for the undefined
-UnaryMutator.prototype._mutatePrivate = function() {
-
-    this.mutationPoint = this.mutationPoints[this.currentIndex];
-    println(this.mutationPoint);
-    this.currentIndex++;
-
-    if(isFunction(this.$expr)){
-        //TODO: Change
-        var temp= this.$expr(this.mutationPoint);
-        this.newValue = this.newValue.insertReplace(temp);
-    }else{
-        if(this.$expr === "undefined"){
-            this.previousValue = this.mutationPoint.copy;
-            println(this.previousValue.operator);
-            this.mutationPoint = this.mutationPoint.insertReplace(this.previousValue.operand);
-        }else{
-            this.previousValue = this.mutationPoint.copy;
-            this.mutationPoint.operator = this.$expr;
-        }
-        //this.newValue = this.$expr;
-    }
-
-    println("/*--------------------------------------*/");
-    println("Mutating operator n."+ this.currentIndex + ": "+ this.previousValue +" to "+ this.mutationPoint);
-    println("/*--------------------------------------*/");
+	
+	if(this.originalUnaryOperator === undefined) {
+		// Check if it not the same operator
+		if($jp.operator === this.unaryOperator) {
+			return false;
+		}	
+	} else {
+		// Check if it is the target operator
+		if($jp.operator != this.originalUnaryOperator) {
+			return false;
+		}
+	}
+	
+	
+	
+	// TODO: Check if operator is "compatible". For instance, we cannot replace a boolean operator (e.g., &&) with an arithmetic operator (e.g., +)
+	
+	return true;
 
 }
 
-UnaryMutator.prototype._restorePrivate = function() {
-    // Restore operator
-    println("Restoring " + this.mutationPoint + " to " + this.previousValue);
+UnaryMutator.prototype._mutatePrivate = function($jp) {
+	// Create a UnaryExpression node
+	var $newOp = KadabraNodes.unaryExpression(this.unaryOperator, $jp.operand.copy());
+	//var $newOp = $jp.copy();
+	//var $newOp = KadabraNodes.unaryExpression(this.unaryOperator, $jp.operand);
 
-    if(this.$expr === "undefined") {
-        this.mutationPoint = this.mutationPoint.insertReplace(this.previousValue);
-    }else {
-        this.mutationPoint.operator = this.previousValue.operator;
-    }
+	//var $newOp2 = KadabraNodes.binaryExpression("+", $jp.operand.copy(), $jp.operand.copy());
+	//println("New op2: " + $newOp2.code);
+	//println("Is newOp2 parent init? " + $newOp.getNode().isParentInitialized());
 
-    this.previousValue = undefined;
-    this.mutationPoint = undefined;
+	// Replace given node
+	var replaceAction = LaraActions.replaceJp($jp, $newOp);
+	//println("Is newOp parent init? " + $newOp.getNode().isParentInitialized());
+	
+	//println("Is point parent init? " + replaceAction.getPoint().getNode().isParentInitialized());
+	return replaceAction.getPoint();
 }

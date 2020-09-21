@@ -102,13 +102,14 @@ public class MutatorKernel implements AppKernel {
                 arguments.add("-av");
                 arguments.add(laraArguments.toJSONString());
 
-
                 arguments.add("-b");
                 arguments.add("2");
                 arguments.add("-s");
                 arguments.add("-Q");
                 arguments.add("-d");
                 arguments.add("-X");
+                arguments.add("-dep");
+                arguments.add("https://github.com/specs-feup/lara-framework.git?folder=experimental/SourceAction;https://github.com/specs-feup/lara-framework.git?folder=experimental/Mutation");
 
                 listArguments.add(arguments.toArray(String[]::new));
             }

@@ -2,127 +2,39 @@ import lara.Io;
 import Mutators;
 
 aspectdef Test
-input outputPath, packageName, outputFolder end
+input outputPath end
 
-	var counter = 0;
-	var identifiersList = new Object();
+var counter = 0;
 
-	identifiersList.identifiers = [];
+if(Mutators[0] === undefined){
+	println("No mutators selected");
+	return;
+}
+var fileName;
+for(mutation of Mutators){
+	for(var $jp of Query.search()) {
+		fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
+		// Get id of current version
+		var beforeMutationVersion = Actions.getCurrentId();
 
-	if(Mutators[0] === undefined){
-		println("No mutators selected");
-		return;
-	}
-
-	for(var $jp of WeaverJps.root().descendants) {
-
-		var $call = $jp.ancestor("call");
-
-		if($call !== undefined && $call.name === "<init>")
-			continue;
-
-		for(mutator of Mutators) {
-			if(mutator.addJp($jp)) {
-				var fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
-				try{
-					println("New mutation point of type " + mutator.getType() + " on: "+ $jp + " file " + fileName + " line " + $jp.line);
-				}catch (e) {
-					try {
-						println("New mutation point of type " + mutator.getType() + " on: "+ $jp.parent + " file " + fileName + " line " + $jp.parent.line);
-					} catch (ee) {
-						println(ee);
-					} 
-				}
-			}
+		var $mutatedJp = mutation.mutate($jp);
+		if($mutatedJp !== undefined) {;
+			println("JP ORIG: " + $jp.code);
+			println("JP MUTATED: " + $mutatedJp.code);
+			saveFile();
 		}
+
+		// Restore version
+		Actions.restore(beforeMutationVersion);
 	}
+}
 
+function saveFile(){
 
-	for(mutator of Mutators){
-		println("Applying mutator " + mutator.getName());
+	var outputFolder = Io.getPath(outputPath+ Io.getSeparator() +fileName + "_" + counter + Io.getSeparator() +"src"+ Io.getSeparator() +"main"+ Io.getSeparator() +"java");
+	counter++;
 
-		while(mutator.hasMutations()) {
-
-			// Mutate
-			mutator.mutate();
-			// Print
-			var identifier = new Object();
-
-			// Try to get a statement
-			var mutationPoint = mutator.getMutationPoint().isStatement ? mutator.getMutationPoint() : mutator.getMutationPoint().ancestor("statement");
-
-			// If no statement ancestor, cannot use current mutation method
-			if(mutationPoint === undefined) {
-				println("Mutation point is a " + mutator.getMutationPoint().joinPointType + ", cannot use current mutation method (ifs)");
-				continue;
-			}
-
-
-			println("Mutation Point ->  " + mutationPoint);
-			println("Mutation Point Type ->  " + mutationPoint.joinPointType);
-			println("Ancestor ->  " + mutationPoint.ancestor("statement"));
-
-			try {
-				identifier.file = mutationPoint.ancestor("file") === undefined ? "NOFILENAME" : mutationPoint.ancestor("file").path;
-				identifier.line = mutationPoint.line;
-				identifier.id = packageName + "_" + identifier.line + "_" + counter;
-				println("New identifier! File -> " + identifier.file + " | Line -> " + identifier.line + " | id -> " + identifier.id);
-			}catch (e) {
-				println("ERROR generating ID!! " + e);
-				continue;
-			}
-			try {
-				mutated.insertBefore(
-					"if(System.getProperty(\"MUID\").equals(\"" + identifier.id + "\")){\n" +
-					mutated.srcCode +
-					"\n}else{\n"
-				);
-				mutationPoint.insertAfter("}");
-			}catch (e) {
-				try{
-					var mutationPointParent = mutationPoint.parent;
-
-					mutationPointParent.insertBefore(
-						"if(System.getenv(\"MutKey\") == \"" + identifier.id + "\"){\n" +
-						mutationPointParent.srcCode +
-						"\n}else{\n"
-					);
-					mutationPointParent.insertAfter("}");
-				} catch (ee) {
-					println("ERROR MUTATING!!! -> " + ee);
-					continue;
-				}
-			}
-
-
-			identifiersList.identifiers.push(identifier);
-			counter++;
-
-
-			//println(mutator.getMutationPoint().parent.code);
-
-			// Restore operator
-			mutator.restore();
-
-		}
-	}
-	saveFile();
-	println("Finalized with "+ identifiersList.identifiers.length +" mutants generated" );
-
-	function saveFile(){
-		var $outputFolder = Io.mkdir(outputFolder + Io.getSeparator());
-		//Io.deleteFolderContents(outputFolder);
-
-		// Write modified code
-		Weaver.writeCode($outputFolder);
-
-		// Print contents
-		// 	for(var mutatedFile of Io.getFiles(outputFolder, "*.java") ) {
-		// 		println("<File '" + mutatedFile.getName() + "'>");
-		// 		println(Io.readFile(mutatedFile));
-		// 	}
-		if(identifiersList.identifiers.length > 0)
-			Io.writeJson(outputPath + Io.getSeparator() +  "mutantsIdentifiers"+ Io.getSeparator() +packageName+".json", identifiersList );
-
-	}
+	// Write modified code
+	Weaver.writeCode(outputFolder);
+}
 end

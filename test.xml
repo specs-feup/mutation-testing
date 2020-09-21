@@ -79,12 +79,7 @@
     </entry>
     <entry>
       <string>BitWise Operator Mutator ^</string>
-      <list>
-        <string>lhs</string>
-        <string>rhs</string>
-        <string>|</string>
-        <string>&amp;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>int byte short: 1 to 0 ; </string>
@@ -116,7 +111,7 @@
     </entry>
     <entry>
       <string>NUMBER_OF_THREADS</string>
-      <int>8</int>
+      <int>20</int>
     </entry>
     <entry>
       <string>float 2.0 to 0, </string>
@@ -140,18 +135,11 @@
     </entry>
     <entry>
       <string>BitWise Operator Mutator ~</string>
-      <list>
-        <string></string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>BitWise Operator Mutator |</string>
-      <list>
-        <string>lhs</string>
-        <string>rhs</string>
-        <string>^</string>
-        <string>&amp;</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string> one String to &quot;&quot;</string>
@@ -278,7 +266,7 @@
     </entry>
     <entry>
       <string>OutputFile</string>
-      <file>Testing\IfClause</file>
+      <file>Testing\Classic</file>
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
@@ -314,12 +302,7 @@
     </entry>
     <entry>
       <string>BitWise Operator Mutator &amp;</string>
-      <list>
-        <string>lhs</string>
-        <string>rhs</string>
-        <string>^</string>
-        <string>|</string>
-      </list>
+      <list/>
     </entry>
     <entry>
       <string>Conditional ||</string>

@@ -1,84 +1,102 @@
-import lara.mutation.Mutator;
+import kadabra.KadabraAst;
 import kadabra.KadabraNodes;
-import weaver.WeaverJps;
-import weaver.Weaver;
 
-var BinaryMutator = function($result, $original) {
-    // Parent constructor
-    Mutator.call(this);
+import lara.mutation.MutationGenerator;
+import lara.actions.LaraActions;
 
-    this.type = "BinaryMutator";
+import lara.Check;
 
-    this.$expr = $result;
-    this.$original = $original;
-    this.mutationPoints = [];
-    this.currentIndex = 0;
-    this.mutationPoint = undefined;
-    this.previousValue = undefined;
+/**
+ *
+ * Generates a mutation related with a single binary operator.
+ *
+ * @class
+ */
+var BinaryMutator = function(originalBinaryOperator, binaryOperator) {
+	
+	Check.isString(binaryOperator);
+	if(!KadabraAst.getBinaryOperators().has(binaryOperator)) {
+		throw "Invalid binary operator '" + binaryOperator + "'. Available operators: " + KadabraAst.getBinaryOperators().values();
+	}
 
+	// Support "undefined" string
+	originalBinaryOperator = originalBinaryOperator === "undefined" ? undefined : originalBinaryOperator;
+	
+	if(originalBinaryOperator !== undefined) {
+		Check.isString(originalBinaryOperator);
+		if(!KadabraAst.getBinaryOperators().has(originalBinaryOperator)) {
+			throw "Invalid binary operator '" + originalBinaryOperator + "'. Available operators: " + KadabraAst.getBinaryOperators().values();
+		}		
+		
+		if(originalBinaryOperator === binaryOperator) {
+			throw "Original binary operator and new binary operator must be different";		
+		}
+	}
+
+	
+	var originalOpName = originalBinaryOperator !== undefined ? originalBinaryOperator : "all";
+	var name = "BinaryMutator_" + originalOpName + "_to_" + binaryOperator;
+
+	// Parent constructor
+	MutationGenerator.call(this, name);
+	
+	this.binaryOperator = binaryOperator;
+	this.originalBinaryOperator = originalBinaryOperator;	
 };
 
-// Inheritance
-BinaryMutator.prototype = Object.create(Mutator.prototype);
-
 BinaryMutator.prototype.getType = function(){
-    return this.type;
+	return "BinaryMutator";
 }
 
-BinaryMutator._isCompatible = function(type1, type2) {
-    return type1 === type2;
+// Inheritance
+BinaryMutator.prototype = Object.create(MutationGenerator.prototype);
+
+BinaryMutator.prototype.getOp = function() {
+	return this.binaryOperator;
+}
+
+BinaryMutator.prototype.getOriginalOp = function() {
+	return this.originalBinaryOperator;
 }
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
-BinaryMutator.prototype.addJp = function($joinpoint){
-    if($joinpoint.instanceOf("binaryExpression")  &&  BinaryMutator._isCompatible($joinpoint.operator, this.$original)) {
-        this.mutationPoints.push($joinpoint);
-        return true;
-    }
-    return false;
-}
 
+BinaryMutator.prototype.isMutationPoint = function($jp) {
+	// Check if binary expression
+	if(!$jp.instanceOf("binaryExpression")) {
+		return false;
+	}
+	
 
-BinaryMutator.prototype.hasMutations = function() {
-    return this.currentIndex < this.mutationPoints.length;
-}
-
-BinaryMutator.prototype.getMutationPoint = function() {
-    if (this.isMutated) {
-        return this.mutationPoint;
-    } else {
-        if (this.currentIndex < this.mutationPoints.length) {
-            return this.mutationPoints[this.currentIndex];
-        } else {
-            return undefined;
-        }
-    }
-}
-
-BinaryMutator.prototype._mutatePrivate = function() {
-
-    this.mutationPoint = this.mutationPoints[this.currentIndex];
-    this.currentIndex++;
-
-    if(isFunction(this.$expr)){
-        //TODO: Change
-        var temp = this.$expr(this.mutationPoint);
-        this.mutationPoint = this.mutationPoint.insertReplace(temp);
-    }else{
-        this.previousValue = this.mutationPoint.copy;
-        this.mutationPoint.operator = this.$expr;
-    }
-
-    println("/*--------------------------------------*/");
-    println("Mutating operator n."+ this.currentIndex + ": "+ this.previousValue +" to "+ this.mutationPoint);
-    println("/*--------------------------------------*/");
+	
+	if(this.originalBinaryOperator === undefined) {
+		// Check if it not the same operator
+		if($jp.operator === this.binaryOperator) {
+			return false;
+		}	
+	} else {
+		// Check if it is the target operator
+		if($jp.operator != this.originalBinaryOperator) {
+			return false;
+		}
+	}
+	
+	
+	
+	// TODO: Check if operator is "compatible". For instance, we cannot replace a boolean operator (e.g., &&) with an arithmetic operator (e.g., +)
+	
+	return true;
 
 }
 
-BinaryMutator.prototype._restorePrivate = function() {
-    // Restore operator
-    println("Restoring: " + this.mutationPoint.operator + " to " + this.previousValue.operator);
-    this.mutationPoint.operator = this.previousValue.operator;
-    this.previousValue = undefined;
-    this.mutationPoint = undefined;
+BinaryMutator.prototype._mutatePrivate = function($jp) {
+	// Create a BinaryExpression node
+	var $newOp = KadabraNodes.binaryExpression(this.binaryOperator, $jp.lhs.copy(), $jp.rhs.copy());
+	
+	// Replace given node
+	var replaceAction = LaraActions.replaceJp($jp, $newOp);
+	//println("Is newOp parent init? " + $newOp.getNode().isParentInitialized());
+
+	
+	return replaceAction.getPoint();
 }
