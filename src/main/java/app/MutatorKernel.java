@@ -35,7 +35,6 @@ public class MutatorKernel implements AppKernel {
         isInterrupted = false;
 
         File projectPath = dataStore.get(Tese_UI.PROJECT_FILE);
-        String classFilesPath = dataStore.get(Tese_UI.PROJECT_CLASS_FILE).getAbsolutePath();
         String laraPath = dataStore.get(Tese_UI.LARA_FILE).isFile() ? dataStore.get(Tese_UI.LARA_FILE).getAbsolutePath() : "src/Lara_Files/Main.lara";
         String outputPath = dataStore.get(Tese_UI.OUTPUT_FILE).getAbsolutePath() + File.separator +"Output";
 
@@ -59,7 +58,6 @@ public class MutatorKernel implements AppKernel {
 
         if(filesList.isEmpty())
             filesList.add(projectPath);
-
         for(File file : filesList) {
             if(file.getName().matches("(.{0,})(.java$)")){
                 JSONObject laraArguments = new JSONObject();
@@ -67,10 +65,7 @@ public class MutatorKernel implements AppKernel {
                 List<String> arguments = new ArrayList<>(Arrays.asList(laraPath,  "-p", file.getAbsolutePath(), "-o", outputPath + "_Main" +
                         "" + File.separator + file.getName()));
 
-                if(!classFilesPath.equals(System.getProperty("user.dir"))) {
-                    arguments.add("-I");
-                    arguments.add(classFilesPath);
-                }
+
 
                 laraArguments.put("outputPath", outputPath);
                 String packageName = getPackageString(file);
@@ -102,28 +97,29 @@ public class MutatorKernel implements AppKernel {
                 arguments.add("-av");
                 arguments.add(laraArguments.toJSONString());
 
-
                 arguments.add("-b");
                 arguments.add("2");
                 arguments.add("-s");
                 arguments.add("-Q");
                 arguments.add("-d");
                 arguments.add("-X");
+                arguments.add("-dep");
+                arguments.add("https://github.com/specs-feup/lara-framework.git?folder=experimental/SourceAction;https://github.com/specs-feup/lara-framework.git?folder=experimental/Mutation");
 
                 listArguments.add(arguments.toArray(String[]::new));
             }
-            else{
-                try {
-                    File outputFolder = new File(getOutputPath(file.getAbsolutePath(),projectPath, outputPath));
-
-                    FileUtils.copyFile(file, outputFolder);
-
-                } catch (IOException e) {
-                    LOGGER.error(e);
-            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));
-                    break;
-                }
-            }
+//            else{
+//                try {
+//                    File outputFolder = new File(getOutputPath(file.getAbsolutePath(),projectPath, outputPath));
+//
+//                    FileUtils.copyFile(file, outputFolder);
+//
+//                } catch (IOException e) {
+//                    LOGGER.error(e);
+//                    Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));
+//                    break;
+//                }
+//            }
         }
 
         threadCount = 0;
@@ -136,7 +132,7 @@ public class MutatorKernel implements AppKernel {
 
 
     private String getOutputPath(String  originalPath, File projectPath, String outputPath){
-        return outputPath + File.separator + "mutatedFiles" + File.separator;//originalPath.replace(projectPath.getAbsolutePath()," " );
+        return outputPath + File.separator + "mutatedFiles" ;//originalPath.replace(projectPath.getAbsolutePath()," " );
     }
 
 
@@ -172,15 +168,15 @@ public class MutatorKernel implements AppKernel {
 
     private static boolean executeSafe(String[] args) {
         if(!isInterrupted)
-        try {
-            LOGGER.info("New Thead. Thread count -> " + ++threadCount);
-            LOGGER.info(" ARGS: " + String.join(" ", Arrays.asList(args)));
-            return KadabraLauncher.execute(args);
-        } catch (Exception e) {
-            LOGGER.error("Exception during Kadabra execution: " + e);
-            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
-            return false;
-        }
+            try {
+                LOGGER.info("New Thead. Thread count -> " + ++threadCount);
+                LOGGER.info(" ARGS: " + String.join(" ", Arrays.asList(args)));
+                return KadabraLauncher.execute(args);
+            } catch (Exception e) {
+                LOGGER.error("Exception during Kadabra execution: " + e);
+                Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
+                return false;
+            }
         return true;
     }
 
@@ -191,8 +187,8 @@ public class MutatorKernel implements AppKernel {
                 if (file.isFile())
                     list.add(file);
                 else
-                    if(file.isDirectory() && !file.getName().matches("test*.{0,}")) //Regex to ignore the folders with name starting as test
-                        list = getFiles(file, list);
+                if(file.isDirectory() && !file.getName().matches("test*.{0,}")) //Regex to ignore the folders with name starting as test
+                    list = getFiles(file, list);
 
             }
         return list;
@@ -208,19 +204,19 @@ public class MutatorKernel implements AppKernel {
 
         if(fList != null)
             for (File file : fList) {
-                    try {
-                        FileReader fr = new FileReader(file);
-                        Object obj = parser.parse(fr);
+                try {
+                    FileReader fr = new FileReader(file);
+                    Object obj = parser.parse(fr);
 
-                        JSONObject jsonObject = (JSONObject) obj;
-                        JSONArray jsonArray = (JSONArray) jsonObject.get("identifiers");
+                    JSONObject jsonObject = (JSONObject) obj;
+                    JSONArray jsonArray = (JSONArray) jsonObject.get("identifiers");
 
-                        identifiersList.addAll(jsonArray);
-                        fr.close();
-                    } catch (ParseException | IOException e) {
-                        LOGGER.error(e);
-                        Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
-                    }
+                    identifiersList.addAll(jsonArray);
+                    fr.close();
+                } catch (ParseException | IOException e) {
+                    LOGGER.error(e);
+                    Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat "+ stackTraceElement));;
+                }
             }
         try {
             FileWriter jsonFileWriter = new FileWriter(folder.getParentFile().getAbsolutePath()+File.separator+ "mutantsIdentifiers.json");

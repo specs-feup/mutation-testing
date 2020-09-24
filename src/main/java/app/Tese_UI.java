@@ -28,7 +28,7 @@ public class Tese_UI {
 
 
     public static final DataKey<File> PROJECT_FILE = KeyFactory.folder("ProjectPath").setLabel("Project path");
-    public static final DataKey<File> PROJECT_CLASS_FILE = KeyFactory.folder("ClassPath").setLabel("Compiled Class files path");
+//    public static final DataKey<File> PROJECT_CLASS_FILE = KeyFactory.folder("ClassPath").setLabel("Compiled Class files path");
     public static final DataKey<File> OUTPUT_FILE = KeyFactory.folder("OutputFile").setLabel("Output Path (Empty for default)");
     public static final DataKey<File> LARA_FILE = KeyFactory.file("LaraPath", "lara").setLabel("Lara file path (for unimplemented mutators)");
     public static final DataKey<Integer> NUMBER_OF_THREADS  = KeyFactory.integer("NUMBER_OF_THREADS").setLabel("Number of threads to run").setDefault(() -> 20);

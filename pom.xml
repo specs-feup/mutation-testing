@@ -29,9 +29,50 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>app.Tese_UI</mainClass>
+
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>${project.basedir}/Kadabra/*.jar</include>
+                    </includes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>in-project</id>
+            <name>In Project Repo</name>
+            <url>file://libs</url>
+        </repository>
+    </repositories>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/pt.up.fe.specs/lara-framework -->
 <!--        <dependency>-->
@@ -61,11 +102,10 @@
 
         <dependency>
             <groupId>weaver.gui</groupId>
-            <artifactId>KadabraLauncher</artifactId>
+            <artifactId>kadabra</artifactId>
             <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>C:\Users\wasdf\OneDrive\Ambiente de Trabalho\Kadabra\kadabra.jar</systemPath>
         </dependency>
 
     </dependencies>
+
 </project>
