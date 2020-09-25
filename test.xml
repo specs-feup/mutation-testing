@@ -45,7 +45,7 @@
     </entry>
     <entry>
       <string>long: 1 to 0, </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Unary ++_</string>
@@ -63,7 +63,7 @@
     </entry>
     <entry>
       <string>float: 1.0 to 0, </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>FindViewById Deletion</string>
@@ -79,11 +79,16 @@
     </entry>
     <entry>
       <string>BitWise Operator Mutator ^</string>
-      <list/>
+      <list>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>|</string>
+        <string>&amp;</string>
+      </list>
     </entry>
     <entry>
       <string>int byte short: 1 to 0 ; </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Conditional &amp;&amp;</string>
@@ -115,7 +120,7 @@
     </entry>
     <entry>
       <string>float 2.0 to 0, </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Identifier Replacer</string>
@@ -131,19 +136,26 @@
     </entry>
     <entry>
       <string>int byte short otherwise increments by 1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>BitWise Operator Mutator ~</string>
-      <list/>
+      <list>
+        <string></string>
+      </list>
     </entry>
     <entry>
       <string>BitWise Operator Mutator |</string>
-      <list/>
+      <list>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>^</string>
+        <string>&amp;</string>
+      </list>
     </entry>
     <entry>
       <string> one String to &quot;&quot;</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Remove Null Check</string>
@@ -151,7 +163,7 @@
     </entry>
     <entry>
       <string>float other number to 1.0</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Arithmetic %</string>
@@ -180,7 +192,7 @@
     </entry>
     <entry>
       <string> False to True</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Arithmetic -</string>
@@ -258,11 +270,11 @@
     </entry>
     <entry>
       <string>int byte short -1 to 1 ; </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>double: 1.0 to 0, </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>OutputFile</string>
@@ -302,7 +314,12 @@
     </entry>
     <entry>
       <string>BitWise Operator Mutator &amp;</string>
-      <list/>
+      <list>
+        <string>lhs</string>
+        <string>rhs</string>
+        <string>^</string>
+        <string>|</string>
+      </list>
     </entry>
     <entry>
       <string>Conditional ||</string>
@@ -326,11 +343,11 @@
     </entry>
     <entry>
       <string>int byte short 5 to -1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>double another number to 1.0</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Relational &gt;=</string>
@@ -344,15 +361,15 @@
     </entry>
     <entry>
       <string> 0 to 1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>True to False</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>1 to -1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Remove Conditional Mutator</string>
@@ -360,7 +377,7 @@
     </entry>
     <entry>
       <string>long: otherwise increments by 1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Relational !=</string>

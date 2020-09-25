@@ -1,5 +1,6 @@
 import lara.Io;
 import Mutators;
+import lara.mutation.MutationGenerator;
 
 aspectdef Test
 input outputPath end
@@ -12,20 +13,50 @@ if(Mutators[0] === undefined){
 }
 var fileName;
 for(mutation of Mutators){
-	for(var $jp of Query.search()) {
-		fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
-		// Get id of current version
-		var beforeMutationVersion = Actions.getCurrentId();
 
-		var $mutatedJp = mutation.mutate($jp);
-		if($mutatedJp !== undefined) {;
-			println("JP ORIG: " + $jp.code);
-			println("JP MUTATED: " + $mutatedJp.code);
+	for(var $jp of Query.search()) {
+		if (mutation instanceof MutationGenerator) {
+			fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
+			// Get id of current version
+			var beforeMutationVersion = Actions.getCurrentId();
+
+			var $mutatedJp = mutation.mutate($jp);
+			if ($mutatedJp !== undefined) {
+				println("JP ORIG: " + $jp.code);
+				println("JP MUTATED: " + $mutatedJp.code);
+				saveFile();
+			} else
+
+
+				// Restore version
+				Actions.restore(beforeMutationVersion);
+		} else{
+			if(mutation.addJp($jp)) {
+				var fileName = $jp.ancestor("file") === undefined ? "NOFILENAME" : $jp.ancestor("file").name;
+				try{
+					println("New mutation point of type " + mutation.getType() + " on: "+ $jp + " file " + fileName + " line " + $jp.line);
+				}catch (e) {
+					try {
+						println("New mutation point of type " + mutation.getType() + " on: "+ $jp.parent + " file " + fileName + " line " + $jp.parent.line);
+					} catch (ee) {
+						//println(ee);
+					}
+				}
+			}
+		}
+	}
+	if (!(mutation instanceof MutationGenerator)){
+		while(mutation.hasMutations()) {
+
+			// Mutate
+			mutation.mutate();
+
 			saveFile();
+
+			mutation.restore();
+
 		}
 
-		// Restore version
-		Actions.restore(beforeMutationVersion);
 	}
 }
 
