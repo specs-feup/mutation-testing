@@ -31,7 +31,10 @@
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;</string>
-      <list/>
+      <list>
+        <string>&lt;&lt;</string>
+        <string>&gt;&gt;&gt;</string>
+      </list>
     </entry>
     <entry>
       <string>Unary _++</string>
@@ -59,7 +62,7 @@
     </entry>
     <entry>
       <string>Arithmetic Operators Deletion</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>float: 1.0 to 0, </string>
@@ -180,7 +183,10 @@
     </entry>
     <entry>
       <string>Bitwise &lt;&lt;</string>
-      <list/>
+      <list>
+        <string>&gt;&gt;</string>
+        <string>&gt;&gt;&gt;</string>
+      </list>
     </entry>
     <entry>
       <string>LaraPath</string>
@@ -278,7 +284,10 @@
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
-      <list/>
+      <list>
+        <string>&lt;&lt;</string>
+        <string>&gt;&gt;</string>
+      </list>
     </entry>
     <entry>
       <string>Unary !</string>

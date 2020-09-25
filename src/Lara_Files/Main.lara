@@ -98,7 +98,7 @@ saveFile();
 println("Finalized with "+ identifiersList.identifiers.length +" mutants generated" );
 
 function saveFile(){
-	var $outputFolder = Io.mkdir(outputFolder);
+	var $outputFolder = Io.mkdir(outputFolder+"\\src\\main\\java\\");
 	//Io.deleteFolderContents(outputFolder);
 
 	// Write modified code
