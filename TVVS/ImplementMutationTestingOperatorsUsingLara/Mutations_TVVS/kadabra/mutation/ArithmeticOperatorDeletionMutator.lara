@@ -4,7 +4,8 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var ArithmeticOperatorDeletionMutator = function($startingPoint) {
-	// Parent constructor
+		notImplemented("NotImplemented");
+/*//Parent constructor
      Mutator.call(this);
 
 	if($startingPoint === undefined) {
@@ -30,6 +31,8 @@ var ArithmeticOperatorDeletionMutator = function($startingPoint) {
 	
 };
 
+*/
+*/};
 // Inheritance
 ArithmeticOperatorDeletionMutator.prototype = Object.create(Mutator.prototype);
 

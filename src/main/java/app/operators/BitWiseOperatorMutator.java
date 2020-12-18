@@ -88,7 +88,7 @@ public final class BitWiseOperatorMutator extends Operators{
             for(String mutator : selectedMutators){
                 mutatorString.append("\tnew ")
                         .append(this.getMutatorType())
-                        .append("(undefined,\"")
+                        .append("(\"")
                         .append(identifier.substring(identifier.lastIndexOf(' ')+1))
                         .append("\",\"")
                         .append(mutator.trim())

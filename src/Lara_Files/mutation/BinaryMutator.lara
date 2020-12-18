@@ -7,20 +7,11 @@ var BinaryMutator = function($result, $original) {
     // Parent constructor
     Mutator.call(this);
 
+    this.type = "BinaryMutator";
+
     this.$expr = $result;
-
+    this.$original = $original;
     this.mutationPoints = [];
-
-    for(var $field of WeaverJps.search('binaryExpression').get()) {
-
-        if(!BinaryMutator._isCompatible($field.operator, $original)) {
-            continue;
-        }
-
-        this.mutationPoints.push($field);
-
-    }
-
     this.currentIndex = 0;
     this.mutationPoint = undefined;
     this.previousValue = undefined;
@@ -30,11 +21,24 @@ var BinaryMutator = function($result, $original) {
 // Inheritance
 BinaryMutator.prototype = Object.create(Mutator.prototype);
 
+BinaryMutator.prototype.getType = function(){
+    return this.type;
+}
+
 BinaryMutator._isCompatible = function(type1, type2) {
     return type1 === type2;
 }
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
+BinaryMutator.prototype.addJp = function($joinpoint){
+    if($joinpoint.instanceOf("binaryExpression")  &&  BinaryMutator._isCompatible($joinpoint.operator, this.$original)) {
+        this.mutationPoints.push($joinpoint);
+        return true;
+    }
+    return false;
+}
+
+
 BinaryMutator.prototype.hasMutations = function() {
     return this.currentIndex < this.mutationPoints.length;
 }

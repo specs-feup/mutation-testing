@@ -4,7 +4,7 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var IdentifierReplacerMutator = function($result, $original) {
-    // Parent constructor
+    //Parent constructor
     Mutator.call(this);
 
     this.$expr = $result;
@@ -14,33 +14,12 @@ var IdentifierReplacerMutator = function($result, $original) {
     //To store the identifiers according to the package
     this.identifiersMap = new Map();
 
-    //To get the mutation points and identifiers
-    for(var $expression of WeaverJps.search('expression', {code: /^R\..*/}).get()) { //Searching for every expression that starts by R.
-
-        var tempList = this.identifiersMap.get($expression.typeReference.package);
-
-        if(tempList === undefined){ //Creating or updating the entry
-            tempList = [$expression];
-        }else{
-            tempList.push($expression);
-        }
-
-        this.identifiersMap.set($expression.typeReference.package, tempList); //Saving the entry
-
-    }
-
-
-    for(var value of this.identifiersMap.values())
-        if(value.length > 1)
-            for(var item of value)
-                this.mutationPoints.push(item);
-
     this.currentIndex = 0;
     this.mutationPoint = undefined;
     this.previousValue = undefined;
 
-};
 
+};
 // Inheritance
 IdentifierReplacerMutator.prototype = Object.create(Mutator.prototype);
 
@@ -49,6 +28,35 @@ IdentifierReplacerMutator._isCompatible = function(type1, type2) {
 }
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
+IdentifierReplacerMutator.prototype.getType = function(){
+    return "IdentifierReplacerMutator";
+}
+
+IdentifierReplacerMutator.prototype.addJp = function($joinpoint){
+
+    if($joinpoint.instanceOf("expression"))
+        if($joinpoint.code.match(/^R\..*/)){
+            var tempList = this.identifiersMap.get($joinpoint.typeReference.package);
+
+            if(tempList === undefined){ //Creating or updating the entry
+                tempList = [$joinpoint];
+            }else{
+                if(tempList.length  === 1) //To add the first to the mutation points
+                    this.mutationPoints.push(tempList[0]);
+
+                tempList.push($joinpoint);
+
+                this.mutationPoints.push($joinpoint);
+            }
+
+            this.identifiersMap.set($joinpoint.typeReference.package, tempList); //Saving the entry
+
+            return true;
+        }
+
+    return false;
+}
+
 IdentifierReplacerMutator.prototype.hasMutations = function() {
     return this.currentIndex < this.mutationPoints.length;
 }

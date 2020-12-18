@@ -5,13 +5,9 @@ import kadabra.KadabraNodes;
  *  @param {$joinpoint} $joinpoint - Joinpoint used as starting point to search for if clauses whose condition will be replaced by true.
  */
 
-var RemoveConditionalMutator = function($joinpoint) {
-	// Parent constructor
+var RemoveConditionalMutator = function() {
+//Parent constructor
     Mutator.call(this);
-
-	if($joinpoint === undefined) {
-		$joinpoint = WeaverJps.root();
-	}
 
 	// Instance variables
 	this.toMutate = [];
@@ -19,36 +15,27 @@ var RemoveConditionalMutator = function($joinpoint) {
 	
 	this.originalConditionalClause = undefined;
 	this.$conditionalClause = undefined;
-	
-	// Checks
-	var extraArgs = arrayFromArgs(arguments, 1);
-	if(extraArgs.length != 0)
-		throw "Expected only 1 argument but received " + (this.extraArgs.length + 1);
 
-	this.extractMutationTargets($joinpoint);
-
-	if(this.toMutate.length == 0)
-		println("Found no suitable code to mutate");
 };
-
-
 // Inheritance
 RemoveConditionalMutator.prototype = Object.create(Mutator.prototype);
 
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
 
-/* Search for if clauses for Remove Conditional mutation and store them */
-RemoveConditionalMutator.prototype.extractMutationTargets = function($joinpoint) {
+
+RemoveConditionalMutator.prototype.getType = function (){
+	return "RemoveConditionalMutator";
+}
+
+RemoveConditionalMutator.prototype.addJp = function($joinpoint){
+
 	// A conditional can be either an if or a ternary operator
-	var conditionalElements = ['if', 'ternary', 'loop'];
-	for(conditionalElement of conditionalElements) {
-		for($element of WeaverJps.searchFrom($joinpoint, conditionalElement).get()) {
-			println($element.cond);
-			this.toMutate.push($element.cond);
-		}
+	if($joinpoint.instanceOf('if') || $joinpoint.instanceOf( 'ternary') || $joinpoint.instanceOf('loop')) {
+		this.toMutate.push($joinpoint.cond);
+		return true;
 	}
-	println(this.toMutate.length);
+	return false;
 }
 
 RemoveConditionalMutator.prototype.hasMutations = function() {

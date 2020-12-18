@@ -4,7 +4,7 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var ConstantMutator = function($expr, $startingPoint) {
-	// Parent constructor
+	//Parent constructor
      Mutator.call(this);
 
 	checkDefined($expr, "ConstantMutator");
@@ -20,54 +20,6 @@ var ConstantMutator = function($expr, $startingPoint) {
 	
 	this.mutationPoints = [];
 
-	for(var $field of WeaverJps.searchFromInclusive($startingPoint, 'field').get()) {
-
-		if($field.init === undefined) {
-			continue;
-		}
-
-		if(!$field.isFinal) {
-			continue;
-		}
-
-		if(!ConstantMutator._isCompatible($field.type, $expr.type)) {
-			continue;
-		}
-
-		this.mutationPoints.push($field);
-
-	}
-
-	for(var $assign of WeaverJps.searchFromInclusive($startingPoint, 'assignment').get()) {
-		
-		if(!$assign.lhs.isFinal) {
-			continue;
-		}
-
-		if(!ConstantMutator._isCompatible($assign.lhs.type, $expr.type)) {
-			continue;
-		}
-		
-		this.mutationPoints.push($assign);
-	}	
-
-
-	for(var $localVar of WeaverJps.searchFromInclusive($startingPoint, 'localVariable').get()) {
-		if($localVar.init === undefined) {
-			continue;
-		}
-		
-		if(!$localVar.isFinal) {
-			continue;
-		}
-
-		if(!ConstantMutator._isCompatible($localVar.type, $expr.type)) {
-			continue;
-		}
-		
-		this.mutationPoints.push($localVar);
-	}	
-
 	this.currentIndex = 0;
 	this.previousValue = undefined;
 
@@ -76,6 +28,33 @@ var ConstantMutator = function($expr, $startingPoint) {
 // Inheritance
 ConstantMutator.prototype = Object.create(Mutator.prototype);
 
+ConstantMutator.prototype.getType = function(){
+	return "ConstantMutator";
+}
+
+ConstantMutator.prototype.addJp = function($joinpoint){
+
+	if($joinpoint.instanceOf('field') || $joinpoint.instanceOf( 'localVariable')) {
+		if($joinpoint.init === undefined || !$joinpoint.isFinal || !ConstantMutator._isCompatible($joinpoint.type, this.$expr.type)) {
+			return false;
+		}
+		this.mutationPoints.push($joinpoint);
+
+		return true;
+	}
+
+	if($joinpoint.instanceOf('assignment')){
+		if(!$joinpoint.isFinal || !ConstantMutator._isCompatible($joinpoint.type, this.$expr.type)) {
+			return false;
+		}
+
+		this.mutationPoints.push($joinpoint);
+
+		return true;
+	}
+
+	return false;
+}
 
 /**ConstantMutator._parseNewValue = function(newValue) {
 	if(Weaver.isJoinPoint(newValue) && newValue.instanceOf("expression")) {
@@ -100,11 +79,14 @@ ConstantMutator.prototype.hasMutations = function() {
 
 ConstantMutator.prototype.getMutationPoint = function() {
 	if(this.isMutated){
+		println("Potato	" + this.newValue);
 		return this.newValue;
 	}else{
 		if(this.currentIndex < this.mutationPoints.length) {
+			println("Potato1");
 			return this.mutationPoints[this.currentIndex];
 		} else {
+			println("Potato2");
 			return undefined;
 		}
 	}

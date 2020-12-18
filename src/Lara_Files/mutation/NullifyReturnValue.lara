@@ -3,34 +3,37 @@ import kadabra.KadabraNodes;
 import weaver.WeaverJps;
 import weaver.Weaver;
 
-var NullifyReturnValue = function($startingPoint) {
-	// Parent constructor
-     Mutator.call(this);
+var NullifyReturnValue = function() {
 
-	if($startingPoint === undefined) {
-		$startingPoint = WeaverJps.root();
-	}
+	//Parent constructor
+     Mutator.call(this);
 
 	this.newValue = undefined;
 	this.mutationPoints = [];
 
-	for (var $return of WeaverJps.search('return').get()) {
-		if (!$return.ancestor('method').returnRef.isPrimitive) {
-			this.mutationPoints.push($return);
+	this.currentIndex = 0;
+	this.previousValue = undefined;
+
+};
+// Inheritance
+NullifyReturnValue.prototype = Object.create(Mutator.prototype);
+
+
+NullifyReturnValue.prototype.getType = function (){
+	return "NullifyReturnValue";
+}
+
+NullifyReturnValue.prototype.addJp = function($joinpoint){
+	if($joinpoint.instanceOf('return')) {
+		if (!$joinpoint.ancestor('method').returnRef.isPrimitive) {
+			this.mutationPoints.push($joinpoint);
+			return true;
 		}
 	}
 
-	println("Mutation points:");
-	for(var $point of this.mutationPoints) {
-		println("Point: " + $point.code);
-	}
-	
-	this.currentIndex = 0;
-	this.previousValue = undefined;
-};
+	return false;
+}
 
-// Inheritance
-NullifyReturnValue.prototype = Object.create(Mutator.prototype);
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
 NullifyReturnValue.prototype.hasMutations = function() {

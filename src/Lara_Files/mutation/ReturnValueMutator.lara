@@ -6,13 +6,9 @@ import lara.mutation.Mutator;
  *  - If method type is primitive INT, SHORT, LONG, CHAR, FLOAT or DOUBLE, return value is replaced with 0.
  *  - If method type is primitive or boxed BOOLEAN, return value is replaced by true.
  */
-var ReturnValueMutator = function($joinpoint) {
-	// Parent constructor
+var ReturnValueMutator = function() {
+	//Parent constructor
     Mutator.call(this);
-
-	if($joinpoint === undefined) {
-		$joinpoint = WeaverJps.root();
-	}
 
 	// Instance variables
 	this.toMutate = [];
@@ -20,45 +16,37 @@ var ReturnValueMutator = function($joinpoint) {
 
 	this.originalReturnExpression = undefined;
 	this.$returnExpression = undefined;
-
-	// Checks
-	var extraArgs = arrayFromArgs(arguments, 1);
-	if(extraArgs.length != 0)
-		throw "Expected only 1 argument but received " + (this.extraArgs.length + 1);
-
-	this.extractMutationTargets($joinpoint);
-
-	if(this.toMutate.length == 0)
-		println("Found no suitable code to mutate");
 };
-
-
 // Inheritance
 ReturnValueMutator.prototype = Object.create(Mutator.prototype);
 
-
+ReturnValueMutator.prototype.getType = function(){
+	return "ReturnValueMutator";
+}
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
 
 /* Analyze method nodes available for Return Value mutation and store their return statements */
-ReturnValueMutator.prototype.extractMutationTargets = function($joinpoint) {
+ReturnValueMutator.prototype.addJp = function($joinpoint) {
 	var methodZeroTypes = ['int', 'short', 'long', 'char', 'float', 'double']; // Types whose return value will changed to 0.
 	var methodTrueTypes = ['boolean', 'Boolean']; // Types whose return value will changed to true.
 	
-	for($method of WeaverJps.searchFrom($joinpoint, 'method').get()) {
+	if($joinpoint.instanceOf('method')) {
 		// Check it is a method capable of being mutated
 		var mutationValue;
-		if(methodZeroTypes.contains($method.returnType)) {
+		if(methodZeroTypes.contains($joinpoint.returnType)) {
 			mutationValue = '0';
-		} else if(methodTrueTypes.contains($method.returnType)) {
+		} else if(methodTrueTypes.contains($joinpoint.returnType)) {
 			mutationValue = 'true';
 		} else {
-			continue;
+			return false;
 		}
 		
 		// Store return statement for later modification
-		var methodReturn = WeaverJps.searchFrom($method, 'return').first();
+		var methodReturn = WeaverJps.searchFrom($joinpoint, 'return').first();
 		this.toMutate.push([methodReturn, mutationValue]);
+		return true;
 	}
+	return false;
 }
 
 ReturnValueMutator.prototype.hasMutations = function() {

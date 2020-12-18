@@ -3,26 +3,14 @@ import kadabra.KadabraNodes;
 import weaver.WeaverJps;
 import weaver.Weaver;
 
-var ArithmeticOperatorDeletionMutator = function($startingPoint) {
-	// Parent constructor
+var ArithmeticOperatorDeletionMutator = function() {
+	//Parent constructor
      Mutator.call(this);
 
-	if($startingPoint === undefined) {
-		$startingPoint = WeaverJps.root();
-	}
+	this.type =  "ArithmeticOperatorDeletionMutator";
 
 	this.newValue = undefined;
 	this.mutationPoints = [];
-
-	for(var $binaryExpression of 
-			WeaverJps.searchFromInclusive($startingPoint, 'binaryExpression').get()) {
-		this.mutationPoints.push($binaryExpression);
-	}
-
-	println("Mutation points:");
-	for(var $point of this.mutationPoints) {
-		println("Point: " + $point.code);
-	}
 	
 	this.currentIndex = 0;
 	this.previousValue = undefined;
@@ -32,6 +20,18 @@ var ArithmeticOperatorDeletionMutator = function($startingPoint) {
 
 // Inheritance
 ArithmeticOperatorDeletionMutator.prototype = Object.create(Mutator.prototype);
+
+ArithmeticOperatorDeletionMutator.prototype.getType = function(){
+	return this.type;
+}
+
+ArithmeticOperatorDeletionMutator.prototype.addJp = function($joinpoint){
+	if($joinpoint.instanceOf("binaryExpression")) {
+		this.mutationPoints.push($joinpoint);
+		return true;
+	}
+	return false;
+}
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
 ArithmeticOperatorDeletionMutator.prototype.hasMutations = function() {

@@ -9,9 +9,13 @@
       <string>workspace</string>
       <FileList>
         <fileList>
-          <file>Java_Test_Files</file>
+          <file>Java_Test_Files\com</file>
         </fileList>
       </FileList>
+    </entry>
+    <entry>
+      <string>write_code</string>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>log</string>
@@ -30,7 +34,7 @@
     </entry>
     <entry>
       <string>argv</string>
-      <string></string>
+      <string>{outputPath: &quot;output&quot;, packageName: &quot;batatas&quot;, outputFolder: &quot;./mutatedOutput&quot;}</string>
     </entry>
     <entry>
       <string>tools</string>
@@ -45,12 +49,14 @@
     </entry>
     <entry>
       <string>output</string>
-      <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Output</file>
+      <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Outputing</file>
     </entry>
     <entry>
       <string>java includes dir</string>
       <FileList>
-        <fileList/>
+        <fileList>
+          <file>..\ant - Cópia\build\classes</file>
+        </fileList>
       </FileList>
     </entry>
     <entry>
@@ -63,7 +69,7 @@
     </entry>
     <entry>
       <string>aspect</string>
-      <file>src\Lara_Files\Main.lara</file>
+      <file>src\Lara_Files\Test.lara</file>
     </entry>
     <entry>
       <string>stack trace</string>
@@ -73,8 +79,7 @@
       <string>include</string>
       <FileList>
         <fileList>
-          <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Mutations_TVVS\kadabra</file>
-          <file>TVVS\ImplementMutationTestingOperatorsUsingLara\Mutations_TVVS\kadabra\mutation</file>
+          <file>src\Lara_Files</file>
         </fileList>
       </FileList>
     </entry>
@@ -87,12 +92,20 @@
       <boolean>false</boolean>
     </entry>
     <entry>
+      <string>copy_resources</string>
+      <boolean>false</boolean>
+    </entry>
+    <entry>
       <string>format</string>
       <boolean>false</boolean>
     </entry>
     <entry>
       <string>noclasspath</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
+      <string>java_compliance_level</string>
+      <int>8</int>
     </entry>
     <entry>
       <string>javascript</string>
@@ -116,7 +129,10 @@
     <entry>
       <string>external_dependencies</string>
       <StringList>
-        <stringList/>
+        <stringList>
+          <string>https://github.com/specs-feup/lara-framework.git?folder=experimental/Mutation</string>
+          <string>https://github.com/specs-feup/lara-framework.git?folder=experimental/SourceAction</string>
+        </stringList>
       </StringList>
     </entry>
     <entry>
@@ -129,6 +145,10 @@
     <entry>
       <string>workspace_extra</string>
       <map/>
+    </entry>
+    <entry>
+      <string>fully_qualified_names</string>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>restrict mode</string>

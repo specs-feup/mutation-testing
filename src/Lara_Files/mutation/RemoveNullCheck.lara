@@ -4,37 +4,31 @@ import weaver.WeaverJps;
 import weaver.Weaver;
 
 var RemoveNullCheck = function($startingPoint) {
-	// Parent constructor
+	//Parent constructor
      Mutator.call(this);
-
-	if($startingPoint === undefined) {
-		$startingPoint = WeaverJps.root();
-	}
 
 	this.newValue = undefined;
 	this.mutationPoints = [];
-
-	for(var $binaryExpression of WeaverJps.searchFromInclusive($startingPoint, 'binaryExpression').get()) {
-		if ($binaryExpression.operator === '!=' || $binaryExpression.operator === '==') {
-			if ($binaryExpression.rhs.type === "<nulltype>" 
-			|| $binaryExpression.lhs.type === "<nulltype>") {
-				this.mutationPoints.push($binaryExpression);
-			}
-		}
-	}	
-
-	println("Mutation points:");
-	for(var $point of this.mutationPoints) {
-		println("Point: " + $point.code);
-	}
 	
 	this.currentIndex = 0;
 	this.previousValue = undefined;
-	
 };
-
 // Inheritance
 RemoveNullCheck.prototype = Object.create(Mutator.prototype);
+
+RemoveNullCheck.prototype.getType = function (){
+	return "RemoveNullCheck";
+}
+
+RemoveNullCheck.prototype.addJp = function($joinpoint){
+	if ($joinpoint.instanceOf("binaryExpression") && ($joinpoint.operator === '!=' || $joinpoint.operator === '==')) {
+		if ($joinpoint.rhs.type === "<nulltype>" || $joinpoint.lhs.type === "<nulltype>") {
+			this.mutationPoints.push($joinpoint);
+			return true;
+		}
+	}
+	return false;
+}
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
 RemoveNullCheck.prototype.hasMutations = function() {

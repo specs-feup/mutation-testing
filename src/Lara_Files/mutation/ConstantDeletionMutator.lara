@@ -7,8 +7,9 @@ import kadabra.KadabraNodes;
  */
 
 var ConstantDeletionMutator = function($joinpoint, targetConstant) {
-	// Parent constructor
-    Mutator.call(this);
+	//Parent constructor
+
+	Mutator.call(this);
 
 	if($joinpoint === undefined) {
 		$joinpoint = WeaverJps.root();
@@ -27,30 +28,27 @@ var ConstantDeletionMutator = function($joinpoint, targetConstant) {
 	if(extraArgs.length != 0)
 		throw "Expected only 2 argument but received " + (this.extraArgs.length + 2);
 
-	this.extractMutationTargets($joinpoint);
-
-	if(this.toMutate.length == 0)
-		println("Found no suitable code to mutate");
 };
-
 
 // Inheritance
 ConstantDeletionMutator.prototype = Object.create(Mutator.prototype);
 
 
 /*** IMPLEMENTATION OF INSTANCE METHODS ***/
-
+ConstantDeletionMutator.prototype.getType = function(){
+	return "ConstantDeletionMutator";
+}
 /* Analyze method binaryExpressions available for Constant Deletion mutation and store them */
-ConstantDeletionMutator.prototype.extractMutationTargets = function($joinpoint) {
-	for($binaryExpression of WeaverJps.searchFrom($joinpoint, 'binaryExpression').get()) {
+ConstantDeletionMutator.prototype.addJp = function($joinpoint) {
+	if($joinpoint.instanceOf('binaryExpression')) {
 	
-		var $lhs = $binaryExpression.lhs;
-		var $rhs = $binaryExpression.rhs;
-		if((	(this.targetConstant.contains($lhs.srcCode) && $lhs.isFinal)
+		var $lhs = $joinpoint.lhs;
+		var $rhs = $joinpoint.rhs;
+		if(((this.targetConstant.contains($lhs.srcCode) && $lhs.isFinal)
 			|| (this.targetConstant.contains($rhs.srcCode) && $rhs.isFinal) )
-			&& $binaryExpression.type !== 'boolean') {
+			&& $joinpoint.type !== 'boolean') {
 			
-			this.toMutate.push($binaryExpression);
+			this.toMutate.push($joinpoint);
 		}
 	}
 }

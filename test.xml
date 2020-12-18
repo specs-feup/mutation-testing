@@ -3,15 +3,23 @@
   <values>
     <entry>
       <string>Relational &gt;</string>
-      <list/>
+      <list>
+        <string>&lt;</string>
+        <string>==</string>
+        <string>!=</string>
+        <string>&lt;=</string>
+        <string>&gt;=</string>
+      </list>
     </entry>
     <entry>
       <string>Relational &lt;</string>
-      <list/>
-    </entry>
-    <entry>
-      <string>Super Constructor Call Deletion Mutator</string>
-      <boolean>false</boolean>
+      <list>
+        <string>&gt;</string>
+        <string>==</string>
+        <string>!=</string>
+        <string>&lt;=</string>
+        <string>&gt;=</string>
+      </list>
     </entry>
     <entry>
       <string>Nullify Return Value</string>
@@ -23,31 +31,46 @@
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;</string>
-      <list/>
+      <list>
+        <string>&lt;&lt;</string>
+        <string>&gt;&gt;&gt;</string>
+      </list>
     </entry>
     <entry>
       <string>Unary _++</string>
-      <list/>
+      <list>
+        <string>+</string>
+        <string>++_</string>
+        <string>-</string>
+        <string>--_</string>
+        <string>_--</string>
+      </list>
     </entry>
     <entry>
       <string>long: 1 to 0, </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Unary ++_</string>
-      <list/>
+      <list>
+        <string>+</string>
+        <string>-</string>
+        <string>_++</string>
+        <string>--_</string>
+        <string>_--</string>
+      </list>
     </entry>
     <entry>
       <string>Arithmetic Operators Deletion</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>float: 1.0 to 0, </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>FindViewById Deletion</string>
-      <boolean>true</boolean>
+      <boolean>false</boolean>
     </entry>
     <entry>
       <string>Conditional Operator Insertion</string>
@@ -68,11 +91,13 @@
     </entry>
     <entry>
       <string>int byte short: 1 to 0 ; </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Conditional &amp;&amp;</string>
-      <list/>
+      <list>
+        <string>||</string>
+      </list>
     </entry>
     <entry>
       <string>Constant Deletion Mutator</string>
@@ -84,10 +109,24 @@
     </entry>
     <entry>
       <string>Relational &lt;=</string>
-      <list/>
+      <list>
+        <string>&gt;</string>
+        <string>&lt;</string>
+        <string>==</string>
+        <string>!=</string>
+        <string>&gt;=</string>
+      </list>
+    </entry>
+    <entry>
+      <string>NUMBER_OF_THREADS</string>
+      <int>8</int>
     </entry>
     <entry>
       <string>float 2.0 to 0, </string>
+      <boolean>true</boolean>
+    </entry>
+    <entry>
+      <string>Identifier Replacer</string>
       <boolean>false</boolean>
     </entry>
     <entry>
@@ -96,12 +135,12 @@
     </entry>
     <entry>
       <string>int byte short otherwise increments by 1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>BitWise Operator Mutator ~</string>
       <list>
-        <string> </string>
+        <string></string>
       </list>
     </entry>
     <entry>
@@ -115,7 +154,7 @@
     </entry>
     <entry>
       <string> one String to &quot;&quot;</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Remove Null Check</string>
@@ -123,11 +162,16 @@
     </entry>
     <entry>
       <string>float other number to 1.0</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Arithmetic %</string>
-      <list/>
+      <list>
+        <string>-</string>
+        <string>*</string>
+        <string>/</string>
+        <string>+</string>
+      </list>
     </entry>
     <entry>
       <string>Fail On Null</string>
@@ -139,7 +183,10 @@
     </entry>
     <entry>
       <string>Bitwise &lt;&lt;</string>
-      <list/>
+      <list>
+        <string>&gt;&gt;</string>
+        <string>&gt;&gt;&gt;</string>
+      </list>
     </entry>
     <entry>
       <string>LaraPath</string>
@@ -147,39 +194,77 @@
     </entry>
     <entry>
       <string> False to True</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Arithmetic -</string>
-      <list/>
+      <list>
+        <string>+</string>
+        <string>*</string>
+        <string>/</string>
+        <string>%</string>
+      </list>
     </entry>
     <entry>
       <string>Relational ==</string>
-      <list/>
+      <list>
+        <string>&gt;</string>
+        <string>&lt;</string>
+        <string>!=</string>
+        <string>&lt;=</string>
+        <string>&gt;=</string>
+      </list>
     </entry>
     <entry>
       <string>Arithmetic +</string>
-      <list/>
+      <list>
+        <string>-</string>
+        <string>*</string>
+        <string>/</string>
+        <string>%</string>
+      </list>
     </entry>
     <entry>
       <string>Unary _--</string>
-      <list/>
+      <list>
+        <string>+</string>
+        <string>++_</string>
+        <string>_++</string>
+        <string>--_</string>
+        <string>-</string>
+      </list>
     </entry>
     <entry>
       <string>Arithmetic *</string>
-      <list/>
+      <list>
+        <string>-</string>
+        <string>+</string>
+        <string>/</string>
+        <string>%</string>
+      </list>
     </entry>
     <entry>
       <string>Unary --_</string>
-      <list/>
+      <list>
+        <string>+</string>
+        <string>++_</string>
+        <string>_++</string>
+        <string>-</string>
+        <string>_--</string>
+      </list>
     </entry>
     <entry>
       <string>Arithmetic /</string>
-      <list/>
+      <list>
+        <string>-</string>
+        <string>*</string>
+        <string>+</string>
+        <string>%</string>
+      </list>
     </entry>
     <entry>
       <string>ProjectPath</string>
-      <file>Java_Test_Files</file>
+      <file>..\Experience-Java-8-master - Cópia</file>
     </entry>
     <entry>
       <string>Return Value Mutator</string>
@@ -187,23 +272,28 @@
     </entry>
     <entry>
       <string>int byte short -1 to 1 ; </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>double: 1.0 to 0, </string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>OutputFile</string>
-      <file></file>
+      <file>Testing\IfClause</file>
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
-      <list/>
+      <list>
+        <string>&lt;&lt;</string>
+        <string>&gt;&gt;</string>
+      </list>
     </entry>
     <entry>
       <string>Unary !</string>
-      <list/>
+      <list>
+        <string>undefined</string>
+      </list>
     </entry>
     <entry>
       <string>Constant to 0</string>
@@ -215,7 +305,13 @@
     </entry>
     <entry>
       <string>Unary +</string>
-      <list/>
+      <list>
+        <string>-</string>
+        <string>++_</string>
+        <string>_++</string>
+        <string>--_</string>
+        <string>_--</string>
+      </list>
     </entry>
     <entry>
       <string>Constant to -1</string>
@@ -232,11 +328,19 @@
     </entry>
     <entry>
       <string>Conditional ||</string>
-      <list/>
+      <list>
+        <string>&amp;&amp;</string>
+      </list>
     </entry>
     <entry>
       <string>Unary -</string>
-      <list/>
+      <list>
+        <string>+</string>
+        <string>++_</string>
+        <string>_++</string>
+        <string>--_</string>
+        <string>_--</string>
+      </list>
     </entry>
     <entry>
       <string>Nullify Input Variable</string>
@@ -244,27 +348,33 @@
     </entry>
     <entry>
       <string>int byte short 5 to -1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>double another number to 1.0</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Relational &gt;=</string>
-      <list/>
+      <list>
+        <string>&lt;</string>
+        <string>&gt;</string>
+        <string>==</string>
+        <string>!=</string>
+        <string>&lt;=</string>
+      </list>
     </entry>
     <entry>
       <string> 0 to 1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>True to False</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>1 to -1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Remove Conditional Mutator</string>
@@ -272,11 +382,17 @@
     </entry>
     <entry>
       <string>long: otherwise increments by 1</string>
-      <boolean>false</boolean>
+      <boolean>true</boolean>
     </entry>
     <entry>
       <string>Relational !=</string>
-      <list/>
+      <list>
+        <string>&gt;</string>
+        <string>&lt;</string>
+        <string>==</string>
+        <string>&lt;=</string>
+        <string>&gt;=</string>
+      </list>
     </entry>
     <entry>
       <string>Constant to Constant + 1</string>

@@ -6,66 +6,60 @@ import weaver.Weaver;
 /**
  * @param {$expression | $expression = function($expression)} $newValue
  */
-var LiteralMutator = function($newValue, $oldValue, $startingPoint) {
-	// Parent constructor
+var LiteralMutator = function($newValue, $oldValue) {
+	//Parent constructor
      Mutator.call(this);
 
-	if($startingPoint === undefined) {
-		$startingPoint = WeaverJps.root();
-	}
-
 	checkDefined($newValue, "LiteralMutator($newValue)");
-	 
-	 if($startingPoint === undefined) {
-		$startingPoint = WeaverJps.root();
-	}
 
-/*
-	if(isString($newValue)) {
-		$newValue = KadabraNodes.literal($newValue);
-	}
-*/	
 	this.newValue = $newValue;
+	this.oldValue = $oldValue;
 
 	this.mutationPoints = [];
-	
-	for(var $literal of WeaverJps.searchFromInclusive($startingPoint, 'literal').get()) {
-		var $mutationPoint = $literal;
-
-		//if the literal is negative.
-		if($literal.parent.instanceOf('unaryExpression')) {
-			$mutationPoint = $literal.parent;
-		}
-
-
-		//mutation will only happen if the literal has other values.
-		if(!isFunction(this.newValue) && LiteralMutator._normalize($mutationPoint.code, $mutationPoint.type) === LiteralMutator._normalize(this.newValue.code, this.newValue.type)) {
-			continue;
-		}
-		
-		if(!isUndefined($oldValue)) {
-			if(isFunction($oldValue)) {
-				if(!$oldValue($mutationPoint)) {
-					continue;
-				}
-			} else if($mutationPoint.code !== $oldValue.code) {
-				//println("SKIP");
-				continue;
-			}
-		}
-
-		this.mutationPoints.push($mutationPoint);
-		
-	}
 	
 	this.currentIndex = 0;
 	this.previousValue = undefined;
 	this.mutation = undefined;
 
-};
 
+};
 // Inheritance
 LiteralMutator.prototype = Object.create(Mutator.prototype);
+
+LiteralMutator.prototype.getType = function(){
+	return "LiteralMutator";
+}
+
+LiteralMutator.prototype.addJp = function($joinpoint){
+	if($joinpoint.instanceOf('literal')) {
+		var $mutationPoint = $joinpoint;
+
+		//if the literal is negative.
+		if($joinpoint.parent.instanceOf('unaryExpression')) {
+			$mutationPoint = $joinpoint.parent;
+		}
+
+
+		//mutation will only happen if the literal has other values.
+		if(!isFunction(this.newValue) && LiteralMutator._normalize($mutationPoint.code, $mutationPoint.type) === LiteralMutator._normalize(this.newValue.code, this.newValue.type)) {
+			return false;
+		}
+
+		if(!isUndefined(this.oldValue)) {
+			if(isFunction(this.oldValue)) {
+				if(!this.oldValue($mutationPoint)) {
+					return false;
+				}
+			} else if($mutationPoint.code !== this.oldValue.code) {
+				return false;
+			}
+		}
+
+		this.mutationPoints.push($mutationPoint);
+		return true;
+	}
+	return false;
+}
 
 LiteralMutator._normalize = function(stringValue, type) {
 
