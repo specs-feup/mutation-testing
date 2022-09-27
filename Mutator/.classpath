@@ -8,8 +8,9 @@
 	<classpathentry kind="src" path="src-java"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=Mutator&amp;ivyXmlPath=ivy.xml&amp;confs=*"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SpecsUtils"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jOptions"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JavaWeaver"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jOptions"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SpecsUtils"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/LARAI"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -19,13 +19,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.lara.interpreter.joptions.config.interpreter.LaraiKeys;
+import org.lara.interpreter.joptions.config.interpreter.VerboseLevel;
+import org.lara.interpreter.joptions.keys.FileList;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.app.AppKernel;
 
 import app.operators.Operators;
 import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.specs.util.utilities.Replacer;
+import pt.up.fe.specs.util.utilities.StringList;
 import weaver.gui.KadabraLauncher;
+import weaver.options.JavaWeaverKeys;
 
 public class MutatorKernel implements AppKernel {
 
@@ -62,7 +67,7 @@ public class MutatorKernel implements AppKernel {
 
         List<File> filesList = getFiles(projectPath, new ArrayList<>());
 
-        List<String[]> listArguments = new ArrayList<>();
+        List<DataStore> listArguments = new ArrayList<>();
 
         if (filesList.isEmpty())
             filesList.add(projectPath);
@@ -70,9 +75,12 @@ public class MutatorKernel implements AppKernel {
             if (file.getName().matches("(.{0,})(.java$)")) {
                 JSONObject laraArguments = new JSONObject();
 
-                List<String> arguments = new ArrayList<>(
-                        Arrays.asList(laraPath, "-p", file.getAbsolutePath(), "-o", outputPath + "_Main" +
-                                "" + File.separator + file.getName()));
+                DataStore data = DataStore.newInstance("Kadabra Options");
+
+                data.put(LaraiKeys.LARA_FILE, new File(laraPath));
+                data.put(LaraiKeys.WORKSPACE_FOLDER, FileList.newInstance(file));
+                data.put(LaraiKeys.OUTPUT_FOLDER,
+                        new File(outputPath + "_Main" + "" + File.separator + file.getName()));
 
                 laraArguments.put("outputPath", outputPath);
                 String packageName = getPackageString(file);
@@ -95,23 +103,26 @@ public class MutatorKernel implements AppKernel {
 
                 SpecsIo.write(new File(mutatorsPath), replacer.toString());
 
-                arguments.add("-av");
-                arguments.add(laraArguments.toJSONString());
+                data.put(LaraiKeys.ASPECT_ARGS, laraArguments.toJSONString());
 
-                arguments.add("-b");
-                arguments.add("2");
-                arguments.add("-s");
-                arguments.add("-Q");
-                arguments.add("-d");
-                arguments.add("-X");
-                arguments.add("-dep");
-                arguments.add(
-                        "https://github.com/specs-feup/lara-framework.git?folder=experimental/SourceAction;https://github.com/specs-feup/lara-framework.git?folder=experimental/Mutation");
+                data.put(LaraiKeys.VERBOSE, VerboseLevel.warnings);
 
-                arguments.add("-i");
-                arguments.add("src/Lara_Files");
+                data.set(LaraiKeys.TRACE_MODE);
 
-                listArguments.add(arguments.toArray(String[]::new));
+                data.set(JavaWeaverKeys.FULLY_QUALIFIED_NAMES);
+
+                data.set(LaraiKeys.DEBUG_MODE);
+
+                data.set(JavaWeaverKeys.NO_CLASSPATH);
+
+                data.set(LaraiKeys.EXTERNAL_DEPENDENCIES,
+                        StringList.newInstance(
+                                "https://github.com/specs-feup/lara-framework.git?folder=experimental/SourceAction",
+                                "https://github.com/specs-feup/lara-framework.git?folder=experimental/Mutation"));
+
+                data.put(LaraiKeys.INCLUDES_FOLDER, FileList.newInstance(new File("src/Lara_Files")));
+
+                listArguments.add(data);
             }
             // else{
             // try {
@@ -128,7 +139,7 @@ public class MutatorKernel implements AppKernel {
         }
 
         threadCount = 0;
-        executeParallel(listArguments.toArray(String[][]::new),
+        executeParallel(listArguments,
                 dataStore.get(Tese_UI.NUMBER_OF_THREADS) < filesList.size() ? dataStore.get(Tese_UI.NUMBER_OF_THREADS)
                         : filesList.size());
 
@@ -141,14 +152,14 @@ public class MutatorKernel implements AppKernel {
         return outputPath + File.separator + "mutatedFiles";// originalPath.replace(projectPath.getAbsolutePath()," " );
     }
 
-    public static boolean executeParallel(String[][] args, int threads) {
+    public static boolean executeParallel(List<DataStore> args, int threads) {
 
         var customThreadPool = threads > 0 ? new ForkJoinPool(threads) : new ForkJoinPool();
 
-        LOGGER.info("Launching " + args.length + " instances of Kadabra in parallel, using " + threads + " threads");
+        LOGGER.info("Launching " + args.size() + " instances of Kadabra in parallel, using " + threads + " threads");
 
         try {
-            var results = customThreadPool.submit(() -> Arrays.asList(args).parallelStream()
+            var results = customThreadPool.submit(() -> args.parallelStream()
                     .map(MutatorKernel::executeSafe)
                     .collect(Collectors.toList())).get();
 
@@ -172,11 +183,11 @@ public class MutatorKernel implements AppKernel {
 
     }
 
-    private static boolean executeSafe(String[] args) {
+    private static boolean executeSafe(DataStore args) {
         if (!isInterrupted)
             try {
                 LOGGER.info("New Thead. Thread count -> " + ++threadCount);
-                LOGGER.info(" ARGS: " + String.join(" ", Arrays.asList(args)));
+                LOGGER.info(" ARGS: " + args);
                 return KadabraLauncher.execute(args);
             } catch (Exception e) {
                 LOGGER.error("Exception during Kadabra execution: " + e);
