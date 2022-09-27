@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,20 +86,9 @@ public class MutatorKernel implements AppKernel {
                                 lastIndex > 0 && lastIndex < absolutePath.length() ? lastIndex : absolutePath.length()),
                                 projectPath, outputPath));
 
-                String templatePath = "src/Lara_Files/template.lara";
                 String mutatorsPath = "src/Lara_Files/Mutators.lara";
 
-                Replacer replacer = null;
-
-                try {
-                    replacer = new Replacer(new String(Files.readAllBytes(Paths.get(templatePath))));
-                } catch (IOException e) {
-                    LOGGER.error(e);
-                    Arrays.stream(e.getStackTrace())
-                            .forEach(stackTraceElement -> LOGGER.error("\tat " + stackTraceElement));
-                    ;
-                    return -1;
-                }
+                var replacer = new Replacer(SpecsIo.getResource("pt/up/fe/specs/mutator/template.lara"));
 
                 replacer.replace("<IMPORT>", "");// Operators.getImportString());
                 replacer.replace("<MUTATORS>", Operators.generateMutatorString(dataStore));

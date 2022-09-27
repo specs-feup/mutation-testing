@@ -1,0 +1,7 @@
+import kadabra.KadabraNodes;
+import mutation.*;
+<IMPORT>
+
+var Mutators = [
+<MUTATORS>
+];
