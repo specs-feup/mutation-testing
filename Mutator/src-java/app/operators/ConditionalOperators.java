@@ -1,16 +1,15 @@
 package app.operators;
 
-import org.suikasoft.jOptions.Datakey.DataKey;
-import org.suikasoft.jOptions.Datakey.KeyFactory;
-import org.suikasoft.jOptions.Interfaces.DataStore;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.suikasoft.jOptions.Datakey.DataKey;
+import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Interfaces.DataStore;
 
-public final class ConditionalOperators extends Operators{
+public final class ConditionalOperators extends Operators {
 
     /***
      * Conditional Operators
@@ -26,8 +25,8 @@ public final class ConditionalOperators extends Operators{
     private static final List<String> AND_OP = Arrays.asList(OR);
     private static final List<String> OR_OP = Arrays.asList(AND);
 
-    private static final List<List<String>> MUTATORS = Arrays.asList(AND_OP,OR_OP);
-    private static final List<String> OPERATORS = Arrays.asList(AND,OR);
+    private static final List<List<String>> MUTATORS = Arrays.asList(AND_OP, OR_OP);
+    private static final List<String> OPERATORS = Arrays.asList(AND, OR);
 
     @Override
     public List<List<String>> getMutators() {
@@ -40,15 +39,15 @@ public final class ConditionalOperators extends Operators{
     }
 
     @Override
-    public List<DataKey> getDataKeys()  {
+    public List<DataKey> getDataKeys() {
         List<DataKey> dataKeysList = new ArrayList<>();
         MUTATORS.forEach(stringList -> {
             String operator = OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining());
-            String operatorIdentifier = DESCRIPTION +" "+operator;
+            String operatorIdentifier = DESCRIPTION + " " + operator;
             identifiers.add(operatorIdentifier);
             dataKeysList.add(
-                KeyFactory.multipleStringList(operatorIdentifier, stringList).setLabel(operator+"  ")
-                        .setDefault(() -> stringList));
+                    KeyFactory.multipleStringList(operatorIdentifier, stringList).setLabel(operator + "  ")
+                            .setDefault(() -> new ArrayList<>(stringList)));
         });
         return dataKeysList;
     }
@@ -72,16 +71,16 @@ public final class ConditionalOperators extends Operators{
     public String getMutatorString(DataStore dataStore) {
         StringBuilder mutatorString = new StringBuilder();
 
-        for (String identifier : this.getIdentifiers()){
+        for (String identifier : this.getIdentifiers()) {
             List<String> selectedMutators = (List<String>) dataStore.get(identifier);
-            for(String mutator : selectedMutators){
+            for (String mutator : selectedMutators) {
                 mutatorString
                         .append("\tnew ")
                         .append(this.getMutatorType())
                         .append("(\"")
                         .append(mutator)
                         .append("\",\"")
-                        .append(identifier.substring(identifier.indexOf(' ')+1))
+                        .append(identifier.substring(identifier.indexOf(' ') + 1))
                         .append("\"),\n");
             }
         }

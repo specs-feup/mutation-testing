@@ -1,17 +1,16 @@
 package app.operators;
 
-import org.suikasoft.jOptions.Datakey.DataKey;
-import org.suikasoft.jOptions.Datakey.KeyFactory;
-import org.suikasoft.jOptions.Interfaces.DataStore;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.suikasoft.jOptions.Datakey.DataKey;
+import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Interfaces.DataStore;
 
-public final class UnaryOperators extends Operators{
+public final class UnaryOperators extends Operators {
 
     /***
      * Unary Operators
@@ -29,18 +28,24 @@ public final class UnaryOperators extends Operators{
     protected static final String DECREMENT_AFTER = "_--";
     protected static final String NEGATE = "!";
 
-
-    private static final List<String> UNARY_PLUS_OP = Arrays.asList(UNARY_MINUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
-    private static final List<String> UNARY_MINUS_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
-    private static final List<String> INCREMENT_BEFORE_OP = Arrays.asList(UNARY_PLUS, UNARY_MINUS, INCREMENT_AFTER, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
-    private static final List<String> INCREMENT_AFTER_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, UNARY_MINUS, DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
-    private static final List<String> DECREMENT_BEFORE_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, UNARY_MINUS, DECREMENT_AFTER, NEGATE);
-    private static final List<String> DECREMENT_AFTER_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER, DECREMENT_BEFORE, UNARY_MINUS, NEGATE);
+    private static final List<String> UNARY_PLUS_OP = Arrays.asList(UNARY_MINUS, INCREMENT_BEFORE, INCREMENT_AFTER,
+            DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
+    private static final List<String> UNARY_MINUS_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER,
+            DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
+    private static final List<String> INCREMENT_BEFORE_OP = Arrays.asList(UNARY_PLUS, UNARY_MINUS, INCREMENT_AFTER,
+            DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
+    private static final List<String> INCREMENT_AFTER_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, UNARY_MINUS,
+            DECREMENT_BEFORE, DECREMENT_AFTER, NEGATE);
+    private static final List<String> DECREMENT_BEFORE_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER,
+            UNARY_MINUS, DECREMENT_AFTER, NEGATE);
+    private static final List<String> DECREMENT_AFTER_OP = Arrays.asList(UNARY_PLUS, INCREMENT_BEFORE, INCREMENT_AFTER,
+            DECREMENT_BEFORE, UNARY_MINUS, NEGATE);
     private static final List<String> NEGATE_OP = Collections.singletonList("undefined");
 
-
-    private static final List<List<String>> MUTATORS = Arrays.asList(UNARY_PLUS_OP, UNARY_MINUS_OP, INCREMENT_BEFORE_OP,INCREMENT_AFTER_OP,DECREMENT_AFTER_OP,DECREMENT_BEFORE_OP,NEGATE_OP);
-    private static final List<String> OPERATORS = Arrays.asList(UNARY_PLUS, UNARY_MINUS, INCREMENT_BEFORE,INCREMENT_AFTER,DECREMENT_AFTER,DECREMENT_BEFORE,NEGATE);
+    private static final List<List<String>> MUTATORS = Arrays.asList(UNARY_PLUS_OP, UNARY_MINUS_OP, INCREMENT_BEFORE_OP,
+            INCREMENT_AFTER_OP, DECREMENT_AFTER_OP, DECREMENT_BEFORE_OP, NEGATE_OP);
+    private static final List<String> OPERATORS = Arrays.asList(UNARY_PLUS, UNARY_MINUS, INCREMENT_BEFORE,
+            INCREMENT_AFTER, DECREMENT_AFTER, DECREMENT_BEFORE, NEGATE);
 
     @Override
     public List<List<String>> getMutators() {
@@ -53,15 +58,17 @@ public final class UnaryOperators extends Operators{
     }
 
     @Override
-    public List<DataKey> getDataKeys()  {
+    public List<DataKey> getDataKeys() {
         List<DataKey> dataKeysList = new ArrayList<>();
         MUTATORS.forEach(stringList -> {
-            String operator = stringList.size()>1 ? OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining()) : "!";
-            String operatorIdentifier = DESCRIPTION +" "+operator;
+            String operator = stringList.size() > 1
+                    ? OPERATORS.stream().filter(s -> !stringList.contains(s)).collect(Collectors.joining())
+                    : "!";
+            String operatorIdentifier = DESCRIPTION + " " + operator;
             identifiers.add(operatorIdentifier);
             dataKeysList.add(
-                    KeyFactory.multipleStringList(operatorIdentifier, stringList).setLabel(operator+"  ")
-                            .setDefault(() -> stringList));
+                    KeyFactory.multipleStringList(operatorIdentifier, stringList).setLabel(operator + "  ")
+                            .setDefault(() -> new ArrayList<>(stringList)));
         });
         return dataKeysList;
     }
@@ -85,16 +92,16 @@ public final class UnaryOperators extends Operators{
     public String getMutatorString(DataStore dataStore) {
         StringBuilder mutatorString = new StringBuilder();
 
-        for (String identifier : this.getIdentifiers()){
+        for (String identifier : this.getIdentifiers()) {
             List<String> selectedMutators = (List<String>) dataStore.get(identifier);
-            for(String mutator : selectedMutators){
+            for (String mutator : selectedMutators) {
                 mutatorString
                         .append("\tnew ")
                         .append(this.getMutatorType())
                         .append("(\"")
                         .append(mutator)
                         .append("\",\"")
-                        .append(identifier.substring(identifier.indexOf(' ')+1))
+                        .append(identifier.substring(identifier.indexOf(' ') + 1))
                         .append("\"),\n");
             }
         }
