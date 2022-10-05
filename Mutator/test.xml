@@ -190,7 +190,7 @@
     </entry>
     <entry>
       <string>LaraPath</string>
-      <file>src\Lara_Files\Main.lara</file>
+      <file>src/Lara_Files/Main.lara</file>
     </entry>
     <entry>
       <string> False to True</string>
@@ -264,7 +264,7 @@
     </entry>
     <entry>
       <string>ProjectPath</string>
-      <file>..\Experience-Java-8-master - Cópia</file>
+      <file>../TestProject/src</file>
     </entry>
     <entry>
       <string>Return Value Mutator</string>
@@ -280,7 +280,7 @@
     </entry>
     <entry>
       <string>OutputFile</string>
-      <file>Testing\IfClause</file>
+      <file>../TestProjectOutput/src</file>
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
