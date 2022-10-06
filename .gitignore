@@ -1,2 +1,5 @@
 # Default ignored files
 target/
+
+# Folder with generated code
+TestProjectOutput/src/main/
