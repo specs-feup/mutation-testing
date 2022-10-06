@@ -12,7 +12,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -50,20 +49,23 @@ public class MutatorKernel implements AppKernel {
                 : "src/Lara_Files/Main.lara";
         String outputPath = dataStore.get(Tese_UI.OUTPUT_FILE).getAbsolutePath() + File.separator + "Output";
 
-        try {
-            File tempOutputDir = new File(outputPath);
-            if (!tempOutputDir.exists())
-                tempOutputDir.mkdir();
-            FileUtils.cleanDirectory(tempOutputDir);
-            tempOutputDir = new File(outputPath + "_Main");
-            if (!tempOutputDir.exists())
-                tempOutputDir.mkdir();
-            FileUtils.cleanDirectory(tempOutputDir);
-        } catch (IOException e) {
-            LOGGER.error(e);
-            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat " + stackTraceElement));
-            ;
-        }
+        // Makes sure the output path exists
+        var outputFolder = SpecsIo.mkdir(dataStore.get(Tese_UI.OUTPUT_FILE));
+
+        // try {
+        // File tempOutputDir = new File(outputPath);
+        // if (!tempOutputDir.exists())
+        // tempOutputDir.mkdir();
+        // FileUtils.cleanDirectory(tempOutputDir);
+        // tempOutputDir = new File(outputPath + "_Main");
+        // if (!tempOutputDir.exists())
+        // tempOutputDir.mkdir();
+        // FileUtils.cleanDirectory(tempOutputDir);
+        // } catch (IOException e) {
+        // LOGGER.error(e);
+        // Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat " + stackTraceElement));
+        // ;
+        // }
 
         List<File> filesList = getFiles(projectPath, new ArrayList<>());
 
@@ -80,7 +82,8 @@ public class MutatorKernel implements AppKernel {
                 data.put(LaraiKeys.LARA_FILE, new File(laraPath));
                 data.put(LaraiKeys.WORKSPACE_FOLDER, FileList.newInstance(file));
                 data.put(LaraiKeys.OUTPUT_FOLDER,
-                        new File(outputPath + "_Main" + "" + File.separator + file.getName()));
+                        // new File(outputPath + "_Main" + "" + File.separator + file.getName()));
+                        outputFolder);
 
                 laraArguments.put("outputPath", outputPath);
                 String packageName = getPackageString(file);

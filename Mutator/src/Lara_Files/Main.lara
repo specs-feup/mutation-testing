@@ -94,7 +94,7 @@ for(mutator of Mutators){
 
 	}
 }
-saveFile();
+//saveFile();
 println("Finalized with "+ identifiersList.identifiers.length +" mutants generated" );
 
 function saveFile(){

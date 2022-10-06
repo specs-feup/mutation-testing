@@ -190,7 +190,7 @@
     </entry>
     <entry>
       <string>LaraPath</string>
-      <file>src/Lara_Files/Main.lara</file>
+      <file>src\Lara_Files\Main.lara</file>
     </entry>
     <entry>
       <string> False to True</string>
@@ -264,7 +264,7 @@
     </entry>
     <entry>
       <string>ProjectPath</string>
-      <file>../TestProject/src</file>
+      <file>..\TestProject\src\main\java</file>
     </entry>
     <entry>
       <string>Return Value Mutator</string>
@@ -280,7 +280,7 @@
     </entry>
     <entry>
       <string>OutputFile</string>
-      <file>../TestProjectOutput/src</file>
+      <file>..\TestProjectOutput\src\main\java</file>
     </entry>
     <entry>
       <string>Bitwise &gt;&gt;&gt;</string>
