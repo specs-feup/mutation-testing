@@ -1,5 +1,6 @@
 laraImport("lara.Io");
 laraImport("Mutators");
+laraImport("weaver.Query");
 
 //aspectdef Test
 //input outputPath, packageName, outputFolder end
@@ -16,15 +17,21 @@ function main(outputPath, packageName, outputFolder) {
 
   identifiersList.identifiers = [];
 
-  if (Mutators[0] === undefined) {
+  if (Mutators.length === 0) {
     println("No mutators selected");
     return;
   }
 
-  for (var $jp of WeaverJps.root().descendants) {
+  for (var $jp of Query.root().descendants) {
     var $call = $jp.ancestor("call");
 
+    // Ignore nodes that are children of $call with the name <init>
     if ($call !== undefined && $call.name === "<init>") continue;
+
+    // Ignore nodes inside variable declarations
+    //if ($jp.ancestor("localVariable") !== undefined) {
+    //  continue;
+    //}
 
     for (mutator of Mutators) {
       if (mutator.addJp($jp)) {
