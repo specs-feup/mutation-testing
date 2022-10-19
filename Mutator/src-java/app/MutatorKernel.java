@@ -46,7 +46,7 @@ public class MutatorKernel implements AppKernel {
 
         File projectPath = dataStore.get(Tese_UI.PROJECT_FILE);
         String laraPath = dataStore.get(Tese_UI.LARA_FILE).isFile() ? dataStore.get(Tese_UI.LARA_FILE).getAbsolutePath()
-                : "src/Lara_Files/Main.lara";
+                : "src/Lara_Files/Main.js";
         String outputPath = dataStore.get(Tese_UI.OUTPUT_FILE).getAbsolutePath() + File.separator + "Output";
 
         // Makes sure the output path exists
