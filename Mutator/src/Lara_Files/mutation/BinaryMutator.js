@@ -5,9 +5,7 @@ laraImport("weaver.Weaver");
 
 class BinaryMutator extends Mutator {
   constructor($result, $original) {
-    super();
-
-    this.type = "BinaryMutator";
+    super("BinaryMutator");
 
     this.$expr = $result;
     this.$original = $original;
@@ -15,13 +13,6 @@ class BinaryMutator extends Mutator {
     this.currentIndex = 0;
     this.mutationPoint = undefined;
     this.previousValue = undefined;
-  }
-
-  // Inheritance
-  //BinaryMutator.prototype = Object.create(Mutator.prototype);
-
-  getType() {
-    return this.type;
   }
 
   static _isCompatible(type1, type2) {
