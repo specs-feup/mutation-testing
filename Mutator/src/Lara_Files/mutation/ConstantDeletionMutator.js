@@ -1,96 +1,93 @@
-import lara.mutation.Mutator;
-import kadabra.KadabraNodes;
+laraImport("lara.mutation.Mutator");
+laraImport("kadabra.KadabraNodes");
 
 /**
  *  @param {$joinpoint} $joinpoint - Joinpoint used as starting point to search for constants to be deleted from binary expressions.
  *  @param {String} targetConstant - Target constant to be removed from binary expressions.
  */
 
-var ConstantDeletionMutator = function($joinpoint, targetConstant) {
-	//Parent constructor
+class ConstantDeletionMutator extends Mutator {
 
-	Mutator.call(this);
+	constructor($joinpoint, targetConstant) {
+		//Parent constructor
 
-	if($joinpoint === undefined) {
-		$joinpoint = WeaverJps.root();
+		super("ConstantDeletionMutator");
+
+		if ($joinpoint === undefined) {
+			$joinpoint = WeaverJps.root();
+		}
+
+		// Instance variables
+		this.toMutate = [];
+		this.currentIndex = 0;
+
+		this.targetConstant = [targetConstant, '(' + targetConstant + ')'];
+		this.$originalNode = undefined;
+		this.$node = undefined;
+
+		// Checks
+		let extraArgs = arrayFromArgs(arguments, 2);
+		if (extraArgs.length != 0)
+			throw new Error("Expected only 2 argument but received " + (this.extraArgs.length + 2));
+
 	}
 
-	// Instance variables
-	this.toMutate = [];
-	this.currentIndex = 0;
-	
-	this.targetConstant = [targetConstant, '(' + targetConstant + ')'];
-	this.$originalNode = undefined;
-	this.$node = undefined;
-	
-	// Checks
-	var extraArgs = arrayFromArgs(arguments, 2);
-	if(extraArgs.length != 0)
-		throw "Expected only 2 argument but received " + (this.extraArgs.length + 2);
+	/*** IMPLEMENTATION OF INSTANCE METHODS ***/
 
-};
+	/* Analyze method binaryExpressions available for Constant Deletion mutation and store them */
+	addJp($joinpoint) {
+		if ($joinpoint.instanceOf('binaryExpression')) {
 
-// Inheritance
-ConstantDeletionMutator.prototype = Object.create(Mutator.prototype);
+			var $lhs = $joinpoint.lhs;
+			var $rhs = $joinpoint.rhs;
+			if (((this.targetConstant.contains($lhs.srcCode) && $lhs.isFinal)
+				|| (this.targetConstant.contains($rhs.srcCode) && $rhs.isFinal))
+				&& $joinpoint.type !== 'boolean') {
 
-
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
-ConstantDeletionMutator.prototype.getType = function(){
-	return "ConstantDeletionMutator";
-}
-/* Analyze method binaryExpressions available for Constant Deletion mutation and store them */
-ConstantDeletionMutator.prototype.addJp = function($joinpoint) {
-	if($joinpoint.instanceOf('binaryExpression')) {
-	
-		var $lhs = $joinpoint.lhs;
-		var $rhs = $joinpoint.rhs;
-		if(((this.targetConstant.contains($lhs.srcCode) && $lhs.isFinal)
-			|| (this.targetConstant.contains($rhs.srcCode) && $rhs.isFinal) )
-			&& $joinpoint.type !== 'boolean') {
-			
-			this.toMutate.push($joinpoint);
+				this.toMutate.push($joinpoint);
+			}
 		}
 	}
-}
 
-ConstantDeletionMutator.prototype.hasMutations = function() {
-	return this.currentIndex < this.toMutate.length;
-}
-
-
-ConstantDeletionMutator.prototype._mutatePrivate = function() {
-	this.$node = this.toMutate[this.currentIndex++];
-
-	this.$originalNode = this.$node.copy();
-
-	if(this.targetConstant.contains(this.$node.lhs.srcCode)) {
-		this.$node = this.$node.insertReplace(this.$node.rhs);
-	} else if(this.targetConstant.contains(this.$node.rhs.srcCode)) {
-		this.$node = this.$node.insertReplace(this.$node.lhs);
+	hasMutations() {
+		return this.currentIndex < this.toMutate.length;
 	}
 
-	println("/*--------------------------------------*/");
-	println("Mutating operator n."+ this.currentIndex + ": "+ this.$originalNode
-		+" to "+ this.$node);
-	println("/*--------------------------------------*/");
 
-}
+	_mutatePrivate() {
+		this.$node = this.toMutate[this.currentIndex++];
 
-ConstantDeletionMutator.prototype._restorePrivate = function() {
-	this.$node = this.$node.insertReplace(this.$originalNode);
+		this.$originalNode = this.$node.copy();
 
-	this.$originalNode = undefined;
-	this.$node = undefined;
-}
+		if (this.targetConstant.contains(this.$node.lhs.srcCode)) {
+			this.$node = this.$node.insertReplace(this.$node.rhs);
+		} else if (this.targetConstant.contains(this.$node.rhs.srcCode)) {
+			this.$node = this.$node.insertReplace(this.$node.lhs);
+		}
 
-ConstantDeletionMutator.prototype.getMutationPoint = function() {
-	if (this.isMutated) {
-		return this.$node;
-	} else {
-		if (this.currentIndex < this.toMutate.length) {
-			return this.toMutate[this.currentIndex];
+		println("/*--------------------------------------*/");
+		println("Mutating operator n." + this.currentIndex + ": " + this.$originalNode
+			+ " to " + this.$node);
+		println("/*--------------------------------------*/");
+
+	}
+
+	_restorePrivate() {
+		this.$node = this.$node.insertReplace(this.$originalNode);
+
+		this.$originalNode = undefined;
+		this.$node = undefined;
+	}
+
+	getMutationPoint() {
+		if (this.isMutated) {
+			return this.$node;
 		} else {
-			return undefined;
+			if (this.currentIndex < this.toMutate.length) {
+				return this.toMutate[this.currentIndex];
+			} else {
+				return undefined;
+			}
 		}
 	}
 }

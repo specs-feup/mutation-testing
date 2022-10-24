@@ -1,42 +1,41 @@
-import lara.mutation.IterativeMutation;
-import lara.mutation.MutationResult;
+laraImport("lara.mutation.IterativeMutation");
+laraImport("lara.mutation.MutationResult");
 
 
 /**
  */
-var ConditionalOperatorDeletionMutation = function() {
-	//Parent constructor
-    IterativeMutation.call(this, "ConditionalOperatorDeletionMutation");
-};
-// Inheritance
-ConditionalOperatorDeletionMutation.prototype = Object.create(IterativeMutation.prototype);
-
-
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
-
-ConditionalOperatorDeletionMutation.prototype.isMutationPoint = function($jp) {
-
-	if($jp.instanceOf('if') || $jp.instanceOf('ternary') || $jp.instanceOf('loop')) {
-
-		if($jp.cond.instanceOf('unaryExpression') && $jp.cond.operator === '!') {
-			return true;
-		}
+class ConditionalOperatorDeletionMutation extends IterativeMutation {
+	constructor() {
+		//Parent constructor
+		super("ConditionalOperatorDeletionMutation");
 	}
 
-	return false;
-}
+	/*** IMPLEMENTATION OF INSTANCE METHODS ***/
 
+	isMutationPoint($jp) {
 
-ConditionalOperatorDeletionMutation.prototype.mutate = function* ($jp) {
+		if ($jp.instanceOf('if') || $jp.instanceOf('ternary') || $jp.instanceOf('loop')) {
 
-	var mutation = $jp.copy;
-	
-	mutation.cond.insertReplace(mutation.cond.operand.copy());
-	
-	debug("/*--------------------------------------*/");
-	debug("Mutating operator: "+ $jp +" to "+ mutation);
-	debug("/*--------------------------------------*/");		
-	
-	yield new MutationResult(mutation);
+			if ($jp.cond.instanceOf('unaryExpression') && $jp.cond.operator === '!') {
+				return true;
+			}
+		}
 
+		return false;
+	}
+
+	//function*
+	mutate($jp) {
+
+		let mutation = $jp.copy;
+
+		mutation.cond.insertReplace(mutation.cond.operand.copy());
+
+		debug("/*--------------------------------------*/");
+		debug("Mutating operator: " + $jp + " to " + mutation);
+		debug("/*--------------------------------------*/");
+
+		return new MutationResult(mutation);
+
+	}
 }

@@ -1,6 +1,5 @@
-import lara.mutation.Mutator;
-import kadabra.KadabraNodes;
-
+laraImport("lara.mutation.Mutator");
+laraImport("kadabra.KadabraNodes");
 /**
  *  @param {$joinpoint} $joinpoint - Joinpoint used as starting point to search for non void method calls which will be replaced by a hardcoded value.
  *  Method call mutations:
@@ -10,128 +9,126 @@ import kadabra.KadabraNodes;
  *  - If method type is primitive CHAR, method call is replaced by '\u0000'.
  *  - If method type is non of the above, method call is replaced by null.
  */
-var NonVoidCallMutator = function() {
-	//Parent constructor
-    Mutator.call(this, "NonVoidCallMutator");
+class NonVoidCallMutator extends Mutator {
+	constructor() {
+		//Parent constructor
+		super("NonVoidCallMutator");
 
-	// Instance variables
-	this.toMutate = [];
-	this.currentIndex = 0;
-	
-	this.$originalCallNode = undefined;
-	this.$callNode = undefined;
+		// Instance variables
+		this.toMutate = [];
+		this.currentIndex = 0;
 
-};
-// Inheritance
-NonVoidCallMutator.prototype = Object.create(Mutator.prototype);
+		this.$originalCallNode = undefined;
+		this.$callNode = undefined;
 
-NonVoidCallMutator.prototype.getType = function(){
-	return "NonVoidCallMutator";
-}
+	}
 
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
 
-// Analyze method calls available for Non Void Call mutation and store them
-NonVoidCallMutator.prototype.addJp = function($joinpoint) {
+	/*** IMPLEMENTATION OF INSTANCE METHODS ***/
 
-	// Map method call type to the respective mutation value (if a type is not on the list, it's mapped to 'null' value)
-	var typeToValue = {
-		'boolean': 'false',
-		'Boolean': 'false',
-		'int': '0',
-		'byte': '0',
-		'short': '0',
-		'long': '0',
-		'float': '0.0',
-		'double': '0.0',
-		'char': '\u0000',
-		'String': '\u0000'
-	};
-	var typeList = Object.keys(typeToValue);
+	// Analyze method calls available for Non Void Call mutation and store them
+	addJp($joinpoint) {
 
-	var hasMutations = false;
+		// Map method call type to the respective mutation value (if a type is not on the list, it's mapped to 'null' value)
+		let typeToValue = {
+			'boolean': 'false',
+			'Boolean': 'false',
+			'int': '0',
+			'byte': '0',
+			'short': '0',
+			'long': '0',
+			'float': '0.0',
+			'double': '0.0',
+			'char': '\u0000',
+			'String': '\u0000'
+		};
+		let typeList = Object.keys(typeToValue);
 
-	if($joinpoint.instanceOf('assignment') || $joinpoint.instanceOf('localVariable') || $joinpoint.instanceOf('if') || $joinpoint.instanceOf('loop')){
-			var descendants = ($joinpoint.instanceOf('if') || $joinpoint.instanceOf('loop')) ? $joinpoint.cond.descendants : $joinpoint.descendants;
+		let hasMutations = false;
 
-		for($descendant of $joinpoint.descendants) {
-			try {
-				if ($descendant.instanceOf('call') && $descendant.returnType !== 'void') {
-					// Store call for later modification
+		if ($joinpoint.instanceOf('assignment') || $joinpoint.instanceOf('localVariable') || $joinpoint.instanceOf('if') || $joinpoint.instanceOf('loop')) {
+			let descendants = ($joinpoint.instanceOf('if') || $joinpoint.instanceOf('loop')) ? $joinpoint.cond.descendants : $joinpoint.descendants;
 
-					var mutationValue = typeList.includes($descendant.returnType) ? typeToValue[$descendant.returnType] : 'null';
+			for (let $descendant of $joinpoint.descendants) {
+				try {
+					if ($descendant.instanceOf('call') && $descendant.returnType !== 'void') {
+						// Store call for later modification
 
-					this.toMutate.push([$descendant, mutationValue]);
-					hasMutations = true;
+						let mutationValue = typeList.includes($descendant.returnType) ? typeToValue[$descendant.returnType] : 'null';
+
+						this.toMutate.push([$descendant, mutationValue]);
+						hasMutations = true;
+					}
+				} catch (e) {
+					println("ERROR: " + e + "\n" + $descendant.attributes);
 				}
-			} catch (e) {
-				println("ERROR: " + e + "\n" + $descendant.attributes);
 			}
 		}
-	}
-	return hasMutations;
-}
-
-NonVoidCallMutator.prototype.hasMutations = function() {
-	return this.currentIndex < this.toMutate.length;
-}
-
-
-NonVoidCallMutator.prototype._mutatePrivate = function() {
-	var mutationInfo = this.toMutate[this.currentIndex];
-
-	this.$callNode = mutationInfo[0];
-	var mutationValue = mutationInfo[1];
-
-	this.$originalCode = this.$callNode.parent.srcCode;
-
-	/* Char and String mutation value is a null character, which generates a null node when using it directly with insertReplace.
-	   A KadabraNodes.literal is required to solve the problem */
-	if(this.$callNode.returnType === 'char' || this.$callNode.returnType === 'String') {
-		try{
-		var mutatedNode = KadabraNodes.literal(mutationValue, this.$callNode.returnType);
-		}catch(e){println("ERROR: " + e);}
-		println("Nope!!!!");
-		this.$callNode.insertReplace(mutatedNode);
-	} else {
-		println("Perhaps!!!!");
-		this.$callNode.insertReplace(mutationValue);
+		return hasMutations;
 	}
 
-	this.isMutated = true;
-
-	println("/*--------------------------------------*/");
-	println("Mutating operator n."+ this.currentIndex + ": "+ this.$originalCallNode
-		+" to "+ this.$callNode);
-	println("/*--------------------------------------*/");
-}
-
-NonVoidCallMutator.prototype._restorePrivate = function() {
-
-	println("$callNode ->  " + this.$callNode);
-	println("originalCallNode ->  " + this.$originalCode);
-	println("Original parent -> " + this.$callNode.parent.srcCode);
-
-	try {
-		this.getMutationPoint().parent.insertReplace(this.$originalCode);
-	}catch (e) {
-		println("ERROR!!! " + e);
-		notImplemented("potato");
+	hasMutations() {
+		return this.currentIndex < this.toMutate.length;
 	}
 
-	println("Parent restored -> " + this.getMutationPoint().parent.srcCode + "\n\n\n\n");
 
-	this.currentIndex++;
-	this.isMutated = false;
-	this.$originalCallNode = undefined;
-	this.$callNode = undefined;
-}
+	_mutatePrivate() {
+		let mutationInfo = this.toMutate[this.currentIndex];
+
+		this.$callNode = mutationInfo[0];
+		let mutationValue = mutationInfo[1];
+
+		this.$originalCode = this.$callNode.parent.srcCode;
+
+		/* Char and String mutation value is a null character, which generates a null node when using it directly with insertReplace.
+		   A KadabraNodes.literal is required to solve the problem */
+		if (this.$callNode.returnType === 'char' || this.$callNode.returnType === 'String') {
+			try {
+				let mutatedNode = KadabraNodes.literal(mutationValue, this.$callNode.returnType);
+			} catch (e) { println("ERROR: " + e); }
+			println("Nope!!!!");
+			this.$callNode.insertReplace(mutatedNode);
+		} else {
+			println("Perhaps!!!!");
+			this.$callNode.insertReplace(mutationValue);
+		}
+
+		this.isMutated = true;
+
+		println("/*--------------------------------------*/");
+		println("Mutating operator n." + this.currentIndex + ": " + this.$originalCallNode
+			+ " to " + this.$callNode);
+		println("/*--------------------------------------*/");
+	}
+
+	_restorePrivate() {
+
+		println("$callNode ->  " + this.$callNode);
+		println("originalCallNode ->  " + this.$originalCode);
+		println("Original parent -> " + this.$callNode.parent.srcCode);
+
+		try {
+			this.getMutationPoint().parent.insertReplace(this.$originalCode);
+		} catch (e) {
+			println("ERROR!!! " + e);
+			notImplemented("potato");
+		}
+
+		println("Parent restored -> " + this.getMutationPoint().parent.srcCode + "\n\n\n\n");
+
+		this.currentIndex++;
+		this.isMutated = false;
+		this.$originalCallNode = undefined;
+		this.$callNode = undefined;
+	}
 
 
-NonVoidCallMutator.prototype.getMutationPoint = function() {
-	if (this.currentIndex < this.toMutate.length) {
-		return this.toMutate[this.currentIndex][0];
-	} else {
-		return undefined;
+	getMutationPoint() {
+		if (this.currentIndex < this.toMutate.length) {
+			return this.toMutate[this.currentIndex][0];
+		} else {
+			return undefined;
+		}
 	}
 }
+

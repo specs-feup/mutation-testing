@@ -1,4 +1,4 @@
-import lara.mutation.Mutator;
+laraImport("lara.mutation.Mutator");
 
 /**
  *  @param {$joinpoint} $joinpoint - Joinpoint used as starting point to search for methods whose return value will be mutated.
@@ -6,86 +6,84 @@ import lara.mutation.Mutator;
  *  - If method type is primitive INT, SHORT, LONG, CHAR, FLOAT or DOUBLE, return value is replaced with 0.
  *  - If method type is primitive or boxed BOOLEAN, return value is replaced by true.
  */
-var ReturnValueMutator = function() {
-	//Parent constructor
-    Mutator.call(this);
+class ReturnValueMutator extends Mutator {
 
-	// Instance variables
-	this.toMutate = [];
-	this.currentIndex = 0;
+	constructor() {
+		//Parent constructor
+		super("ReturnValueMutator")
 
-	this.originalReturnExpression = undefined;
-	this.$returnExpression = undefined;
-};
-// Inheritance
-ReturnValueMutator.prototype = Object.create(Mutator.prototype);
+		// Instance variables
+		this.toMutate = [];
+		this.currentIndex = 0;
 
-ReturnValueMutator.prototype.getType = function(){
-	return "ReturnValueMutator";
-}
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
-
-/* Analyze method nodes available for Return Value mutation and store their return statements */
-ReturnValueMutator.prototype.addJp = function($joinpoint) {
-	var methodZeroTypes = ['int', 'short', 'long', 'char', 'float', 'double']; // Types whose return value will changed to 0.
-	var methodTrueTypes = ['boolean', 'Boolean']; // Types whose return value will changed to true.
-	
-	if($joinpoint.instanceOf('method')) {
-		// Check it is a method capable of being mutated
-		var mutationValue;
-		if(methodZeroTypes.contains($joinpoint.returnType)) {
-			mutationValue = '0';
-		} else if(methodTrueTypes.contains($joinpoint.returnType)) {
-			mutationValue = 'true';
-		} else {
-			return false;
-		}
-		
-		// Store return statement for later modification
-		var methodReturn = WeaverJps.searchFrom($joinpoint, 'return').first();
-		this.toMutate.push([methodReturn, mutationValue]);
-		return true;
+		this.originalReturnExpression = undefined;
+		this.$returnExpression = undefined;
 	}
-	return false;
-}
 
-ReturnValueMutator.prototype.hasMutations = function() {
-	return this.currentIndex < this.toMutate.length;
-}
+	/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+
+	/* Analyze method nodes available for Return Value mutation and store their return statements */
+	addJp($joinpoint) {
+		let methodZeroTypes = ['int', 'short', 'long', 'char', 'float', 'double']; // Types whose return value will changed to 0.
+		let methodTrueTypes = ['boolean', 'Boolean']; // Types whose return value will changed to true.
+
+		if ($joinpoint.instanceOf('method')) {
+			// Check it is a method capable of being mutated
+			let mutationValue;
+			if (methodZeroTypes.contains($joinpoint.returnType)) {
+				mutationValue = '0';
+			} else if (methodTrueTypes.contains($joinpoint.returnType)) {
+				mutationValue = 'true';
+			} else {
+				return false;
+			}
+
+			// Store return statement for later modification
+			let methodReturn = WeaverJps.searchFrom($joinpoint, 'return').first();
+			this.toMutate.push([methodReturn, mutationValue]);
+			return true;
+		}
+		return false;
+	}
+
+	hasMutations() {
+		return this.currentIndex < this.toMutate.length;
+	}
 
 
-ReturnValueMutator.prototype._mutatePrivate = function() {
-	var mutationInfo = this.toMutate[this.currentIndex++];
+	_mutatePrivate() {
+		let mutationInfo = this.toMutate[this.currentIndex++];
 
-	this.$returnExpression = mutationInfo[0];
-	var mutationValue = mutationInfo[1];
-	
-	this.originalReturnExpression = this.$returnExpression.copy();
-	
-	var mutatedReturn = 'return ' + mutationValue + ';';
-	this.$returnExpression = this.$returnExpression.insertReplace(mutatedReturn);
+		this.$returnExpression = mutationInfo[0];
+		let mutationValue = mutationInfo[1];
 
-	println("/*--------------------------------------*/");
-	println("Mutating operator n."+ this.currentIndex + ": " + this.originalReturnExpression
-		+ " to "+ this.$returnExpression);
-	println("/*--------------------------------------*/");
-}
+		this.originalReturnExpression = this.$returnExpression.copy();
 
-ReturnValueMutator.prototype._restorePrivate = function() {
-	this.$returnExpression = this.$returnExpression.insertReplace(this.originalReturnExpression);
-	
-	this.originalReturnExpression = undefined;
-	this.$returnExpression = undefined;
-}
+		let mutatedReturn = 'return ' + mutationValue + ';';
+		this.$returnExpression = this.$returnExpression.insertReplace(mutatedReturn);
 
-ReturnValueMutator.prototype.getMutationPoint = function() {
-	if (this.isMutated && this.$returnExpression !== null) {
-		return this.$returnExpression;
-	} else {
-		if (this.currentIndex < this.toMutate.length) {
-			return this.toMutate[this.currentIndex];
+		println("/*--------------------------------------*/");
+		println("Mutating operator n." + this.currentIndex + ": " + this.originalReturnExpression
+			+ " to " + this.$returnExpression);
+		println("/*--------------------------------------*/");
+	}
+
+	_restorePrivate() {
+		this.$returnExpression = this.$returnExpression.insertReplace(this.originalReturnExpression);
+
+		this.originalReturnExpression = undefined;
+		this.$returnExpression = undefined;
+	}
+
+	getMutationPoint() {
+		if (this.isMutated && this.$returnExpression !== null) {
+			return this.$returnExpression;
 		} else {
-			return undefined;
+			if (this.currentIndex < this.toMutate.length) {
+				return this.toMutate[this.currentIndex];
+			} else {
+				return undefined;
+			}
 		}
 	}
 }

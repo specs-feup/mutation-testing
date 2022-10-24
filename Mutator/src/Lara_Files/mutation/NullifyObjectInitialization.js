@@ -1,71 +1,69 @@
-import lara.mutation.Mutator;
-import kadabra.KadabraNodes;
-import weaver.WeaverJps;
-import weaver.Weaver;
+laraImport("lara.mutation.Mutator");
+laraImport("kadabra.KadabraNodes");
+laraImport("weaver.WeaverJps");
+laraImport("weaver.Query");
 
-var NullifyObjectInitialization = function($startingPoint) {
-//Parent constructor
-     Mutator.call(this);
+class NullifyObjectInitialization extends Mutator {
 
-	this.newValue = undefined;
-	this.mutationPoints = [];
-	
-	this.currentIndex = 0;
-	this.previousValue = undefined;
+	constructor($startingPoint) {
+		//Parent constructor
+		super("NullifyObjectInitialization")
 
-};
-// Inheritance
-NullifyObjectInitialization.prototype = Object.create(Mutator.prototype);
+		this.newValue = undefined;
+		this.mutationPoints = [];
 
-NullifyObjectInitialization.prototype.getType = function (){
-	return "NullifyObjectInitialization";
-}
+		this.currentIndex = 0;
+		this.previousValue = undefined;
 
-NullifyObjectInitialization.prototype.addJp = function($joinpoint){
-	if($joinpoint.instanceOf('new')) {
-		this.mutationPoints.push($joinpoint);
-		return true;
 	}
 
-	return false;
-}
 
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
-NullifyObjectInitialization.prototype.hasMutations = function() {
-	return this.currentIndex < this.mutationPoints.length;
-}
+	addJp($joinpoint) {
+		if ($joinpoint.instanceOf('new')) {
+			this.mutationPoints.push($joinpoint);
+			return true;
+		}
 
-NullifyObjectInitialization.prototype.getMutationPoint = function() {
-	if(this.isMutated){
-		return this.newValue;
-	}else{
-		if(this.currentIndex < this.mutationPoints.length) {
-		return this.mutationPoints[this.currentIndex];
+		return false;
+	}
+
+	/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+	hasMutations() {
+		return this.currentIndex < this.mutationPoints.length;
+	}
+
+	getMutationPoint() {
+		if (this.isMutated) {
+			return this.newValue;
 		} else {
-			return undefined;
+			if (this.currentIndex < this.mutationPoints.length) {
+				return this.mutationPoints[this.currentIndex];
+			} else {
+				return undefined;
+			}
 		}
 	}
-}
 
-NullifyObjectInitialization.prototype._mutatePrivate = function() {
+	_mutatePrivate() {
 
-	var mutationPoint = this.mutationPoints[this.currentIndex];
-	this.previousValue = mutationPoint.code;
-	
-	this.newValue = mutationPoint.insertReplace("null");
+		var mutationPoint = this.mutationPoints[this.currentIndex];
+		this.previousValue = mutationPoint.code;
 
-	this.currentIndex++;
+		this.newValue = mutationPoint.insertReplace("null");
 
-	println("/*--------------------------------------*/");
-	println("Mutating operator n."+ this.currentIndex + ": " + this.previousValue
-			+ " to "+ this.newValue); 
-	println("/*--------------------------------------*/");
+		this.currentIndex++;
 
-}
-NullifyObjectInitialization.prototype._restorePrivate = function() {
-	// Restore operator
-	println("Restore  prev: " + this.previousValue);
-	println("Restore new: " + this.newValue.parent);	
-	this.newValue.insertReplace(this.previousValue);
-	this.newValue = undefined;
+		println("/*--------------------------------------*/");
+		println("Mutating operator n." + this.currentIndex + ": " + this.previousValue
+			+ " to " + this.newValue);
+		println("/*--------------------------------------*/");
+
+	}
+	_restorePrivate() {
+		// Restore operator
+		println("Restore  prev: " + this.previousValue);
+		println("Restore new: " + this.newValue.parent);
+		this.newValue.insertReplace(this.previousValue);
+		this.newValue = undefined;
+	}
 }

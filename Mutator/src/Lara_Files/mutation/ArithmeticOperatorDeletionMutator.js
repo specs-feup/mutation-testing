@@ -1,87 +1,79 @@
-import lara.mutation.Mutator;
-import kadabra.KadabraNodes;
-import weaver.WeaverJps;
-import weaver.Weaver;
+laraImport("lara.mutation.Mutator");
+laraImport("kadabra.KadabraNodes");
+laraImport("weaver.WeaverJps");
 
-var ArithmeticOperatorDeletionMutator = function() {
-	//Parent constructor
-     Mutator.call(this);
+laraImport("weaver.Weaver");
 
-	this.type =  "ArithmeticOperatorDeletionMutator";
+class ArithmeticOperatorDeletionMutator extends Mutator {
+    //Parent constructor
+    constructor() {
+        super("ArithmeticOperatorDeletionMutator");
 
-	this.newValue = undefined;
-	this.mutationPoints = [];
-	
-	this.currentIndex = 0;
-	this.previousValue = undefined;
-	this.isFirst = false;
-	
-};
+        this.newValue = undefined;
+        this.mutationPoints = [];
+        this.currentIndex = 0;
+        this.previousValue = undefined;
+        this.isFirst = false;
+    }
 
-// Inheritance
-ArithmeticOperatorDeletionMutator.prototype = Object.create(Mutator.prototype);
+    addJp($joinpoint) {
+        if ($joinpoint.instanceOf("binaryExpression")) {
+            this.mutationPoints.push($joinpoint);
+            return true;
+        }
+        return false;
+    }
 
-ArithmeticOperatorDeletionMutator.prototype.getType = function(){
-	return this.type;
-}
+    /*** IMPLEMENTATION OF INSTANCE METHODS ***/
+    hasMutations() {
+        return this.currentIndex < this.mutationPoints.length;
+    }
 
-ArithmeticOperatorDeletionMutator.prototype.addJp = function($joinpoint){
-	if($joinpoint.instanceOf("binaryExpression")) {
-		this.mutationPoints.push($joinpoint);
-		return true;
-	}
-	return false;
-}
+    getMutationPoint() {
+        if (this.isMutated) {
+            return this.newValue;
+        } else {
+            if (this.currentIndex < this.mutationPoints.length) {
+                return this.mutationPoints[this.currentIndex];
+            } else {
+                return undefined;
+            }
+        }
+    }
 
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
-ArithmeticOperatorDeletionMutator.prototype.hasMutations = function() {
-	return this.currentIndex < this.mutationPoints.length;
-}
+    _mutatePrivate() {
 
-ArithmeticOperatorDeletionMutator.prototype.getMutationPoint = function() {
-	if(this.isMutated){
-		return this.newValue;
-	}else{
-		if(this.currentIndex < this.mutationPoints.length) {
-		return this.mutationPoints[this.currentIndex];
-		} else {
-			return undefined;
-		}
-	}
-}
+        var mutationPoint = this.mutationPoints[this.currentIndex];
 
-ArithmeticOperatorDeletionMutator.prototype._mutatePrivate = function() {
+        this.previousValue = mutationPoint;
 
-	var mutationPoint = this.mutationPoints[this.currentIndex];
+        if (this.isFirst === false) {
+            var leftOperand = mutationPoint.lhs.copy();
+            this.newValue = mutationPoint.insertReplace(leftOperand);
+            this.isFirst = true;
+        }
+        else {
+            var rightOperand = mutationPoint.rhs.copy();
+            this.newValue = mutationPoint.insertReplace(rightOperand);
+            this.isFirst = false;
+            this.currentIndex++;
+        }
 
-	this.previousValue = mutationPoint;
+        //this.newValue = copy;
 
-	if (this.isFirst === false) {
-		var leftOperand = mutationPoint.lhs.copy();
-		this.newValue = mutationPoint.insertReplace(leftOperand);
-		this.isFirst = true;
-	}
-	else {
-		var rightOperand = mutationPoint.rhs.copy();
-		this.newValue = mutationPoint.insertReplace(rightOperand);
-		this.isFirst = false;
-		this.currentIndex++;
-	}
-	
-	//this.newValue = copy;
+        println("/*--------------------------------------*/");
+        println("Mutating operator n." + this.currentIndex + ": " + this.previousValue
+            + " to " + this.newValue);
+        println("/*--------------------------------------*/");
 
-	println("/*--------------------------------------*/");
-	println("Mutating operator n."+ this.currentIndex + ": "+ this.previousValue 
-		  +" to "+ this.newValue); 
-	println("/*--------------------------------------*/");
-
-}
-ArithmeticOperatorDeletionMutator.prototype._restorePrivate = function() {
-	// Restore operator
-	println("Restore  prev: " + this.previousValue.code);
-	println("Restore new: " + this.newValue.code);	
-	this.newValue.insertReplace(this.previousValue);
-	this.previousValue = undefined;
-	this.newValue = undefined;
-	//this.isFirst = false;
+    }
+    _restorePrivate() {
+        // Restore operator
+        println("Restore  prev: " + this.previousValue.code);
+        println("Restore new: " + this.newValue.code);
+        this.newValue.insertReplace(this.previousValue);
+        this.previousValue = undefined;
+        this.newValue = undefined;
+        //this.isFirst = false;
+    }
 }

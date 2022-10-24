@@ -1,40 +1,40 @@
-import lara.mutation.IterativeMutation;
-import lara.mutation.MutationResult;
-
-var ArithmeticOperatorDeletionMutation = function() {
-	//Parent constructor
-     IterativeMutation.call(this, "ArithmeticOperatorDeletionMutation");
-};
-
-// Inheritance
-ArithmeticOperatorDeletionMutation.prototype = Object.create(IterativeMutation.prototype);
+laraImport("lara.mutation.IterativeMutation");
+laraImport("lara.mutation.MutationResult");
 
 
+class ArithmeticOperatorDeletionMutation extends IterativeMutation {
+	constructor() {
+		//Parent constructor
+		super("ArithmeticOperatorDeletionMutation");
+	}
 
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
-
-ArithmeticOperatorDeletionMutation.prototype.isMutationPoint = function($jp) {
-	return $jp.instanceOf("binaryExpression");
-}
 
 
-ArithmeticOperatorDeletionMutation.prototype.mutate = function* ($jp) {
-	
-	
-	var leftOperand = $jp.lhs.copy();
+	/*** IMPLEMENTATION OF INSTANCE METHODS ***/
 
-	debug("/*--------------------------------------*/");
-	debug("Mutating operator: "+ $jp +" to "+ leftOperand); 
-	debug("/*--------------------------------------*/");
+	isMutationPoint($jp) {
+		return $jp.instanceOf("binaryExpression");
+	}
 
-	yield new MutationResult(leftOperand);
-	
-	
-	var rightOperand = $jp.rhs.copy();
-	
-	debug("/*--------------------------------------*/");
-	debug("Mutating operator: "+ $jp +" to "+ rightOperand); 
-	debug("/*--------------------------------------*/");	
-	
-	yield new MutationResult(rightOperand);
+	// = function* 
+	mutate($jp) {
+
+
+		let leftOperand = $jp.lhs.copy();
+
+		debug("/*--------------------------------------*/");
+		debug("Mutating operator: " + $jp + " to " + leftOperand);
+		debug("/*--------------------------------------*/");
+
+		return new MutationResult(leftOperand);
+
+
+		let rightOperand = $jp.rhs.copy();
+
+		debug("/*--------------------------------------*/");
+		debug("Mutating operator: " + $jp + " to " + rightOperand);
+		debug("/*--------------------------------------*/");
+
+		return new MutationResult(rightOperand);
+	}
 }

@@ -1,8 +1,8 @@
-laraImport("lara.mutation.Mutator");
+
 laraImport("kadabra.KadabraNodes");
 laraImport("weaver.WeaverJps");
-laraImport("weaver.Weaver");
-
+laraImport("weaver.Query");
+laraImport("lara.mutation.Mutator");
 class BinaryMutator extends Mutator {
   constructor($result, $original) {
     super("BinaryMutator");
@@ -63,11 +63,11 @@ class BinaryMutator extends Mutator {
     println("/*--------------------------------------*/");
     println(
       "Mutating operator n." +
-        this.currentIndex +
-        ": " +
-        this.previousValue +
-        " to " +
-        this.mutationPoint
+      this.currentIndex +
+      ": " +
+      this.previousValue +
+      " to " +
+      this.mutationPoint
     );
     println("/*--------------------------------------*/");
   }
@@ -76,9 +76,9 @@ class BinaryMutator extends Mutator {
     // Restore operator
     println(
       "Restoring: " +
-        this.mutationPoint.operator +
-        " to " +
-        this.previousValue.operator
+      this.mutationPoint.operator +
+      " to " +
+      this.previousValue.operator
     );
     this.mutationPoint.operator = this.previousValue.operator;
     this.previousValue = undefined;

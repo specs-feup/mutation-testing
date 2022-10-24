@@ -1,81 +1,83 @@
-import lara.mutation.Mutator;
-import kadabra.KadabraNodes;
-import weaver.WeaverJps;
-import weaver.Weaver;
+laraImport("lara.mutation.Mutator");
+laraImport("kadabra.KadabraNodes");
+laraImport("weaver.WeaverJps");
+laraImport("weaver.Query");
 
-var FailOnNull = function($startingPoint) {
-		notImplemented("NotImplemented");
-/* //Parent constructor
-     Mutator.call(this);
+class FailOnNull extends Mutator {
+	constructor($startingPoint) {
 
-	if($startingPoint === undefined) {
-		$startingPoint = WeaverJps.root();
-	}
+		//Parent constructor
+		super("FailOnNull")
 
-	this.mutationPoints = [];
-
-	for(var $var of WeaverJps.search('var').get()) {
-		if($var.reference.toString() === "read" && !$var.isPrimitive) {
-			this.mutationPoints.push($var);
+		if ($startingPoint === undefined) {
+			$startingPoint = WeaverJps.root();
 		}
+
+		this.mutationPoints = [];
+
+		for (var $var of WeaverJps.search('var').get()) {
+			if ($var.reference.toString() === "read" && !$var.isPrimitive) {
+				this.mutationPoints.push($var);
+			}
+		}
+
+		println("Mutation points:");
+		for (var $point of this.mutationPoints) {
+			println("Point: " + $point.code);
+		}
+
+		this.currentIndex = 0;
+		this.newValue = undefined;
+
+	};
+
+
+
+	/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+	hasMutations() {
+		return this.currentIndex < this.mutationPoints.length;
 	}
 
-	println("Mutation points:");
-	for(var $point of this.mutationPoints) {
-		println("Point: " + $point.code);
-	}
-	
-	this.currentIndex = 0;
-	this.newValue = undefined;
-	
-};
-
-*/};
-// Inheritance
-FailOnNull.prototype = Object.create(Mutator.prototype);
-
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
-FailOnNull.prototype.hasMutations = function() {
-	return this.currentIndex < this.mutationPoints.length;
-}
-
-FailOnNull.prototype.getMutationPoint = function() {
-	if(this.isMutated){
-		return this.newValue;
-	}else{
-		if(this.currentIndex < this.mutationPoints.length) {
-		return this.mutationPoints[this.currentIndex];
+	getMutationPoint() {
+		if (this.isMutated) {
+			return this.newValue;
 		} else {
-			return undefined;
+			if (this.currentIndex < this.mutationPoints.length) {
+				return this.mutationPoints[this.currentIndex];
+			} else {
+				return undefined;
+			}
 		}
 	}
-}
 
-FailOnNull.prototype._mutatePrivate = function() {
+	_mutatePrivate() {
 
-	var mutationPoint = this.mutationPoints[this.currentIndex];
+		var mutationPoint = this.mutationPoints[this.currentIndex];
 
-		if (mutationPoint.type === "String") {
-			this.newValue = mutationPoint.insertBefore(%{if ([[mutationPoint]] == null) 
-			{ throw new java.lang.NullPointerException("Fail on empty") }}%);
-		}
+		/* if (mutationPoint.type === "String") {
+			this.newValue = mutationPoint.insertBefore(% { if([[mutationPoint]] == null)
+			{ throw new java.lang.NullPointerException("Fail on empty") }
+		}%);
+	}
 		else {
-			this.newValue = mutationPoint.insertBefore(%{if ([[mutationPoint]] == null) 
-			{ throw new java.lang.NullPointerException("fail on null") }}%);
-		}
+	this.newValue = mutationPoint.insertBefore(% { if([[mutationPoint]] == null)
+	{ throw new java.lang.NullPointerException("fail on null") }
+}%); */
+	}
 
 
-	this.currentIndex++;
+	//this.currentIndex++;
 
-	println("/*--------------------------------------*/");
-	println("Mutating operator n."+ this.currentIndex + ": "+ 
-		  " to "+ this.newValue); 
-	println("/*--------------------------------------*/");
+	// println("/*--------------------------------------*/");
+	// println("Mutating operator n." + this.currentIndex + ": " +
+	// 	" to " + this.newValue);
+	// println("/*--------------------------------------*/");
 
-}
-FailOnNull.prototype._restorePrivate = function() {
-	// Restore operator
-	this.newValue.remove();
-	//println("value restored:" + this.newValue);
-	this.newValue = undefined;
+
+	_restorePrivate() {
+		// Restore operator
+		this.newValue.remove();
+		//println("value restored:" + this.newValue);
+		this.newValue = undefined;
+	}
 }

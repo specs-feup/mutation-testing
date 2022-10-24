@@ -1,101 +1,95 @@
-import lara.mutation.Mutator;
+laraImport("lara.mutation.Mutator");
 
 /**
  *  @param {$joinPoint} $joinPoint - A join point to use as starting point to search for conditionals to insert '!'.
  */
-var ConditionalOperatorInsertionMutator = function($joinPoint) {
-	//Parent constructor
-	Mutator.call(this);
+class ConditionalOperatorInsertionMutator extends Mutator {
+    //Parent constructor
+    constructor($joinPoint) {
 
-	if($joinPoint === undefined) {
-		$joinPoint = WeaverJps.root();
-	}
+        super("ConditionalOperatorInsertionMutator");
 
-	// Instance variables
-	this.$joinPoint = $joinPoint;
-	this.extraArgs = arrayFromArgs(arguments, 1);
+        if ($joinPoint === undefined) {
+            $joinPoint = WeaverJps.root();
+        }
 
-	this.toMutate = [];
-	this.totalMutations = -1;
-	this.currentIndex = 0;
+        // Instance variables
+        this.$joinPoint = $joinPoint;
+        this.extraArgs = arrayFromArgs(arguments, 1);
 
-	this.$conditional = undefined;
-	this.$originalConditional = undefined;
+        this.toMutate = [];
+        this.totalMutations = -1;
+        this.currentIndex = 0;
 
-
-	// Checks
-	if(this.extraArgs.length != 0)
-		throw "Expected only 1 argument but received " + (this.extraArgs.length + 1);
-
-};
-
-// Inheritance
-ConditionalOperatorInsertionMutator.prototype = Object.create(Mutator.prototype);
+        this.$conditional = undefined;
+        this.$originalConditional = undefined;
 
 
-/*** IMPLEMENTATION OF INSTANCE METHODS ***/
+        // Checks
+        if (this.extraArgs.length != 0)
+            throw new Error("Expected only 1 argument but received " + (this.extraArgs.length + 1));
 
-ConditionalOperatorInsertionMutator.prototype.getType = function(){
-	return "ConditionalOperatorInsertionMutator";
-}
-
-ConditionalOperatorInsertionMutator.prototype.addJp = function($joinpoint){
-	//println("JP -> " +$joinpoint);
-
-	if($joinpoint.instanceOf('if') || $joinpoint.instanceOf('ternary') || $joinpoint.instanceOf('loop')) {
-
-		if($joinpoint.cond.instanceOf('unaryExpression') && $joinpoint.cond.operator === '!')
-			this.toMutate.push($joinpoint);
-		else
-		if($joinpoint.cond.instanceOf('unaryExpression') && $joinpoint.cond.operator === '!')
-			this.toMutate.push($joinpoint);
-		else
-		if($joinpoint.cond.instanceOf('unaryExpression') && $joinpoint.cond.operator === '!')
-			this.toMutate.push($joinpoint);
-
-		this.totalMutations = this.toMutate.length;
-		return true;
-	}
-
-	return false;
-
-}
-
-ConditionalOperatorInsertionMutator.prototype.hasMutations = function() {
-	return this.currentIndex < this.totalMutations;
-}
+    }
 
 
-ConditionalOperatorInsertionMutator.prototype._mutatePrivate = function() {
-	this.$conditional = this.toMutate[this.currentIndex++];
+    addJp($joinpoint) {
+        //println("JP -> " +$joinpoint);
 
-	this.$originalConditional = this.$conditional.copy();
+        if ($joinpoint.instanceOf('if') || $joinpoint.instanceOf('ternary') || $joinpoint.instanceOf('loop')) {
 
-	var cond = this.$conditional.cond;
-	var newSrc = "!(" + cond.srcCode + ")";
-	cond.insertReplace(newSrc);
+            if ($joinpoint.cond.instanceOf('unaryExpression') && $joinpoint.cond.operator === '!')
+                this.toMutate.push($joinpoint);
+            else
+                if ($joinpoint.cond.instanceOf('unaryExpression') && $joinpoint.cond.operator === '!')
+                    this.toMutate.push($joinpoint);
+                else
+                    if ($joinpoint.cond.instanceOf('unaryExpression') && $joinpoint.cond.operator === '!')
+                        this.toMutate.push($joinpoint);
 
-	println("/*--------------------------------------*/");
-	println("Mutating operator n."+ this.currentIndex + ": "+ this.$originalConditional
-		+" to "+ this.$conditional);
-	println("/*--------------------------------------*/");
+            this.totalMutations = this.toMutate.length;
+            return true;
+        }
 
-}
+        return false;
 
-ConditionalOperatorInsertionMutator.prototype._restorePrivate = function() {
-	this.$conditional = this.$conditional.insertReplace(this.$originalConditional);
-	this.$originalConditional = undefined;
-	this.$conditional = undefined;
-}
+    }
 
-ConditionalOperatorInsertionMutator.prototype.getMutationPoint = function() {
-	if (this.isMutated) {
-		return this.$conditional;
-	} else {
-		if (this.currentIndex < this.toMutate.length) {
-			return this.toMutate[this.currentIndex];
-		} else {
-			return undefined;
-		}
-	}
+    hasMutations() {
+        return this.currentIndex < this.totalMutations;
+    }
+
+
+    _mutatePrivate() {
+        this.$conditional = this.toMutate[this.currentIndex++];
+
+        this.$originalConditional = this.$conditional.copy();
+
+        let cond = this.$conditional.cond;
+        let newSrc = "!(" + cond.srcCode + ")";
+        cond.insertReplace(newSrc);
+
+        println("/*--------------------------------------*/");
+        println("Mutating operator n." + this.currentIndex + ": " + this.$originalConditional
+            + " to " + this.$conditional);
+        println("/*--------------------------------------*/");
+
+    }
+
+    _restorePrivate() {
+        this.$conditional = this.$conditional.insertReplace(this.$originalConditional);
+        this.$originalConditional = undefined;
+        this.$conditional = undefined;
+    }
+
+    getMutationPoint() {
+        if (this.isMutated) {
+            return this.$conditional;
+        } else {
+            if (this.currentIndex < this.toMutate.length) {
+                return this.toMutate[this.currentIndex];
+            } else {
+                return undefined;
+            }
+        }
+    }
 }
