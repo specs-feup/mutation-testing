@@ -3,3 +3,6 @@ target/
 
 # Folder with generated code
 TestProjectOutput/src/main/
+
+# Compiled files
+bin/
