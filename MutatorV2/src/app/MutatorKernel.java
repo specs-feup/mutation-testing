@@ -42,7 +42,7 @@ public class MutatorKernel implements AppKernel {
 	
     @Override
     public int execute(DataStore dataStore) {
-        LOGGER.debug("CONFIG:" + dataStore);
+        //LOGGER.debug("CONFIG:" + dataStore);
 
         //Gets all the files from project location
         File projectPath = dataStore.get(TeseUI.PROJECT_PATH);
@@ -68,9 +68,7 @@ public class MutatorKernel implements AppKernel {
         List<DataStore> listArguments = new ArrayList<>();
 
         //For each java file detected
-        for (File file : filesList) {
-        	System.out.println(file.getName());
-        	
+        for (File file : filesList) {        	
             DataStore data = DataStore.newInstance("Kadabra Options");
 
             data.put(LaraiKeys.LARA_FILE, new File(javascriptPath));
@@ -81,16 +79,17 @@ public class MutatorKernel implements AppKernel {
             data.set(JavaWeaverKeys.FULLY_QUALIFIED_NAMES);
             data.set(LaraiKeys.DEBUG_MODE);
             data.set(JavaWeaverKeys.NO_CLASSPATH);
+            data.set(JavaWeaverKeys.WRITE_CODE, false);
             data.set(LaraiKeys.EXTERNAL_DEPENDENCIES,StringList.newInstance("https://github.com/specs-feup/lara-framework.git?folder=experimental/SourceAction","https://github.com/specs-feup/lara-framework.git?folder=experimental/Mutation"));
             data.put(LaraiKeys.INCLUDES_FOLDER, FileList.newInstance(new File(MUTATORS_CODE_LOCATION)));
             
-            
             JSONObject javascriptArguments = new JSONObject();
             javascriptArguments.put("outputPath", OutputPath.getAbsolutePath());
-            javascriptArguments.put("fileName", file.getName());
+            javascriptArguments.put("filePath", file.getAbsolutePath());
             javascriptArguments.put("outputFolder" , OutputPath.getAbsolutePath() + File.separator + "mutatedFiles");
             javascriptArguments.put("traditionalMutation", dataStore.get(TeseUI.TRADITIONAL_MUTATION));
             javascriptArguments.put("projectPath", dataStore.get(TeseUI.PROJECT_PATH).getAbsolutePath()+ File.separator + " ");
+            javascriptArguments.put("debugMessages", dataStore.get(TeseUI.DEBUG));
 
             
             data.put(LaraiKeys.ASPECT_ARGS, javascriptArguments.toJSONString());
@@ -112,9 +111,6 @@ public class MutatorKernel implements AppKernel {
         }else {
         	executeParallel(listArguments, filesList.size());
         }
-        
-
-        //compileMutantIds(new File(OutputPath.getAbsolutePath() + File.separator + "mutantsIdentifiers"));
     	
     	return 0;
     }
@@ -155,8 +151,8 @@ public class MutatorKernel implements AppKernel {
                 //LOGGER.info("New Thead. Thread count -> " + ++threadCount);
                 //LOGGER.info(" ARGS: " + args);
             	
-            	//System.out.print("New Thead. Thread count -> " + ++threadCount);
-                System.out.println(" ARGS: " + args);
+            	System.out.print("[DEBUG] New Thead. Thread count -> " + ++threadCount);
+                System.out.println("[DEBUG] ARGS: " + args);
                 return KadabraLauncher.execute(args);
             } catch (Exception e) {
                 //LOGGER.error("Exception during Kadabra execution: " + e);
@@ -166,49 +162,5 @@ public class MutatorKernel implements AppKernel {
         return true;
     }
     
-    public static boolean compileMutantIds(File folder) {
-        File[] fList = folder.listFiles(File::isFile);
-        JSONParser parser = new JSONParser();
-        JSONArray identifiersList = new JSONArray();
-
-        if (fList != null)
-            for (File file : fList) {
-                try {
-                    FileReader fr = new FileReader(file);
-                    Object obj = parser.parse(fr);
-
-                    JSONObject jsonObject = (JSONObject) obj;
-                    JSONArray jsonArray = (JSONArray) jsonObject.get("identifiers");
-
-                    identifiersList.addAll(jsonArray);
-                    fr.close();
-                } catch (ParseException | IOException e) {
-                    LOGGER.error(e);
-                    Arrays.stream(e.getStackTrace())
-                            .forEach(stackTraceElement -> LOGGER.error("\tat " + stackTraceElement));
-                    ;
-                }
-            }
-        try {
-            FileWriter jsonFileWriter = new FileWriter(
-                    folder.getParentFile().getAbsolutePath() + File.separator + "mutantsIdentifiers.json");
-
-            JSONObject finalResult = new JSONObject();
-            finalResult.put("identifiers", identifiersList);
-            jsonFileWriter.write(finalResult.toJSONString());
-
-            jsonFileWriter.flush();
-            jsonFileWriter.close();
-
-            LOGGER.info("Generated " + identifiersList.size() + " mutants");
-        } catch (IOException e) {
-            LOGGER.error(e);
-            Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> LOGGER.error("\tat " + stackTraceElement));
-            ;
-            return false;
-        }
-
-        return true;
-    }
-
+   
 }

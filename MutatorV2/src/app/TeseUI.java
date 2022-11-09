@@ -20,4 +20,5 @@ public class TeseUI {
     public static final DataKey<File> JAVASCRIPT_FILE = KeyFactory.file("JavascriptPath", "js").setLabel("Javascript file path (for unimplemented mutators)");
     public static final DataKey<Integer> NUMBER_OF_THREADS = KeyFactory.integer("NUMBER_OF_THREADS").setLabel("Number of threads to run").setDefault(() -> 20);
     public static final DataKey<Boolean> TRADITIONAL_MUTATION = KeyFactory.bool("TRADITIONAL_MUTATION").setLabel("Use traditional mutation");
+    public static final DataKey<Boolean> DEBUG = KeyFactory.bool("Debug").setLabel("Activate debug messages");
 }

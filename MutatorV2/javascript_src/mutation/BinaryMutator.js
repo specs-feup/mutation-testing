@@ -22,7 +22,7 @@ class BinaryMutator extends Mutator {
       $joinpoint.operator === this.$original
     ) {
       this.mutationPoints.push($joinpoint);
-      println(
+      debug(
         "Adicionou um ponto de mutação " +
           this.$expr +
           " a " +
@@ -55,7 +55,7 @@ class BinaryMutator extends Mutator {
     this.mutationPoint = this.mutationPoints[this.currentIndex];
     this.currentIndex++;
 
-    println(`${this.getName()}: from ${this.mutationPoint} to ${this.$expr}`);
+    debug(`${this.getName()}: from ${this.mutationPoint} to ${this.$expr}`);
 
     this.previousValue = this.mutationPoint.operator;
     this.mutationPoint.operator = this.$expr;

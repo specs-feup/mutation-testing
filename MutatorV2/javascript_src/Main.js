@@ -4,27 +4,38 @@ laraImport("Mutators");
 laraImport("weaver.Query");
 
 const outputPath = laraArgs.outputPath;
-const fileName = laraArgs.fileName;
+const filePath = laraArgs.filePath;
 const outputFolder = laraArgs.outputFolder;
 const traditionalMutation = laraArgs.traditionalMutation;
-const projectPath = laraArgs.projectPath;
+const projectPath = laraArgs.projectPath.trim();
+const debugMessages = laraArgs.debugMessages;
+const fileName = filePath.substring(
+  filePath.lastIndexOf(Io.getSeparator()) + 1
+);
+main();
 
-main(outputPath, fileName, outputFolder, traditionalMutation, projectPath);
+function main() {
+  //Shows aditional prints
+  if (debugMessages) {
+    setDebug(true);
+  }
 
-function main(outputPath, fileName, outputFolder, traditionalMutation) {
-  print(fileName);
+  //If no mutatans were selected
   if (Mutators.length === 0) {
     println("No mutators selected");
     return;
   }
+
   println("Traditional Mutation: " + traditionalMutation);
+
   if (traditionalMutation) {
+    println("Going through AST for file " + fileName);
     //Goes to each node and stores the mutatation point
     runTreeAndGetMutants();
 
-    applyTraditionalMutation(outputPath, fileName);
-
-    //Goes to each stored mutation point and
+    println("Generating Mutants for file " + fileName);
+    //Goes to each stored mutation point and applies the mutation
+    applyTraditionalMutation();
 
     /*
     println(Query.root().code);*/
@@ -47,7 +58,7 @@ function main(outputPath, fileName, outputFolder, traditionalMutation) {
 
       for (mutator of Mutators) {
         if (mutator.addJp($jp)) {
-          var fileName =
+          var fileName2 =
             $jp.ancestor("file") === undefined
               ? "NOFILENAME"
               : $jp.ancestor("file").name;
@@ -58,7 +69,7 @@ function main(outputPath, fileName, outputFolder, traditionalMutation) {
                 " on: " +
                 $jp +
                 " file " +
-                fileName +
+                fileName2 +
                 " line " +
                 $jp.line
             );
@@ -70,7 +81,7 @@ function main(outputPath, fileName, outputFolder, traditionalMutation) {
                   " on: " +
                   $jp.parent +
                   " file " +
-                  fileName +
+                  fileName2 +
                   " line " +
                   $jp.parent.line
               );
@@ -104,7 +115,7 @@ function main(outputPath, fileName, outputFolder, traditionalMutation) {
               : mutated.ancestor("file").path;
           identifier.line = mutated.line;
           identifier.id =
-            fileName +
+            fileName2 +
             "_" +
             mutator.getType() +
             "_" +
@@ -159,7 +170,7 @@ function main(outputPath, fileName, outputFolder, traditionalMutation) {
         mutator.restore();
       }
     }
-    //saveFile();
+    saveFile();
     println(
       "Finalized with " +
         identifiersList.identifiers.length +
@@ -172,7 +183,7 @@ function runTreeAndGetMutants() {
   for (var $jp of Query.root().descendants) {
     for (mutator of Mutators) {
       if (mutator.addJp($jp)) {
-        println(mutator);
+        debug(mutator);
       }
     }
   }
@@ -186,32 +197,36 @@ function printMutationPoints() {
   }
 }
 
-function applyTraditionalMutation(outputPath, fileName) {
+function applyTraditionalMutation() {
   for (mutator of Mutators) {
     while (mutator.hasMutations()) {
       mutator.mutate();
 
-      saveFileNew(outputPath, fileName, mutator.getName());
+      saveFileNew(mutator.getName());
     }
   }
 }
 
-function saveFileNew(outputPath, fileName, mutatorName) {
+function saveFileNew(mutatorName) {
+  let relativePath = Io.getRelativePath(filePath, projectPath);
+
   let newFolder =
-    outputPath + Io.getSeparator() + mutatorName + Io.getSeparator();
-  /*Io.getSeparator() +
-    fileName +
+    outputPath +
+    Io.getSeparator() +
+    mutatorName +
+    Io.getSeparator() +
+    fileName.replace(".java", "") +
     "_" +
-    Strings.uuid();*/
-  println("NewFolder: " + newFolder);
-  println("ProjectPath: " + projectPath);
+    Strings.uuid();
+
   Io.copyFolder(projectPath, newFolder, true);
-  //println(Query.root().code);
 
-  //p.replace(regex, "ferret");
-
-  // Write modified code
-  //Weaver.writeCode($outputFolder);
+  Io.writeFile(
+    newFolder +
+      Io.getSeparator() +
+      relativePath.replace("/", Io.getSeparator()),
+    Query.root().code
+  );
 }
 
 function saveFile() {
