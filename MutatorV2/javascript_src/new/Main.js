@@ -4,7 +4,7 @@ laraImport("Mutators");
 laraImport("weaver.Query");
 laraImport("lara.util.ProcessExecutor");
 
-const outputPath = laraArgs.outputPath;
+/*const outputPath = laraArgs.outputPath;
 const filePath = laraArgs.filePath;
 const outputFolder = laraArgs.outputFolder;
 const traditionalMutation = laraArgs.traditionalMutation;
@@ -12,7 +12,7 @@ const projectPath = laraArgs.projectPath.trim();
 const debugMessages = laraArgs.debugMessages;
 const fileName = filePath.substring(
   filePath.lastIndexOf(Io.getSeparator()) + 1
-);
+);*/
 
 class Arguments {
   constructor(
@@ -47,25 +47,25 @@ class Arguments {
 
     //Clava with stack strace
     if (this.stackTrace) {
-      strAux.push(" -s");
+      strAux.push("-s");
     }
 
     //Writes the code by it selfy
     if (this.writeCode) {
-      strAux.push(" WR");
+      strAux.push("WR");
     }
 
     //Adds the output path
-    strAux.push(" -o ");
+    strAux.push("-o");
     strAux.push(this.outputFolder);
 
     if (this.debugMode) {
-      strAux.push(" -d");
+      strAux.push("-d");
     }
 
     //Adds the dependencies (pode ser preciso remover o ultimo; )
     if (this.externalDependencies.length > 0) {
-      strAux.push(" -dep ");
+      strAux.push("-dep ");
 
       let aux = "";
       for (i in this.externalDependencies) {
@@ -75,23 +75,23 @@ class Arguments {
     }
 
     //add args
-    strAux.push(" -av");
+    strAux.push("-av");
     strAux.push("{" + this.args + "}");
 
     //Fully qualified names
     if (this.fullyQualifiedNames) {
-      strAux.push(" -Q");
+      strAux.push("-Q");
     }
 
     //includes folder
-    strAux.push(" -i ");
+    strAux.push("-i");
     strAux.push(this.includesFolder);
 
     // files
-    strAux.push(" -p ");
+    strAux.push("-p");
     strAux.push(this.workspaceFolder);
 
-    strAux.push(" -X ");
+    strAux.push("-X");
 
     return strAux;
   }
@@ -104,23 +104,23 @@ function main() {
 
   //aux.execute("dir");
 
-  let teste = Io.getFiles(projectPath, "*.java", true);
+  //let teste = Io.getFiles(projectPath, "*.java", true);
 
-  let args = new Arguments(
-    "C:\\Users\\david\\Desktop\\Output".trim(),
-    "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src\\Main.js".trim(),
-    "args: none",
-    "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src".trim(),
-    "C:\\Users\\david\\Desktop\\TestProject\\src\\main\\java\\org\\test\\project\\operations\\DivideOperation.java".trim()
+  let array = new Arguments(
+    "C:\\Users\\david\\Desktop\\Output",
+    "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src\\Main.js",
+    "args:'none',teste:'david'",
+    "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src",
+    "C:\\Users\\david\\Desktop\\TestProject\\src\\main\\java\\org\\test\\project\\operations\\DivideOperation.java"
   ).getList();
 
-  args = args.map((arg) => arg.trim());
+  //array = array.map((arg) => arg.trim());
 
-  for (i in args) {
-    println(args[i]);
+  for (i in array) {
+    println(array[i]);
   }
 
-  let result = Weaver.runParallel([args], 1);
+  let result = Weaver.runParallel([array], 1);
 
   //println("teste: " + teste);
 }

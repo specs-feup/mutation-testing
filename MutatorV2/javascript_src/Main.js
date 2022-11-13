@@ -3,12 +3,13 @@ laraImport("lara.Strings");
 laraImport("Mutators");
 laraImport("weaver.Query");
 
-const outputPath = laraArgs.outputPath;
-const filePath = laraArgs.filePath;
-const outputFolder = laraArgs.outputFolder;
-const traditionalMutation = laraArgs.traditionalMutation;
-const projectPath = laraArgs.projectPath.trim();
-const debugMessages = laraArgs.debugMessages;
+const outputPath = "C:\\Users\\david\\Desktop\\Output"; //laraArgs.outputPath;
+const filePath =
+  "C:\\Users\\david\\Desktop\\TestProject\\src\\main\\java\\org\\test\\project\\operations\\SubtractOperation.java"; //laraArgs.filePath;
+const outputFolder = "C:\\Users\\david\\Desktop\\Output\\mutatedFiles"; //laraArgs.outputFolder;
+const traditionalMutation = true; // laraArgs.traditionalMutation;
+const projectPath = "C:\\Users\\david\\Desktop\\TestProject\\"; //laraArgs.projectPath.trim();
+const debugMessages = true; //laraArgs.debugMessages;
 const fileName = filePath.substring(
   filePath.lastIndexOf(Io.getSeparator()) + 1
 );
@@ -40,6 +41,9 @@ function main() {
   } else {
     runTreeAndApplyMetaMutant();
   }
+
+  print(laraArgs.args);
+  print(laraArgs.teste);
 }
 
 function runTreeAndGetMutantsTraditionaly() {
