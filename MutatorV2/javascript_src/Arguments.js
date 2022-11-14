@@ -60,7 +60,7 @@ class Arguments {
 
     //add args
     strAux.push("-av");
-    strAux.push("{" + this.args + "}");
+    strAux.push(this.args);
 
     //Fully qualified names
     if (this.fullyQualifiedNames) {

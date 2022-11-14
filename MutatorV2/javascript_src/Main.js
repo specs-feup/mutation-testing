@@ -37,16 +37,25 @@ function main() {
   args_final = [];
   for (i in filesToUse) {
     println(filesToUse[i]);
+    args = {
+      outputPath: outputPath.trim(),
+      filePath: filesToUse[i].toString(),
+      traditionalMutation: traditionalMutation,
+      projectPath: projectPath,
+      debugMessages: debugMessages,
+    };
 
-    let args = new Arguments(
+    let args_kadabra = new Arguments(
       outputPath.trim(),
       "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src_2\\Main.js".trim(),
-      "args:'none'",
+      JSON.stringify(args),
       "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src_2".trim(),
       filesToUse[i]
     ).getList();
 
-    args_final.push(args);
+    print(args_kadabra);
+
+    args_final.push(args_kadabra);
   }
 
   let result = Weaver.runParallel(args_final, args_final.length);

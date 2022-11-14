@@ -3,21 +3,20 @@ laraImport("lara.Strings");
 laraImport("Mutators");
 laraImport("weaver.Query");
 
-/*const outputPath = laraArgs.outputPath;
+const outputPath = laraArgs.outputPath;
 const filePath = laraArgs.filePath;
-const outputFolder = laraArgs.outputFolder;
 const traditionalMutation = laraArgs.traditionalMutation;
 const projectPath = laraArgs.projectPath.trim();
 const debugMessages = laraArgs.debugMessages;
 const fileName = filePath.substring(
   filePath.lastIndexOf(Io.getSeparator()) + 1
-);*/
+);
 
 main();
 
 function main() {
   //Shows aditional prints
-  /*if (debugMessages) {
+  if (debugMessages) {
     setDebug(true);
   }
 
@@ -39,8 +38,7 @@ function main() {
     applyTraditionalMutation();
   } else {
     runTreeAndApplyMetaMutant();
-  }*/
-  print("Teste!!!!!!!!!");
+  }
 }
 
 function runTreeAndGetMutantsTraditionaly() {
@@ -167,6 +165,7 @@ function runTreeAndApplyMetaMutant() {
           );
           mutated.insertAfter("}");
         }
+        mutator.restore();
       }
     }
   }
@@ -198,10 +197,10 @@ function saveFileNew(mutatorName) {
 function saveFileSimple() {
   let relativePath = Io.getRelativePath(filePath, projectPath);
 
-  Io.copyFolder(projectPath, outputPath, true);
-
   Io.writeFile(
     outputPath +
+      Io.getSeparator() +
+      "MetaMutante" +
       Io.getSeparator() +
       relativePath.replace("/", Io.getSeparator()),
     Query.root().code
