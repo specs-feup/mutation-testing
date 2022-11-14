@@ -3,28 +3,51 @@ laraImport("lara.Strings");
 laraImport("weaver.Query");
 laraImport("Arguments");
 
-/*const outputPath = laraArgs.outputPath;
-const filePath = laraArgs.filePath;
-const outputFolder = laraArgs.outputFolder;
+const outputPath = laraArgs.outputPath;
 const traditionalMutation = laraArgs.traditionalMutation;
-const projectPath = laraArgs.projectPath.trim();
+const projectPath = laraArgs.projectPath;
 const debugMessages = laraArgs.debugMessages;
-const fileName = filePath.substring(
-  filePath.lastIndexOf(Io.getSeparator()) + 1
-);*/
+const folderToIgnore = laraArgs.folderToIgnore;
 
 main();
 
 function main() {
-  let array_teste = new Arguments(
-    "C:\\Users\\david\\Desktop\\Output".trim(),
-    "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src_2\\Main.js".trim(),
-    "args:'none'",
-    "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src_2".trim(),
-    "C:\\Users\\david\\Desktop\\TestProject\\src\\main\\java\\org\\test\\project\\operations\\DivideOperation.java".trim()
-  ).getList();
+  //Shows aditional prints
+  if (debugMessages) {
+    setDebug(true);
+  }
 
-  println(array_teste.toString());
+  let allJavaFiles = Io.getFiles(projectPath, "*.java", true);
+  let javaFilesToRemove = Io.getFiles(folderToIgnore, "*.java", true);
 
-  let result = Weaver.runParallel([array_teste], 1);
+  let filesToUse = allJavaFiles.filter(function (el) {
+    return javaFilesToRemove.indexOf(el) < 0;
+  });
+
+  //Makes already the copy of the projetc
+  if (!traditionalMutation) {
+    Io.copyFolder(
+      projectPath,
+      outputPath + Io.getSeparator() + "MetaMutante",
+      true
+    );
+  }
+
+  //Kadabra Parallel execution
+  args_final = [];
+  for (i in filesToUse) {
+    println(filesToUse[i]);
+
+    let args = new Arguments(
+      outputPath.trim(),
+      "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src_2\\Main.js".trim(),
+      "args:'none'",
+      "C:\\Users\\david\\git\\mutation-testing\\MutatorV2\\javascript_src_2".trim(),
+      filesToUse[i]
+    ).getList();
+
+    args_final.push(args);
+  }
+
+  let result = Weaver.runParallel(args_final, args_final.length);
 }

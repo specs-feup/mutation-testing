@@ -53,6 +53,7 @@ public class MutatorKernel implements AppKernel {
         JSONObject javascriptArguments = new JSONObject();
         javascriptArguments.put("outputPath", dataStore.get(TeseUI.OUTPUT_FOLDER).getAbsolutePath());
         javascriptArguments.put("traditionalMutation", dataStore.get(TeseUI.TRADITIONAL_MUTATION));
+        javascriptArguments.put("folderToIgnore", dataStore.get(TeseUI.FOLDER_TO_IGNORE).getAbsolutePath());
         javascriptArguments.put("projectPath",
                 dataStore.get(TeseUI.PROJECT_PATH).getAbsolutePath() + File.separator);
         javascriptArguments.put("debugMessages", dataStore.get(TeseUI.DEBUG));

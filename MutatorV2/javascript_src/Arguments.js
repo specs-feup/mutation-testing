@@ -71,9 +71,12 @@ class Arguments {
     strAux.push("-i");
     strAux.push(this.includesFolder);
 
-    // files
+    //files
     strAux.push("-p");
     strAux.push(this.workspaceFolder);
+
+    //Incomlete classpath
+    strAux.push("-X");
 
     return strAux;
   }

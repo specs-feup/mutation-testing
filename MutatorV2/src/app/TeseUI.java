@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Options.FileList;
 import org.suikasoft.jOptions.storedefinition.StoreDefinition;
 
 public class TeseUI {
@@ -18,6 +19,7 @@ public class TeseUI {
     public static final DataKey<File> PROJECT_PATH = KeyFactory.folder("ProjectPath").setLabel("Project path");
     public static final DataKey<File> OUTPUT_FOLDER = KeyFactory.folder("OutputFolder").setLabel("Output Path (Empty for default)");
     public static final DataKey<File> JAVASCRIPT_FILE = KeyFactory.file("JavascriptPath", "js").setLabel("Javascript file path (for unimplemented mutators)");
+    public static final DataKey<File> FOLDER_TO_IGNORE = KeyFactory.folder("IgnoreFolder").setLabel("Folder to ignore java files");
     public static final DataKey<Integer> NUMBER_OF_THREADS = KeyFactory.integer("NUMBER_OF_THREADS").setLabel("Number of threads to run").setDefault(() -> 20);
     public static final DataKey<Boolean> TRADITIONAL_MUTATION = KeyFactory.bool("TRADITIONAL_MUTATION").setLabel("Use traditional mutation");
     public static final DataKey<Boolean> DEBUG = KeyFactory.bool("Debug").setLabel("Activate debug messages");
