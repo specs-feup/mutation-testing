@@ -31,25 +31,25 @@ class Arguments {
 
     //Clava with stack strace
     if (this.stackTrace) {
-      strAux.push(" -s");
+      strAux.push("-s");
     }
 
     //Writes the code by it selfy
     if (this.writeCode) {
-      strAux.push(" WR");
+      strAux.push("WR");
     }
 
     //Adds the output path
-    strAux.push(" -o ");
+    strAux.push("-o");
     strAux.push(this.outputFolder);
 
     if (this.debugMode) {
-      strAux.push(" -d");
+      strAux.push("-d");
     }
 
     //Adds the dependencies (pode ser preciso remover o ultimo; )
     if (this.externalDependencies.length > 0) {
-      strAux.push(" -dep ");
+      strAux.push("-dep ");
 
       let aux = "";
       for (i in this.externalDependencies) {
@@ -59,20 +59,20 @@ class Arguments {
     }
 
     //add args
-    strAux.push(" -av");
+    strAux.push("-av");
     strAux.push("{" + this.args + "}");
 
     //Fully qualified names
     if (this.fullyQualifiedNames) {
-      strAux.push(" -Q");
+      strAux.push("-Q");
     }
 
     //includes folder
-    strAux.push(" -i ");
+    strAux.push("-i");
     strAux.push(this.includesFolder);
 
     // files
-    strAux.push(" -p ");
+    strAux.push("-p");
     strAux.push(this.workspaceFolder);
 
     return strAux;
