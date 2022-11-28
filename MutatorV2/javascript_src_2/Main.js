@@ -2,6 +2,7 @@ laraImport("lara.Io");
 laraImport("lara.Strings");
 laraImport("Mutators");
 laraImport("weaver.Query");
+laraImport("weaver.Script");
 
 const outputPath = laraArgs.outputPath;
 const filePath = laraArgs.filePath;
@@ -28,6 +29,8 @@ function main() {
 
   println("Traditional Mutation: " + traditionalMutation);
 
+  let output = {};
+
   if (traditionalMutation) {
     println("Going through AST for file " + fileName);
     //Goes to each node and stores the mutatation point
@@ -35,10 +38,11 @@ function main() {
 
     println("Generating Mutants for file " + fileName);
     //Goes to each stored mutation point and applies the mutation
-    applyTraditionalMutation();
+    output = applyTraditionalMutation();
   } else {
-    runTreeAndApplyMetaMutant();
+    output = runTreeAndApplyMetaMutant();
   }
+  Script.setOutput({ output });
 }
 
 function runTreeAndGetMutantsTraditionaly() {
@@ -70,15 +74,25 @@ function printMutationPoints() {
 }
 
 function applyTraditionalMutation() {
+  let auxOutputStr = [];
   for (mutator of Mutators) {
     while (mutator.hasMutations()) {
       //Aplies the mutation
       mutator.mutate();
 
+      auxOutputStr.push(mutator.toJson());
+
       //Saves to a file
       saveFileNew(mutator.getName());
     }
   }
+  println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  for (i in auxOutputStr) {
+    println(JSON.stringify(auxOutputStr[i]));
+  }
+  //print(auxOutputStr);
+
+  println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 }
 
 function runTreeAndApplyMetaMutant() {
@@ -123,13 +137,15 @@ function runTreeAndApplyMetaMutant() {
           "_" +
           Strings.uuid();
 
+        //print(mutator.toJson());
+
         if (needElseIf) {
           if (mutationPoints > 1) {
             if (firstTime) {
               mutated.insertBefore(
-                'if(System.getProperty("MUID") == "' +
+                'if(System.getProperty("MUID").equals("' +
                   mutantId +
-                  '"){\n' +
+                  '")){\n' +
                   mutated.srcCode +
                   ";\n}"
               );
@@ -137,9 +153,9 @@ function runTreeAndApplyMetaMutant() {
               firstTime = false;
             } else {
               mutated.insertBefore(
-                'else if(System.getProperty("MUID") == "' +
+                'else if(System.getProperty("MUID").equals("' +
                   mutantId +
-                  '"){\n' +
+                  '")){\n' +
                   mutated.srcCode +
                   ";\n}"
               );
@@ -147,9 +163,9 @@ function runTreeAndApplyMetaMutant() {
             mutationPoints--;
           } else {
             mutated.insertBefore(
-              'else if (System.getProperty("MUID") == "' +
+              'else if (System.getProperty("MUID").equals("' +
                 mutantId +
-                '"){\n' +
+                '")){\n' +
                 mutated.srcCode +
                 ";\n}else{\n\t"
             );
@@ -157,9 +173,9 @@ function runTreeAndApplyMetaMutant() {
           }
         } else {
           mutated.insertBefore(
-            'if (System.getProperty("MUID") == "' +
+            'if (System.getProperty("MUID").equals("' +
               mutantId +
-              '"){\n' +
+              '")){\n' +
               mutated.srcCode +
               ";\n}else{\n\t"
           );

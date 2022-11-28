@@ -70,4 +70,12 @@ class BinaryMutator extends Mutator {
   toString() {
     return `BinaryMutator from ${this.$original} to ${this.$expr}, current mutation points ${this.mutationPoints}, current mutation point ${this.mutationPoint} and previoues value ${this.previousValue}`;
   }
+
+  toJson() {
+    return {
+      original: this.$original,
+      change: this.$expr,
+      mutationType: "BinaryMutator",
+    };
+  }
 }

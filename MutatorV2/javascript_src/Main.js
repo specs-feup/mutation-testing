@@ -59,4 +59,8 @@ function main() {
   }
 
   let result = Weaver.runParallel(args_final, args_final.length);
+
+  for (i in result) {
+    println(JSON.stringify(result[i]));
+  }
 }
