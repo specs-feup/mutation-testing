@@ -60,7 +60,21 @@ function main() {
 
   let result = Weaver.runParallel(args_final, args_final.length);
 
+  let fileData = [];
+
   for (i in result) {
-    println(JSON.stringify(result[i]));
+    if (result[i]["output"] != "[]") {
+      let listaAux = JSON.parse(result[i]["output"]);
+      for (j in listaAux) {
+        fileData.push(listaAux[j]);
+      }
+    }
+    //println(JSON.stringify(result[i]));
   }
+  //print(JSON.stringify(fileData));
+
+  Io.writeFile(
+    outputPath + Io.getSeparator() + "MutationInfo.json",
+    JSON.stringify(fileData)
+  );
 }

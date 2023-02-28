@@ -36,8 +36,13 @@ public class MutatorKernel implements AppKernel {
     private DataStore createKadabraOptions(DataStore dataStore) {
         DataStore data = DataStore.newInstance("Kadabra Options");
 
+        
         data.put(LaraiKeys.LARA_FILE, new File(dataStore.get(TeseUI.JAVASCRIPT_FILE).getAbsolutePath()));
+        System.out.println("dataStore.get(TeseUI.JAVASCRIPT_FILE).getAbsolutePath())" + dataStore.get(TeseUI.JAVASCRIPT_FILE).getAbsolutePath());
+        
         data.put(LaraiKeys.OUTPUT_FOLDER, dataStore.get(TeseUI.OUTPUT_FOLDER));
+        System.out.println("TeseUI.OUTPUT_FOLDER:" + TeseUI.OUTPUT_FOLDER);
+        
         data.put(LaraiKeys.VERBOSE, VerboseLevel.warnings);
         data.set(LaraiKeys.TRACE_MODE);
         data.set(JavaWeaverKeys.FULLY_QUALIFIED_NAMES);
@@ -49,6 +54,7 @@ public class MutatorKernel implements AppKernel {
                         "https://github.com/specs-feup/lara-framework.git?folder=experimental/SourceAction",
                         "https://github.com/specs-feup/lara-framework.git?folder=experimental/Mutation"));
         data.put(LaraiKeys.INCLUDES_FOLDER, FileList.newInstance(new File(Entry_CODE_LOCATION)));
+        System.out.println("Entry_CODE_LOCATION:" + Entry_CODE_LOCATION);
 
         JSONObject javascriptArguments = new JSONObject();
         javascriptArguments.put("outputPath", dataStore.get(TeseUI.OUTPUT_FOLDER).getAbsolutePath());
@@ -59,11 +65,16 @@ public class MutatorKernel implements AppKernel {
         javascriptArguments.put("debugMessages", dataStore.get(TeseUI.DEBUG));
 
         data.put(LaraiKeys.ASPECT_ARGS, javascriptArguments.toJSONString());
+        System.out.println("javascriptArguments.toJSONString():" +javascriptArguments.toJSONString());
 
         var replacer = new Replacer(SpecsIo.getResource("template.js"));
         replacer.replace("<IMPORT>", "");
         replacer.replace("<MUTATORS>", Operators.generateMutatorString(dataStore));
+        System.out.println("Operators.generateMutatorString(dataStore):" +Operators.generateMutatorString(dataStore));
+        
+        
         SpecsIo.write(new File(CHOSEN_MUTATOR_FILE_LOCATION), replacer.toString());
+        System.out.println("CHOSEN_MUTATOR_FILE_LOCATION:" +CHOSEN_MUTATOR_FILE_LOCATION);
 
         return data;
     }

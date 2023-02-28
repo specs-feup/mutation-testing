@@ -15,24 +15,23 @@ import pt.up.fe.specs.util.SpecsSystem;
 
 public class Main {
 
-    
-    public static void main(String[] args) {
-        SpecsSystem.programStandardInit();
-        
-        StoreDefinitionBuilder storeDefinitionBuilder = new StoreDefinitionBuilder(TeseUI.class);
-        
-        for (Operators operators : Operators.assignedOperators) {
-            storeDefinitionBuilder.startSection(operators.getDescription() + " Operators");
-            
-            for (DataKey dk: operators.getDataKeys()) {
-            	storeDefinitionBuilder.addKey(dk);
-            }
-        }   
-        
-        TeseUI.storeDefinition = storeDefinitionBuilder.build();
-        AppPersistence persistence = new XmlPersistence(TeseUI.storeDefinition);
-        
-        App app = App.newInstance(TeseUI.storeDefinition, persistence, new MutatorKernel());
-        JOptionsUtils.executeApp(app, Arrays.asList(args));
-    }
+	public static void main(String[] args) {
+		SpecsSystem.programStandardInit();
+
+		StoreDefinitionBuilder storeDefinitionBuilder = new StoreDefinitionBuilder(TeseUI.class);
+
+		for (Operators operators : Operators.assignedOperators) {
+			storeDefinitionBuilder.startSection(operators.getDescription() + " Operators");
+
+			for (DataKey dk : operators.getDataKeys()) {
+				storeDefinitionBuilder.addKey(dk);
+			}
+		}
+
+		TeseUI.storeDefinition = storeDefinitionBuilder.build();
+		AppPersistence persistence = new XmlPersistence(TeseUI.storeDefinition);
+
+		App app = App.newInstance(TeseUI.storeDefinition, persistence, new MutatorKernel());
+		JOptionsUtils.executeApp(app, Arrays.asList(args));
+	}
 }

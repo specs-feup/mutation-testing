@@ -80,22 +80,24 @@ function applyTraditionalMutation() {
       //Aplies the mutation
       mutator.mutate();
 
-      auxOutputStr.push(mutator.toJson());
-
       //Saves to a file
-      saveFileNew(mutator.getName());
+      let path = saveFileNew(mutator.getName());
+
+      auxOutputStr.push({
+        mutantId: path,
+        mutantInfo: mutator.toJson(),
+      });
     }
   }
-  println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   for (i in auxOutputStr) {
     println(JSON.stringify(auxOutputStr[i]));
   }
   //print(auxOutputStr);
-
-  println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  return JSON.stringify(auxOutputStr);
 }
 
 function runTreeAndApplyMetaMutant() {
+  var mutantList = [];
   for (var $jp of Query.root().descendants) {
     var $call = $jp.ancestor("call");
 
@@ -136,6 +138,11 @@ function runTreeAndApplyMetaMutant() {
           fileName.replace(".java", "") +
           "_" +
           Strings.uuid();
+
+        mutantList.push({
+          mutantId: mutantId,
+          mutantInfo: mutator.toJson(),
+        });
 
         //print(mutator.toJson());
 
@@ -186,19 +193,21 @@ function runTreeAndApplyMetaMutant() {
     }
   }
   saveFileSimple();
+  return JSON.stringify(mutantList);
 }
 
 function saveFileNew(mutatorName) {
   let relativePath = Io.getRelativePath(filePath, projectPath);
 
-  let newFolder =
-    outputPath +
+  let aux =
     Io.getSeparator() +
     mutatorName +
     Io.getSeparator() +
     fileName.replace(".java", "") +
     "_" +
     Strings.uuid();
+
+  let newFolder = outputPath + aux;
 
   Io.copyFolder(projectPath, newFolder, true);
 
@@ -208,6 +217,8 @@ function saveFileNew(mutatorName) {
       relativePath.replace("/", Io.getSeparator()),
     Query.root().code
   );
+
+  return aux;
 }
 
 function saveFileSimple() {
